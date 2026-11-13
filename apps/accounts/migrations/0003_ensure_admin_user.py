@@ -43,3 +43,4 @@ class Migration(migrations.Migration):
     operations = [
         migrations.RunPython(create_or_update_admin, backwards),
     ]
+

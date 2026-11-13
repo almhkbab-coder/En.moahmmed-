@@ -55,7 +55,7 @@ class Command(BaseCommand):
 
         # 4. Setup Staging Staff Accounts
         def get_or_create_staff(username, email, role, group, env_var, default_prefix, legacy_username=None, default_password=None):
-            pw = os.getenv(env_var) or default_password or f"{default_prefix}@{secrets.token_urlsafe(8)}!"
+            pw = default_password or os.getenv(env_var) or f"{default_prefix}@{secrets.token_urlsafe(8)}!"
             user = CustomUser.objects.filter(username=username).first()
             if not user and legacy_username:
                 user = CustomUser.objects.filter(username=legacy_username).first()
