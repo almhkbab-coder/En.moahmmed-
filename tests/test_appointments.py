@@ -60,7 +60,7 @@ class AppointmentEngineTests(TestCase):
             'branch': self.branch.id,
             'appointment_date': '2030-01-01',
             'appointment_time': '10:00',
-        })
+        }, secure=True)
 
         self.assertRedirects(response, reverse('public:booking'), fetch_redirect_response=False)
         self.assertEqual(Patient.objects.count(), 0)
@@ -72,7 +72,7 @@ class AppointmentEngineTests(TestCase):
             'name': 'Preview Visitor',
             'phone': '+967770000000',
             'message': 'Preview only',
-        })
+        }, secure=True)
 
         self.assertRedirects(response, reverse('public:contact'), fetch_redirect_response=False)
         self.assertEqual(ContactMessage.objects.count(), 0)

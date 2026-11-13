@@ -6,6 +6,12 @@ from .base import *
 # ==========================================
 DEBUG = False
 
+if os.getenv('RENDER'):
+    if not os.getenv('SECRET_KEY'):
+        import secrets
+        SECRET_KEY = secrets.token_urlsafe(64)
+    PUBLIC_FORMS_ENABLED = os.getenv('PUBLIC_FORMS_ENABLED', 'False') == 'True'
+
 # Staging Allowed Hosts
 ALLOWED_HOSTS = [
     host.strip() for host in os.getenv(
@@ -71,6 +77,10 @@ X_FRAME_OPTIONS = 'DENY'
 CSRF_COOKIE_SECURE = os.getenv('STAGING_COOKIE_SECURE', 'False') == 'True'
 SESSION_COOKIE_SECURE = os.getenv('STAGING_COOKIE_SECURE', 'False') == 'True'
 SECURE_SSL_REDIRECT = os.getenv('STAGING_SSL_REDIRECT', 'False') == 'True'
+if os.getenv('RENDER'):
+    CSRF_COOKIE_SECURE = os.getenv('STAGING_COOKIE_SECURE', 'True') == 'True'
+    SESSION_COOKIE_SECURE = os.getenv('STAGING_COOKIE_SECURE', 'True') == 'True'
+    SECURE_SSL_REDIRECT = os.getenv('STAGING_SSL_REDIRECT', 'True') == 'True'
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Dedicated Staging Media Directory (Isolates test uploads from production)
