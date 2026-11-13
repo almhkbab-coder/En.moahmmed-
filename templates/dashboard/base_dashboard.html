@@ -3,7 +3,14 @@
 <html lang="{{ current_lang }}" dir="{% if is_rtl %}rtl{% else %}ltr{% endif %}">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <meta name="theme-color" content="#173B58">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="عيادة الصياد">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="format-detection" content="telephone=no">
+
   <title>{{ page_title }} | لوحة التحكم - عيادة الصياد | جراحة العظام والمفاصل</title>
 
   <!-- Google Fonts: Cairo, Tajawal & Inter -->
@@ -31,16 +38,23 @@
 </head>
 <body class="bg-light {% if current_lang == 'en' %}lang-en{% endif %}">
 
+  <!-- Mobile Backdrop for Offcanvas Sidebar -->
+  <div class="saas-sidebar-backdrop" id="sidebarBackdrop"></div>
+
   <div class="saas-dashboard-wrapper">
-    <!-- Clean White SaaS Sidebar (Matching Image 3) -->
-    <aside class="saas-sidebar">
+    <!-- Clean White SaaS Sidebar (Responsive Drawer on Mobile, Sticky on Desktop) -->
+    <aside class="saas-sidebar" id="saasSidebar" aria-label="{% if current_lang == 'ar' %}القائمة الجانبية للوحة التحكم{% else %}Dashboard Sidebar{% endif %}">
       <!-- Brand Header -->
-      <div class="saas-sidebar-brand">
-        <img src="{% if site_settings.logo %}{{ site_settings.logo.url }}{% else %}{% static 'img/clinic_logo.jpg' %}{% endif %}" alt="شعار عيادة الصياد" class="rounded-circle shadow-sm bg-white p-1 flex-shrink-0" style="width: 50px; height: 50px; min-width: 50px; object-fit: contain; border: 2px solid #E2E8F0;">
-        <div>
-          <div class="fw-bold fs-6 text-navy lh-1 mb-1">{% if current_lang == 'ar' %}عيادة الصياد{% else %}Al-Sayyad Clinic{% endif %}</div>
-          <div class="text-muted" style="font-size: 0.72rem;">{% if current_lang == 'ar' %}جراحة العظام والمفاصل{% else %}Orthopaedic Practice{% endif %}</div>
+      <div class="saas-sidebar-brand d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center gap-2">
+          <img src="{% if site_settings.logo %}{{ site_settings.logo.url }}{% else %}{% static 'img/clinic_logo.jpg' %}{% endif %}" alt="شعار عيادة الصياد" class="rounded-circle shadow-sm bg-white p-1 flex-shrink-0" style="width: 46px; height: 46px; min-width: 46px; object-fit: contain; border: 2px solid #E2E8F0;">
+          <div>
+            <div class="fw-bold fs-6 text-navy lh-1 mb-1">{% if current_lang == 'ar' %}عيادة الصياد{% else %}Al-Sayyad Clinic{% endif %}</div>
+            <div class="text-muted" style="font-size: 0.72rem;">{% if current_lang == 'ar' %}جراحة العظام والمفاصل{% else %}Orthopaedic Practice{% endif %}</div>
+          </div>
         </div>
+        <!-- Close button visible only on mobile/tablet -->
+        <button type="button" class="btn-close d-lg-none" id="sidebarCloseBtn" aria-label="{% if current_lang == 'ar' %}إغلاق القائمة{% else %}Close{% endif %}"></button>
       </div>
 
       <!-- Quick Search Bar inside Sidebar (⌘K) -->
@@ -53,7 +67,7 @@
       </div>
 
       <!-- Navigation Menu Groups -->
-      <nav class="flex-grow-1 overflow-auto pe-1">
+      <nav class="flex-grow-1 overflow-auto pe-1" id="sidebarNav">
         <div class="saas-menu-heading">{% if current_lang == 'ar' %}القائمة الرئيسية{% else %}Menu{% endif %}</div>
 
         <!-- 1. Dashboard -->
@@ -151,28 +165,35 @@
 
     <!-- Main SaaS Content Area -->
     <div class="saas-main-area">
-      <!-- Modern Topbar (Matching Image 3) -->
+      <!-- Modern Responsive Topbar -->
       <header class="saas-topbar">
-        <!-- Search Bar Pill in Center -->
-        <div class="d-none d-md-flex align-items-center bg-light border rounded-pill px-3 py-1" style="width: 320px;">
-          <i class="bi bi-search text-muted me-2 ms-2"></i>
-          <input type="text" class="form-control form-control-sm border-0 bg-transparent shadow-none" placeholder="{% if current_lang == 'ar' %}بحث في المواعيد أو المرضى...{% else %}Search appointments, patients...{% endif %}">
+        <!-- Left: Hamburger Menu (Mobile/Tablet) & Page Title -->
+        <div class="d-flex align-items-center gap-2">
+          <button type="button" class="btn btn-light border rounded-3 p-1 px-2 d-lg-none shadow-none" id="sidebarToggleBtn" aria-label="{% if current_lang == 'ar' %}فتح القائمة الرئيسية{% else %}Toggle Menu{% endif %}">
+            <i class="bi bi-list fs-5 text-navy"></i>
+          </button>
+
+          <!-- Search Bar Pill in Center (Desktop) -->
+          <div class="d-none d-md-flex align-items-center bg-light border rounded-pill px-3 py-1" style="width: 280px;">
+            <i class="bi bi-search text-muted me-2 ms-2"></i>
+            <input type="text" class="form-control form-control-sm border-0 bg-transparent shadow-none" placeholder="{% if current_lang == 'ar' %}بحث في المواعيد أو المرضى...{% else %}Search appointments, patients...{% endif %}">
+          </div>
+
+          <div class="d-md-none fw-bold text-navy text-truncate" style="max-width: 150px; font-size: 0.95rem;">
+            {{ page_title }}
+          </div>
         </div>
 
-        <div class="d-md-none fw-bold text-navy">
-          {{ page_title }}
-        </div>
-
-        <!-- Right Side Icons & Profile Pill (Matching Image 3) -->
-        <div class="d-flex align-items-center gap-3">
+        <!-- Right Side Icons & Profile Pill -->
+        <div class="d-flex align-items-center gap-2 gap-sm-3">
           <!-- Direct Patient Booking Screen Button -->
-          <a href="{% url 'public:booking' %}" target="_blank" class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-semibold d-none d-sm-inline-flex align-items-center gap-1">
+          <a href="{% url 'public:booking' %}" target="_blank" class="btn btn-sm btn-outline-primary rounded-pill px-2 px-sm-3 fw-semibold d-none d-sm-inline-flex align-items-center gap-1">
             <i class="bi bi-plus-circle"></i>
             <span>{% if current_lang == 'ar' %}حجز مريض جديد{% else %}New Booking{% endif %}</span>
           </a>
 
           <!-- Notification Bell -->
-          <a href="{% url 'dashboard:appointments_list' %}?status=pending" class="rounded-circle p-2 bg-light text-muted position-relative text-decoration-none d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+          <a href="{% url 'dashboard:appointments_list' %}?status=pending" class="rounded-circle p-2 bg-light text-muted position-relative text-decoration-none d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;" title="{% if current_lang == 'ar' %}المواعيد المعلقة{% else %}Pending Appointments{% endif %}">
             <i class="bi bi-bell"></i>
             {% if pending_appointments_count %}
               <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
@@ -180,18 +201,18 @@
           </a>
 
           <!-- Inquiries Envelope -->
-          <a href="{% url 'dashboard:contact_messages' %}" class="rounded-circle p-2 bg-light text-muted text-decoration-none d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+          <a href="{% url 'dashboard:contact_messages' %}" class="rounded-circle p-2 bg-light text-muted text-decoration-none d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;" title="{% if current_lang == 'ar' %}استفسارات الموقع{% else %}Inquiries{% endif %}">
             <i class="bi bi-envelope"></i>
           </a>
 
-          <!-- User Profile Chip (Matching Sullivan / Doctor in Image 3) -->
+          <!-- User Profile Chip -->
           <div class="d-flex align-items-center gap-2 ps-2 border-start">
-            <img src="{% static 'img/dr_mohammed_alsayyad.jpg' %}" alt="User Avatar" class="rounded-circle object-fit-cover shadow-sm" style="width: 40px; height: 40px; border: 2px solid #E2E8F0;">
-            <div class="d-none d-lg-block text-start" style="line-height: 1.2;">
+            <img src="{% static 'img/dr_mohammed_alsayyad.jpg' %}" alt="User Avatar" class="rounded-circle object-fit-cover shadow-sm" style="width: 36px; height: 36px; border: 2px solid #E2E8F0;">
+            <div class="d-none d-xl-block text-start" style="line-height: 1.2;">
               <div class="fw-bold text-navy small">{% if current_lang == 'ar' %}د. محمد الصياد{% else %}Dr. Mohammed{% endif %}</div>
               <div class="text-muted" style="font-size: 0.72rem;">{% if current_lang == 'ar' %}جراحة العظام والمفاصل{% else %}Orthopaedic Consultant{% endif %}</div>
             </div>
-            <a href="{% url 'dashboard:site_settings' %}" class="text-muted text-decoration-none ms-1">
+            <a href="{% url 'dashboard:site_settings' %}" class="text-muted text-decoration-none ms-1" title="{% if current_lang == 'ar' %}الإعدادات{% else %}Settings{% endif %}">
               <i class="bi bi-gear fs-6"></i>
             </a>
           </div>
@@ -200,7 +221,7 @@
 
       <!-- Alert Messages -->
       {% if messages %}
-        <div class="px-4 pt-3 pb-0">
+        <div class="px-3 px-sm-4 pt-3 pb-0">
           {% for message in messages %}
             <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show shadow-sm mb-2 rounded-3" role="alert">
               {{ message }}
@@ -211,14 +232,120 @@
       {% endif %}
 
       <!-- Content Container -->
-      <main class="p-4 flex-grow-1">
+      <main class="saas-content-container flex-grow-1">
         {% block dashboard_content %}{% endblock %}
       </main>
     </div>
   </div>
 
+  <!-- Mobile Bottom App Navigation Bar (Dedicated Mobile App Experience) -->
+  <nav class="saas-mobile-bottom-nav d-lg-none" aria-label="{% if current_lang == 'ar' %}شريط التنقل السريع للهاتف{% else %}Mobile Quick Navigation{% endif %}">
+    <a href="{% url 'dashboard:index' %}" class="saas-bottom-nav-item {% if request.resolver_match.url_name == 'index' %}active{% endif %}">
+      <i class="bi bi-grid-fill"></i>
+      <span>{% if current_lang == 'ar' %}الرئيسية{% else %}Home{% endif %}</span>
+    </a>
+    <a href="{% url 'dashboard:appointments_list' %}" class="saas-bottom-nav-item position-relative {% if 'appointment' in request.resolver_match.url_name %}active{% endif %}">
+      <i class="bi bi-calendar-check"></i>
+      <span>{% if current_lang == 'ar' %}المواعيد{% else %}Bookings{% endif %}</span>
+      {% if pending_appointments_count %}
+        <span class="position-absolute badge rounded-pill bg-danger" style="font-size: 0.6rem; top: 4px; left: 52%;">{{ pending_appointments_count }}</span>
+      {% endif %}
+    </a>
+    <a href="{% url 'dashboard:patients_list' %}" class="saas-bottom-nav-item {% if 'patient' in request.resolver_match.url_name %}active{% endif %}">
+      <i class="bi bi-person-lines-fill"></i>
+      <span>{% if current_lang == 'ar' %}المرضى{% else %}Patients{% endif %}</span>
+    </a>
+    <a href="{% url 'dashboard:services_list' %}" class="saas-bottom-nav-item {% if 'service' in request.resolver_match.url_name %}active{% endif %}">
+      <i class="bi bi-hospital"></i>
+      <span>{% if current_lang == 'ar' %}الخدمات{% else %}Services{% endif %}</span>
+    </a>
+    <button type="button" class="saas-bottom-nav-item border-0 bg-transparent" id="bottomNavMenuBtn" aria-label="{% if current_lang == 'ar' %}فتح القائمة الكاملة{% else %}Open Menu{% endif %}">
+      <i class="bi bi-list"></i>
+      <span>{% if current_lang == 'ar' %}المزيد{% else %}More{% endif %}</span>
+    </button>
+  </nav>
+
   <!-- Bootstrap 5 Bundle JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Responsive Dashboard Script -->
+  <script>
+    (function() {
+      const sidebar = document.getElementById('saasSidebar');
+      const backdrop = document.getElementById('sidebarBackdrop');
+      const toggleBtn = document.getElementById('sidebarToggleBtn');
+      const closeBtn = document.getElementById('sidebarCloseBtn');
+      const bottomMenuBtn = document.getElementById('bottomNavMenuBtn');
+      const sidebarNav = document.getElementById('sidebarNav');
+
+      function openSidebar() {
+        if (!sidebar) return;
+        sidebar.classList.add('show');
+        if (backdrop) backdrop.classList.add('show');
+        document.body.classList.add('saas-sidebar-open');
+      }
+
+      function closeSidebar() {
+        if (!sidebar) return;
+        sidebar.classList.remove('show');
+        if (backdrop) backdrop.classList.remove('show');
+        document.body.classList.remove('saas-sidebar-open');
+      }
+
+      if (toggleBtn) toggleBtn.addEventListener('click', openSidebar);
+      if (bottomMenuBtn) bottomMenuBtn.addEventListener('click', openSidebar);
+      if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+      if (backdrop) backdrop.addEventListener('click', closeSidebar);
+
+      // Close on Escape key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && sidebar && sidebar.classList.contains('show')) {
+          closeSidebar();
+        }
+      });
+
+      // Close mobile drawer when clicking a navigation link
+      if (sidebarNav) {
+        sidebarNav.querySelectorAll('.saas-nav-link').forEach(function(link) {
+          link.addEventListener('click', function() {
+            if (window.innerWidth < 992) {
+              closeSidebar();
+            }
+          });
+        });
+      }
+
+      // Touch swipe-to-close gesture on mobile
+      let touchStartX = 0;
+      let touchStartY = 0;
+      if (sidebar) {
+        sidebar.addEventListener('touchstart', function(e) {
+          touchStartX = e.changedTouches[0].screenX;
+          touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+
+        sidebar.addEventListener('touchend', function(e) {
+          const touchEndX = e.changedTouches[0].screenX;
+          const touchEndY = e.changedTouches[0].screenY;
+          const deltaX = touchEndX - touchStartX;
+          const deltaY = Math.abs(touchEndY - touchStartY);
+
+          // If horizontal swipe is much larger than vertical movement
+          if (deltaY < 80) {
+            const isRTL = document.documentElement.getAttribute('dir') === 'rtl';
+            if (isRTL && deltaX > 60) {
+              // Swiped right in RTL -> close
+              closeSidebar();
+            } else if (!isRTL && deltaX < -60) {
+              // Swiped left in LTR -> close
+              closeSidebar();
+            }
+          }
+        }, { passive: true });
+      }
+    })();
+  </script>
+
   {% block extra_js %}{% endblock %}
 </body>
 </html>
