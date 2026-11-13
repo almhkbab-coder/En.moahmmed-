@@ -1,0 +1,150 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load static i18n %}
+
+{% block dashboard_content %}
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="card border-0 rounded-4 shadow-sm bg-white p-4 p-md-5">
+      <h2 class="h5 fw-bold text-navy mb-4 border-bottom pb-2">
+        <i class="bi bi-person-badge text-success me-1"></i> تعديل بيانات وسيرة الطبيب الرسمية
+      </h2>
+
+      <!-- Medical Claims & Statistics Advisory Notice -->
+      <div class="alert alert-warning border-0 rounded-3 p-3 mb-4 d-flex align-items-start gap-3">
+        <i class="bi bi-shield-exclamation text-warning fs-3"></i>
+        <div>
+          <div class="fw-bold text-dark">تنبيه تدقيق المحتوى الطبي والإحصائي (Medical Claims Verification Notice):</div>
+          <div class="small text-muted mt-1">
+            الأرقام الإحصائية الحالية (سنوات الخبرة، عدد العمليات، عدد الاستشارات، والشهادات الأكاديمية) هي بيانات توضيحية تجريبية (Demo Placeholders). <strong>يجب مراجعتها واعتمادها شخصياً ورسمياً من قبل الدكتور محمد أحمد الصياد</strong> قبل تفعيل ونشر الموقع لعموم الجمهور لضمان المصداقية والأخلاقيات الطبية والقانونية.
+          </div>
+        </div>
+      </div>
+
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label small fw-semibold">اسم الطبيب (عربي) *</label>
+            {{ form.name_ar }}
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label small fw-semibold">اسم الطبيب (إنجليزي) *</label>
+            {{ form.name_en }}
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label small fw-semibold">اللقب المهني (عربي) *</label>
+            {{ form.title_ar }}
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label small fw-semibold">اللقب المهني (إنجليزي) *</label>
+            {{ form.title_en }}
+          </div>
+
+          <div class="col-12">
+            <label class="form-label small fw-semibold">التخصص الدقيق (عربي) *</label>
+            {{ form.specialty_ar }}
+          </div>
+
+          <div class="col-12">
+            <label class="form-label small fw-semibold">التخصص الدقيق (إنجليزي) *</label>
+            {{ form.specialty_en }}
+          </div>
+
+          <div class="col-12">
+            <label class="form-label small fw-semibold">السيرة الذاتية والنبذة السريرية (عربي) *</label>
+            {{ form.bio_ar }}
+          </div>
+
+          <div class="col-12">
+            <label class="form-label small fw-semibold">السيرة الذاتية والنبذة السريرية (إنجليزي) *</label>
+            {{ form.bio_en }}
+          </div>
+
+          <div class="col-12">
+            <label class="form-label small fw-semibold">الرؤية والرسالة الطبية (عربي)</label>
+            {{ form.vision_ar }}
+          </div>
+
+          <div class="col-12">
+            <label class="form-label small fw-semibold">الرؤية والرسالة الطبية (إنجليزي)</label>
+            {{ form.vision_en }}
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label small fw-semibold">سنوات الخبرة</label>
+            {{ form.years_of_experience }}
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label small fw-semibold">العمليات الناجحة</label>
+            {{ form.successful_surgeries }}
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label small fw-semibold">عدد الاستشارات</label>
+            {{ form.consultations_count }}
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label small fw-semibold">الصورة الرسمية للطبيب</label>
+            {{ form.profile_photo }}
+          </div>
+
+          <div class="col-md-6 d-flex align-items-center mt-4">
+            <div class="form-check form-switch">
+              {{ form.is_active }}
+              <label class="form-check-label small fw-semibold">عرض الملف في الموقع العام</label>
+            </div>
+          </div>
+
+          <div class="col-12 mt-4 pt-3 border-top">
+            <button type="submit" class="btn btn-medical px-4">
+              <i class="bi bi-save me-1"></i> حفظ وتحديث ملف الطبيب
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <!-- Education & Experiences Quick View -->
+    <div class="card border-0 rounded-4 shadow-sm bg-white p-4 mb-4">
+      <h3 class="h6 fw-bold text-navy mb-3 border-bottom pb-2">
+        <i class="bi bi-mortarboard text-success me-1"></i> المؤهلات العلمية المسجلة
+      </h3>
+      <ul class="list-unstyled small text-muted mb-0">
+        {% for edu in educations %}
+          <li class="mb-2 p-2 bg-light rounded border">
+            <div class="fw-bold text-navy">{{ edu.degree_ar }}</div>
+            <div style="font-size: 0.75rem;">{{ edu.institution_ar }} ({{ edu.year }})</div>
+          </li>
+        {% empty %}
+          <li class="text-muted">لا توجد مؤهلات مسجلة.</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="card border-0 rounded-4 shadow-sm bg-white p-4">
+      <h3 class="h6 fw-bold text-navy mb-3 border-bottom pb-2">
+        <i class="bi bi-briefcase text-primary me-1"></i> الخبرات والمستشفيات المسجلة
+      </h3>
+      <ul class="list-unstyled small text-muted mb-0">
+        {% for exp in experiences %}
+          <li class="mb-2 p-2 bg-light rounded border">
+            <div class="fw-bold text-navy">{{ exp.position_ar }}</div>
+            <div style="font-size: 0.75rem;">{{ exp.hospital_ar }} ({{ exp.period_ar }})</div>
+          </li>
+        {% empty %}
+          <li class="text-muted">لا توجد خبرات مسجلة.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

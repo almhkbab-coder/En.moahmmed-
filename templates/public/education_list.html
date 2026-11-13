@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="py-5 bg-white border-bottom">
+  <div class="container text-center max-w-700">
+    <span class="badge bg-medical-subtle text-primary px-3 py-2 rounded-pill fw-bold mb-2">
+      {% if current_lang == 'ar' %}المكتبة المرئية والتثقيف الصحي{% else %}Patient Video Education{% endif %}
+    </span>
+    <h1 class="display-6 fw-bold text-navy mb-3">
+      {% if current_lang == 'ar' %}السلاسل والفيديوهات التثقيفية الطبية{% else %}Educational Video Series &amp; Guides{% endif %}
+    </h1>
+    <p class="text-muted">
+      {% if current_lang == 'ar' %}
+        مكتبة توعوية يقدمها الدكتور محمد الصياد لتثقيف المرضى حول أمراض المفاصل والعمليات الجراحية وطرق التعافي السليم
+      {% else %}
+        Authoritative educational guides led by Dr. Mohammed Al-Sayyad on joint health, arthritis, surgical procedures, and optimal recovery.
+      {% endif %}
+    </p>
+  </div>
+</div>
+
+<div class="py-5" style="background-color: var(--bg-light);">
+  <div class="container">
+    <div class="row g-4">
+      {% for series in series_list %}
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm border rounded-4 overflow-hidden bg-white">
+            <div class="text-white p-4" style="background: linear-gradient(135deg, #0A223B 0%, #154575 100%); min-height: 170px;">
+              <span class="badge bg-success float-end">
+                {{ series.episode_count }} {% if current_lang == 'ar' %}حلقات{% else %}Episodes{% endif %}
+              </span>
+              <i class="bi bi-collection-play fs-1 text-warning mb-2 d-block"></i>
+              <h2 class="h5 fw-bold text-white mb-2">
+                <a href="{{ series.get_absolute_url }}" class="text-white text-decoration-none">
+                  {% if current_lang == 'ar' %}{{ series.title_ar }}{% else %}{{ series.title_en }}{% endif %}
+                </a>
+              </h2>
+            </div>
+            <div class="card-body d-flex flex-column p-4">
+              <p class="text-muted small flex-grow-1 lh-base">
+                {% if current_lang == 'ar' %}{{ series.description_ar }}{% else %}{{ series.description_en }}{% endif %}
+              </p>
+              <a href="{{ series.get_absolute_url }}" class="btn btn-medical w-100 mt-3 fw-bold">
+                <i class="bi bi-play-circle me-1 ms-1"></i> {% if current_lang == 'ar' %}مشاهدة الحلقات الآن{% else %}Watch Series Now{% endif %}
+              </a>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <div class="col-12 text-center py-5">
+          <i class="bi bi-camera-video fs-1 text-muted"></i>
+          <p class="mt-3 text-muted">
+            {% if current_lang == 'ar' %}لا توجد سلاسل توعوية منشورة حالياً.{% else %}No video series published yet.{% endif %}
+          </p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Facebook Official Channel Banner -->
+    <div class="mt-5 p-4 p-md-5 rounded-4 bg-white border shadow-sm">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-8">
+          <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
+            <span class="badge text-white px-3 py-1 rounded-pill" style="background-color: #1877F2;">
+              <i class="bi bi-facebook me-1 ms-1"></i> {% if current_lang == 'ar' %}الصفحة الرسمية على فيسبوك{% else %}Official Facebook Page{% endif %}
+            </span>
+            <span class="badge bg-light text-muted border px-2 py-1 rounded-pill small">
+              <i class="bi bi-people-fill text-primary me-1 ms-1"></i> +12,800 {% if current_lang == 'ar' %}متابع{% else %}Followers{% endif %}
+            </span>
+            <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 rounded-pill small">
+              <i class="bi bi-patch-check-fill me-1 ms-1"></i> {% if current_lang == 'ar' %}حساب معتمد{% else %}Verified Page{% endif %}
+            </span>
+          </div>
+          <h2 class="h4 fw-bold text-navy mb-2">
+            {% if current_lang == 'ar' %}عيادة الدكتور محمد الصياد – نعيد الحركة لحياتك{% else %}Dr. Mohammed Al-Sayyad Clinic – Restoring Movement to Your Life{% endif %}
+          </h2>
+          <p class="text-muted small mb-0 lh-lg">
+            {% if current_lang == 'ar' %}
+              تابع أحدث الفيديوهات التوعوية، والاستشارات الطبية، وإرشادات صحة المفاصل والركبة وجراحات استبدال المفاصل التي ينشرها الدكتور محمد الصياد بانتظام عبر صفحته الرسمية على فيسبوك (<code>mohsayyad10</code>).
+            {% else %}
+              Follow the latest clinical videos, patient guidance, and joint arthroplasty updates published directly by Dr. Mohammed Al-Sayyad on his official Facebook page (<code>mohsayyad10</code>).
+            {% endif %}
+          </p>
+        </div>
+        <div class="col-lg-4 text-lg-end text-center">
+          <a href="{{ site_settings.facebook_url|default:'https://www.facebook.com/mohsayyad10/' }}" target="_blank" rel="noopener noreferrer" class="btn text-white px-4 py-2 rounded-pill fw-bold shadow-sm d-inline-flex align-items-center gap-2" style="background-color: #1877F2; border-color: #1877F2;">
+            <i class="bi bi-facebook fs-5"></i>
+            <span>{% if current_lang == 'ar' %}زيارة صفحة فيسبوك ومتابعة الفيديوهات{% else %}Visit Facebook Channel{% endif %}</span>
+            <i class="bi bi-box-arrow-up-right small"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

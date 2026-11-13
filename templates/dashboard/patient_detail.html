@@ -1,0 +1,79 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load static i18n %}
+
+{% block dashboard_content %}
+<div class="row g-4">
+  <div class="col-lg-5">
+    <div class="card border-0 rounded-4 shadow-sm bg-white p-4">
+      <h2 class="h5 fw-bold text-navy mb-3 border-bottom pb-2">
+        <i class="bi bi-person-circle text-success me-1"></i> بيانات المريض
+      </h2>
+      <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label class="form-label small fw-semibold">اسم المريض</label>
+          <input type="text" name="full_name" value="{{ patient.full_name }}" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label small fw-semibold">رقم الهاتف</label>
+          <input type="text" name="phone_number" value="{{ patient.phone_number }}" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label small fw-semibold">البريد الإلكتروني</label>
+          <input type="email" name="email" value="{{ patient.email|default:'' }}" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label class="form-label small fw-semibold">ملاحظات طبية خاصة بالمريض</label>
+          <textarea name="notes" class="form-control" rows="3">{{ patient.notes }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-medical w-100">
+          <i class="bi bi-save me-1"></i> حفظ تعديلات المريض
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="col-lg-7">
+    <div class="card border-0 rounded-4 shadow-sm bg-white p-4">
+      <h2 class="h5 fw-bold text-navy mb-3 border-bottom pb-2">
+        <i class="bi bi-calendar-check text-primary me-1"></i> سجل حجوزات ومواعيد المريض ({{ appointments.count }})
+      </h2>
+      <div class="table-responsive">
+        <table class="table table-sm table-hover align-middle">
+          <thead class="table-light small">
+            <tr>
+              <th>رمز الحجز</th>
+              <th>التاريخ والوقت</th>
+              <th>الخدمة</th>
+              <th>الحالة</th>
+              <th>الإجراء</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for apt in appointments %}
+              <tr>
+                <td class="fw-bold">{{ apt.booking_reference }}</td>
+                <td>{{ apt.appointment_date|date:"Y-m-d" }} {{ apt.appointment_time }}</td>
+                <td class="small">{{ apt.service.title_ar|default:"استشارة عامة" }}</td>
+                <td>
+                  <span class="badge {{ apt.status_badge_class }}">{{ apt.get_status_display }}</span>
+                </td>
+                <td>
+                  <a href="{% url 'dashboard:appointment_detail' apt.id %}" class="btn btn-sm btn-light border py-0 px-2">
+                    <i class="bi bi-eye"></i>
+                  </a>
+                </td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="5" class="text-center py-3 text-muted">لا توجد مواعيد سابقة لهذا المريض.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

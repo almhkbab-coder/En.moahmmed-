@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="py-5 bg-white border-bottom">
+  <div class="container text-center max-w-700">
+    <span class="badge bg-medical-subtle text-primary px-3 py-2 rounded-pill fw-bold mb-2">
+      {% if current_lang == 'ar' %}المدونة الطبية والمعرفة السريرية{% else %}Orthopaedic Blog &amp; Insights{% endif %}
+    </span>
+    <h1 class="display-6 fw-bold text-navy mb-3">
+      {% if current_lang == 'ar' %}المقالات الطبية والنصائح الصحية{% else %}Medical Articles &amp; Clinical Guides{% endif %}
+    </h1>
+    <p class="text-muted">
+      {% if current_lang == 'ar' %}
+        مقالات علمية وإرشادات مبسطة لحماية المفاصل والعظام بإشراف الدكتور محمد الصياد
+      {% else %}
+        Specialist articles and health advice on arthritis, fracture recovery, and joint replacement by Dr. Mohammed Al-Sayyad.
+      {% endif %}
+    </p>
+  </div>
+</div>
+
+<div class="py-5" style="background-color: var(--bg-light);">
+  <div class="container">
+    <div class="row g-4">
+      <!-- Search & Filters -->
+      <div class="col-12 mb-2">
+        <form method="get" class="row g-2 justify-content-center">
+          <div class="col-md-5">
+            <div class="input-group">
+              <input type="text" name="q" value="{{ search_query|default:'' }}" class="form-control" placeholder="{% if current_lang == 'ar' %}ابحث في المقالات الطبية...{% else %}Search medical articles...{% endif %}">
+              <button class="btn btn-navy" type="submit"><i class="bi bi-search"></i></button>
+            </div>
+          </div>
+          {% if categories %}
+            <div class="col-md-3">
+              <select name="category" class="form-select" onchange="this.form.submit()">
+                <option value="">{% if current_lang == 'ar' %}جميع التصنيفات الطبية{% else %}All Medical Categories{% endif %}</option>
+                {% for cat in categories %}
+                  <option value="{{ cat.slug }}" {% if selected_category == cat.slug %}selected{% endif %}>
+                    {% if current_lang == 'ar' %}{{ cat.name_ar }}{% else %}{{ cat.name_en }}{% endif %}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+          {% endif %}
+        </form>
+      </div>
+
+      <!-- Articles Grid -->
+      {% for article in page_obj %}
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 border rounded-4 shadow-sm overflow-hidden d-flex flex-column bg-white">
+            <div class="card-body p-4 d-flex flex-column">
+              <div class="d-flex align-items-center justify-content-between small text-muted mb-2">
+                <span class="badge bg-light text-navy border">
+                  {% if current_lang == 'ar' %}{{ article.category.name_ar }}{% else %}{{ article.category.name_en }}{% endif %}
+                </span>
+                <span><i class="bi bi-clock me-1 ms-1"></i> {{ article.reading_time }} {% if current_lang == 'ar' %}دقائق قراءة{% else %}min read{% endif %}</span>
+              </div>
+              <h2 class="h5 fw-bold mb-3">
+                <a href="{{ article.get_absolute_url }}" class="text-navy text-decoration-none">
+                  {% if current_lang == 'ar' %}{{ article.title_ar }}{% else %}{{ article.title_en }}{% endif %}
+                </a>
+              </h2>
+              <p class="text-muted small flex-grow-1 lh-base">
+                {% if current_lang == 'ar' %}{{ article.excerpt_ar }}{% else %}{{ article.excerpt_en }}{% endif %}
+              </p>
+              <div class="d-flex align-items-center justify-content-between pt-3 border-top mt-auto">
+                <span class="text-muted small"><i class="bi bi-calendar3 me-1 ms-1"></i> {{ article.published_at|date:"Y-m-d" }}</span>
+                <a href="{{ article.get_absolute_url }}" class="small fw-bold text-primary text-decoration-none">
+                  {% if current_lang == 'ar' %}قراءة المقال{% else %}Read More{% endif %} <i class="bi bi-arrow-{% if current_lang == 'ar' %}left{% else %}right{% endif %}"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <div class="col-12 text-center py-5">
+          <i class="bi bi-journal-x fs-1 text-muted"></i>
+          <p class="mt-3 text-muted">
+            {% if current_lang == 'ar' %}لم يتم العثور على مقالات تطابق بحثكم.{% else %}No medical articles found matching your query.{% endif %}
+          </p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+      <nav class="mt-5" aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}">
+                {% if current_lang == 'ar' %}السابق{% else %}Previous{% endif %}
+              </a>
+            </li>
+          {% endif %}
+          
+          {% for num in page_obj.paginator.page_range %}
+            <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+              <a class="page-link" href="?page={{ num }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}">{{ num }}</a>
+            </li>
+          {% endfor %}
+
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}">
+                {% if current_lang == 'ar' %}التالي{% else %}Next{% endif %}
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

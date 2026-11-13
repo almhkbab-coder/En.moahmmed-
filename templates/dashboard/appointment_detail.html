@@ -1,0 +1,152 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load static i18n %}
+
+{% block dashboard_content %}
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="card border-0 rounded-4 shadow-sm bg-white p-4 mb-4">
+      <div class="d-flex align-items-center justify-content-between border-bottom pb-3 mb-3">
+        <div>
+          <span class="text-muted small">رمز الحجز:</span>
+          <h2 class="h4 fw-bold text-navy mb-0">{{ appointment.booking_reference }}</h2>
+        </div>
+        <div>
+          <span class="badge {{ appointment.status_badge_class }} fs-6 px-3 py-2">
+            {{ appointment.get_status_display }}
+          </span>
+        </div>
+      </div>
+
+      <div class="row g-3 mb-4">
+        <div class="col-md-6">
+          <label class="text-muted small">اسم المريض:</label>
+          <div class="fw-bold fs-6">
+            <a href="{% url 'dashboard:patient_detail' appointment.patient.id %}">{{ appointment.patient.full_name }}</a>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <label class="text-muted small">رقم الهاتف:</label>
+          <div class="fw-bold fs-6">
+            <a href="tel:{{ appointment.patient.phone_number }}">{{ appointment.patient.phone_number }}</a>
+            <a href="https://wa.me/{{ appointment.patient.phone_number|cut:' '|cut:'+' }}" target="_blank" class="btn btn-sm btn-outline-success ms-2 py-0 px-2" title="مراسلة واتساب">
+              <i class="bi bi-whatsapp"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <label class="text-muted small">البريد الإلكتروني:</label>
+          <div class="fw-semibold">{{ appointment.patient.email|default:"غير متوفر" }}</div>
+        </div>
+
+        <div class="col-md-6">
+          <label class="text-muted small">فرع العيادة:</label>
+          <div class="fw-semibold">{{ appointment.branch.name_ar }}</div>
+        </div>
+
+        <div class="col-md-6">
+          <label class="text-muted small">تاريخ الموعد:</label>
+          <div class="fw-bold text-navy fs-6">{{ appointment.appointment_date|date:"l d F Y" }}</div>
+        </div>
+
+        <div class="col-md-6">
+          <label class="text-muted small">وقت الموعد:</label>
+          <div class="fw-bold text-navy fs-6">{{ appointment.appointment_time }}</div>
+        </div>
+
+        <div class="col-md-6">
+          <label class="text-muted small">الخدمة المطلوبة:</label>
+          <div class="fw-semibold">{{ appointment.service.title_ar|default:"استشارة / فحص عام" }}</div>
+        </div>
+
+        <div class="col-md-6">
+          <label class="text-muted small">تاريخ ووقت تقديم الطلب:</label>
+          <div class="text-muted">{{ appointment.created_at|date:"Y-m-d H:i" }}</div>
+        </div>
+
+        {% if appointment.visit_reason %}
+          <div class="col-12">
+            <label class="text-muted small">سبب الزيارة أو الشكوى:</label>
+            <div class="p-3 bg-light rounded-3 border">{{ appointment.visit_reason }}</div>
+          </div>
+        {% endif %}
+
+        {% if appointment.patient_notes %}
+          <div class="col-12">
+            <label class="text-muted small">ملاحظات المريض:</label>
+            <div class="p-3 bg-light rounded-3 border">{{ appointment.patient_notes }}</div>
+          </div>
+        {% endif %}
+
+        {% if appointment.staff_notes %}
+          <div class="col-12">
+            <label class="text-muted small">ملاحظات العيادة الداخلية:</label>
+            <div class="p-3 bg-warning-subtle rounded-3 border border-warning" style="white-space: pre-line;">{{ appointment.staff_notes }}</div>
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Action Form to Change Status -->
+      <div class="border-top pt-4">
+        <h3 class="h6 fw-bold text-navy mb-3">تحديث حالة الموعد وإضافة ملاحظات</h3>
+        <form method="post">
+          {% csrf_token %}
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold">الحالة الجديدة للموعد</label>
+              <select name="new_status" class="form-select" required>
+                {% for val, label in status_choices %}
+                  <option value="{{ val }}" {% if appointment.status == val %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold">ملاحظات التحديث أو سبب التغيير</label>
+              <input type="text" name="staff_notes" class="form-control" placeholder="مثال: تم التأكيد هاتفياً مع المريض...">
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn btn-medical">
+                <i class="bi bi-save me-1"></i> حفظ وتحديث الحالة
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status History Timeline Column -->
+  <div class="col-lg-4">
+    <div class="card border-0 rounded-4 shadow-sm bg-white p-4 h-100">
+      <h3 class="h6 fw-bold text-navy mb-3 border-bottom pb-2">
+        <i class="bi bi-clock-history me-1 text-success"></i> سجل تغييرات الحالة (Audit Trail)
+      </h3>
+      <div class="timeline small">
+        {% for log in appointment.status_history.all %}
+          <div class="mb-3 p-3 bg-light rounded-3 border-start border-3 border-success">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="badge bg-secondary">{{ log.get_new_status_display }}</span>
+              <span class="text-muted" style="font-size: 0.75rem;">{{ log.timestamp|date:"Y-m-d H:i" }}</span>
+            </div>
+            <div class="text-muted" style="font-size: 0.8rem;">
+              بواسطة: 
+              {% if log.changed_by %}
+                {{ log.changed_by.get_full_name|default:log.changed_by.username }}
+              {% else %}
+                النظام / الموقع
+              {% endif %}
+            </div>
+            {% if log.notes %}
+              <div class="mt-1 small text-dark">{{ log.notes }}</div>
+            {% endif %}
+          </div>
+        {% empty %}
+          <p class="text-muted small">لا توجد سجلات سابقة.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

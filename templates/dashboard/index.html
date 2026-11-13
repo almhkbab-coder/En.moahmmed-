@@ -1,0 +1,527 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load static i18n %}
+
+{% block dashboard_content %}
+<!-- Welcome & Action Bar -->
+<div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
+  <div>
+    <h1 class="h3 fw-bold text-navy mb-1">
+      {% if current_lang == 'ar' %}أهلاً بك مجدداً، د. محمد الصياد <i class="bi bi-person-check-fill text-primary ms-1"></i>{% else %}Welcome back, Dr. Mohammed <i class="bi bi-person-check-fill text-primary ms-1"></i>{% endif %}
+    </h1>
+    <p class="text-muted small mb-0">
+      {% if current_lang == 'ar' %}متابعة حية للنشاط الإكلينيكي، حجوزات العيادة، وإحصائيات المرضى ليوم {{ today|date:"Y-m-d" }}{% else %}Real-time clinic activity, patient appointments, and practice insights for {{ today|date:"M d, Y" }}{% endif %}
+    </p>
+  </div>
+
+  <div class="d-flex align-items-center gap-2 flex-wrap">
+    <!-- Export to CSV Button -->
+    <a href="{% url 'dashboard:appointments_list' %}?export=csv" class="btn btn-white border shadow-sm rounded-pill px-3 py-2 text-muted fw-semibold small d-inline-flex align-items-center gap-2" style="background: #FFFFFF;">
+      <i class="bi bi-download text-primary"></i>
+      <span>{% if current_lang == 'ar' %}تصدير إلى CSV{% else %}Export to CSV{% endif %}</span>
+    </a>
+
+    <!-- Generate Report Button -->
+    <a href="{% url 'dashboard:appointments_list' %}" class="btn btn-white border shadow-sm rounded-pill px-3 py-2 text-muted fw-semibold small d-inline-flex align-items-center gap-2" style="background: #FFFFFF;">
+      <i class="bi bi-file-earmark-text text-success"></i>
+      <span>{% if current_lang == 'ar' %}تقرير المواعيد{% else %}Generate Report{% endif %}</span>
+    </a>
+
+    <!-- Date Range Filter Pill -->
+    <div class="dropdown">
+      <button class="btn btn-primary rounded-pill px-3 py-2 fw-semibold small dropdown-toggle d-inline-flex align-items-center gap-2 shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background: #2A72F8; border-color: #2A72F8;">
+        <i class="bi bi-calendar3"></i>
+        <span>{% if current_lang == 'ar' %}هذا الأسبوع{% else %}This week{% endif %}</span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3">
+        <li><a class="dropdown-item active" href="#">{% if current_lang == 'ar' %}هذا الأسبوع{% else %}This week{% endif %}</a></li>
+        <li><a class="dropdown-item" href="#">{% if current_lang == 'ar' %}هذا الشهر{% else %}This month{% endif %}</a></li>
+        <li><a class="dropdown-item" href="#">{% if current_lang == 'ar' %}هذا العام{% else %}This year{% endif %}</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- 4 KPI Metric Cards -->
+<div class="row g-3 mb-4">
+  <!-- 1. Total Patients -->
+  <div class="col-sm-6 col-xl-3">
+    <div class="saas-kpi-card h-100">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <div class="d-flex align-items-center gap-2 text-muted small fw-semibold">
+          <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 28px; height: 28px; background-color: #EFF6FF; color: #2A72F8;">
+            <i class="bi bi-person"></i>
+          </div>
+          <span>{% if current_lang == 'ar' %}إجمالي المرضى{% else %}Total Patients{% endif %}</span>
+        </div>
+        <button class="btn btn-sm btn-link text-muted p-0 shadow-none"><i class="bi bi-three-dots-vertical"></i></button>
+      </div>
+
+      <div class="d-flex align-items-baseline gap-2 mb-2">
+        <h2 class="display-6 fw-bold text-navy mb-0">{{ total_patients }}</h2>
+        <span class="badge rounded-pill" style="background-color: #EFF6FF; color: #2A72F8; font-size: 0.72rem; font-weight: 700;">+24%</span>
+      </div>
+
+      <div class="text-muted small d-flex align-items-center justify-content-between" style="font-size: 0.75rem;">
+        <span>{% if current_lang == 'ar' %}سجلات مشفرة وآمنة{% else %}Encrypted database records{% endif %}</span>
+        <svg width="60" height="20" viewBox="0 0 60 20" fill="none">
+          <path d="M2 14C12 8 20 18 30 10C40 2 48 14 58 6" stroke="#2A72F8" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Appointments Today -->
+  <div class="col-sm-6 col-xl-3">
+    <div class="saas-kpi-card h-100">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <div class="d-flex align-items-center gap-2 text-muted small fw-semibold">
+          <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 28px; height: 28px; background-color: #ECFDF5; color: #10B981;">
+            <i class="bi bi-calendar-check"></i>
+          </div>
+          <span>{% if current_lang == 'ar' %}مواعيد اليوم{% else %}Appointments Today{% endif %}</span>
+        </div>
+        <button class="btn btn-sm btn-link text-muted p-0 shadow-none"><i class="bi bi-three-dots-vertical"></i></button>
+      </div>
+
+      <div class="d-flex align-items-baseline gap-2 mb-2">
+        <h2 class="display-6 fw-bold text-navy mb-0">{{ today_appointments }}</h2>
+        <span class="badge rounded-pill" style="background-color: #ECFDF5; color: #10B981; font-size: 0.72rem; font-weight: 700;">+14%</span>
+      </div>
+
+      <div class="d-flex align-items-center justify-content-between">
+        <span class="text-muted" style="font-size: 0.75rem;">{% if current_lang == 'ar' %}جدول العيادة المسائي{% else %}Active clinic slots{% endif %}</span>
+        <div class="mini-bars-mock">
+          <div class="mini-bar" style="height: 12px;"></div>
+          <div class="mini-bar" style="height: 18px;"></div>
+          <div class="mini-bar" style="height: 24px;"></div>
+          <div class="mini-bar active" style="height: 34px;"></div>
+          <div class="mini-bar" style="height: 20px;"></div>
+          <div class="mini-bar" style="height: 16px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Pending Reports / Requests -->
+  <div class="col-sm-6 col-xl-3">
+    <div class="saas-kpi-card h-100">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <div class="d-flex align-items-center gap-2 text-muted small fw-semibold">
+          <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 28px; height: 28px; background-color: #FFFBEB; color: #F59E0B;">
+            <i class="bi bi-clock-history"></i>
+          </div>
+          <span>{% if current_lang == 'ar' %}طلبات بانتظار المراجعة{% else %}Pending Requests{% endif %}</span>
+        </div>
+        <button class="btn btn-sm btn-link text-muted p-0 shadow-none"><i class="bi bi-three-dots-vertical"></i></button>
+      </div>
+
+      <div class="d-flex align-items-baseline gap-2 mb-2">
+        <h2 class="display-6 fw-bold text-navy mb-0">{{ pending_appointments }}</h2>
+        <span class="badge rounded-pill" style="background-color: #FFFBEB; color: #D97706; font-size: 0.72rem; font-weight: 700;">
+          {% if current_lang == 'ar' %}جديد{% else %}Action{% endif %}
+        </span>
+      </div>
+
+      <div>
+        <div class="d-flex justify-content-between text-muted mb-1" style="font-size: 0.72rem;">
+          <span>{% if current_lang == 'ar' %}بانتظار التأكيد{% else %}Review pending{% endif %}</span>
+          <span class="fw-bold text-navy">{{ pending_appointments }}</span>
+        </div>
+        <div class="progress" style="height: 6px; border-radius: 4px; background-color: #F1F5F9;">
+          <div class="progress-bar" role="progressbar" style="width: 65%; background: linear-gradient(90deg, #F59E0B, #2A72F8); border-radius: 4px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Total Completed -->
+  <div class="col-sm-6 col-xl-3">
+    <div class="saas-kpi-card h-100">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <div class="d-flex align-items-center gap-2 text-muted small fw-semibold">
+          <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 28px; height: 28px; background-color: #F0FDF4; color: #16A34A;">
+            <i class="bi bi-check2-circle"></i>
+          </div>
+          <span>{% if current_lang == 'ar' %}الاستشارات المنجزة{% else %}Completed Visits{% endif %}</span>
+        </div>
+        <button class="btn btn-sm btn-link text-muted p-0 shadow-none"><i class="bi bi-three-dots-vertical"></i></button>
+      </div>
+
+      <div class="d-flex align-items-baseline gap-2 mb-2">
+        <h2 class="display-6 fw-bold text-navy mb-0">{{ completed_appointments }}</h2>
+        <span class="badge rounded-pill" style="background-color: #F0FDF4; color: #16A34A; font-size: 0.72rem; font-weight: 700;">
+          {% if current_lang == 'ar' %}مؤكدة: {{ confirmed_appointments }}{% else %}Confirmed: {{ confirmed_appointments }}{% endif %}
+        </span>
+      </div>
+
+      <div class="text-muted small d-flex align-items-center justify-content-between" style="font-size: 0.75rem;">
+        <span>{% if current_lang == 'ar' %}إجمالي الحجوزات: {{ total_appointments }}{% else %}Total Bookings: {{ total_appointments }}{% endif %}</span>
+        <svg width="60" height="20" viewBox="0 0 60 20" fill="none">
+          <path d="M2 16C12 16 18 6 30 8C42 10 48 3 58 4" stroke="#10B981" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main Row: Two Columns -->
+<div class="row g-4 mb-4">
+  <!-- Left Column: Patient Arrival Statistics + Appointments Table -->
+  <div class="col-lg-8">
+    <!-- Panel 1: Patient Arrival Statistics -->
+    <div class="saas-panel-card mb-4">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+        <div class="d-flex align-items-center gap-2">
+          <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; background-color: #EFF6FF; color: #2A72F8;">
+            <i class="bi bi-graph-up"></i>
+          </div>
+          <h3 class="h6 fw-bold text-navy mb-0">
+            {% if current_lang == 'ar' %}إحصائيات توافد المرضى والحجوزات{% else %}Patient Arrival Statistics{% endif %}
+          </h3>
+        </div>
+
+        <div class="dropdown">
+          <button class="btn btn-sm btn-light border rounded-pill px-3 dropdown-toggle text-muted small" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            {% if current_lang == 'ar' %}الشهور الحالية{% else %}This Months{% endif %}
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+            <li><a class="dropdown-item active" href="#">2026</a></li>
+            <li><a class="dropdown-item" href="#">2025</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Highlighted Metric -->
+      <div class="mb-3">
+        <div class="display-6 fw-bold text-navy" style="font-size: 1.85rem;">
+          {{ total_appointments }} <span class="fs-6 fw-normal text-muted">{% if current_lang == 'ar' %}إجمالي الحالات المسجلة{% else %}Total Registered Cases{% endif %}</span>
+        </div>
+        <div class="text-muted small" style="font-size: 0.78rem;">
+          <span class="text-success fw-bold"><i class="bi bi-arrow-up-right"></i> +18.2%</span>
+          <span>{% if current_lang == 'ar' %}مقارنة بالفترات السابقة{% else %}vs last period{% endif %}</span>
+        </div>
+      </div>
+
+      <!-- Area Chart Container -->
+      <div style="height: 250px; position: relative;">
+        <canvas id="patientArrivalChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Panel 2: Appointments Schedule -->
+    <div class="saas-panel-card">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+        <div class="d-flex align-items-center gap-2">
+          <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; background-color: #EFF6FF; color: #2A72F8;">
+            <i class="bi bi-calendar3"></i>
+          </div>
+          <h3 class="h6 fw-bold text-navy mb-0">
+            {% if current_lang == 'ar' %}المواعيد وحجوزات العيادة{% else %}Appointments{% endif %}
+          </h3>
+        </div>
+
+        <!-- Legend -->
+        <div class="d-flex align-items-center gap-3 small text-muted">
+          <span class="d-inline-flex align-items-center gap-1">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background-color: #94A3B8;"></span>
+            <span>{% if current_lang == 'ar' %}متاح{% else %}Available Slots{% endif %}</span>
+          </span>
+          <span class="d-inline-flex align-items-center gap-1">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background-color: #2A72F8;"></span>
+            <span>{% if current_lang == 'ar' %}محدد{% else %}Selected{% endif %}</span>
+          </span>
+          <span class="d-inline-flex align-items-center gap-1">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background-color: #CBD5E1;"></span>
+            <span>{% if current_lang == 'ar' %}محجوز بالكامل{% else %}Unavailable Slots{% endif %}</span>
+          </span>
+          <a href="{% url 'dashboard:appointments_list' %}" class="btn btn-sm btn-light rounded-circle p-1 ms-1 text-navy" title="{% if current_lang == 'ar' %}عرض كل المواعيد{% else %}View All{% endif %}">
+            <i class="bi bi-arrow-up-right"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Horizontal Calendar Days Strip (1..28) -->
+      <div class="saas-day-strip mb-3">
+        <button class="btn btn-sm btn-link text-muted p-0 px-1"><i class="bi bi-chevron-{% if is_rtl %}right{% else %}left{% endif %}"></i></button>
+        <div class="saas-day-pill">1</div>
+        <div class="saas-day-pill">2</div>
+        <div class="saas-day-pill">3</div>
+        <div class="saas-day-pill">4</div>
+        <div class="saas-day-pill">5</div>
+        <div class="saas-day-pill">6</div>
+        <div class="saas-day-pill">7</div>
+        <div class="saas-day-pill">8</div>
+        <div class="saas-day-pill">9</div>
+        <div class="saas-day-pill">10</div>
+        <div class="saas-day-pill">11</div>
+        <div class="saas-day-pill">12</div>
+        <div class="saas-day-pill">13</div>
+        <div class="saas-day-pill active">{{ today.day|default:"14" }}</div>
+        <div class="saas-day-pill">15</div>
+        <div class="saas-day-pill">16</div>
+        <div class="saas-day-pill">17</div>
+        <div class="saas-day-pill">18</div>
+        <div class="saas-day-pill">19</div>
+        <div class="saas-day-pill">20</div>
+        <div class="saas-day-pill">21</div>
+        <div class="saas-day-pill">22</div>
+        <div class="saas-day-pill">23</div>
+        <div class="saas-day-pill">24</div>
+        <div class="saas-day-pill">25</div>
+        <div class="saas-day-pill">26</div>
+        <div class="saas-day-pill">27</div>
+        <div class="saas-day-pill">28</div>
+        <button class="btn btn-sm btn-link text-muted p-0 px-1"><i class="bi bi-chevron-{% if is_rtl %}left{% else %}right{% endif %}"></i></button>
+      </div>
+
+      <!-- Appointments Clean Table -->
+      <div class="table-responsive">
+        <table class="table table-borderless align-middle mb-0">
+          <thead style="border-bottom: 1px solid #F1F5F9; color: #94A3B8; font-size: 0.78rem; text-transform: uppercase;">
+            <tr>
+              <th class="ps-2">{% if current_lang == 'ar' %}المريض{% else %}Patients{% endif %}</th>
+              <th>{% if current_lang == 'ar' %}الطبيب المشرف{% else %}Assigned Doctor{% endif %}</th>
+              <th>{% if current_lang == 'ar' %}الموعد والتاريخ{% else %}Date & Time{% endif %}</th>
+              <th>{% if current_lang == 'ar' %}التخصص / الخدمة{% else %}Condition / Service{% endif %}</th>
+              <th>{% if current_lang == 'ar' %}الحالة{% else %}Status{% endif %}</th>
+              <th class="text-end pe-2">{% if current_lang == 'ar' %}الإجراءات{% else %}Actions{% endif %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for apt in recent_appointments %}
+              <tr style="border-bottom: 1px solid #F8FAFC;">
+                <!-- Patient Info -->
+                <td class="ps-2 py-3">
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold flex-shrink-0" style="width: 36px; height: 36px; background: linear-gradient(135deg, #2A72F8, #1E40AF); font-size: 0.85rem;">
+                      {{ apt.patient.full_name|slice:":1" }}
+                    </div>
+                    <div>
+                      <div class="fw-bold text-navy small">{{ apt.patient.full_name }}</div>
+                      <div class="text-muted" style="font-size: 0.72rem;">{{ apt.patient.phone_number }}</div>
+                    </div>
+                  </div>
+                </td>
+
+                <!-- Assigned Doctor -->
+                <td>
+                  <div class="fw-semibold small text-navy">د. محمد الصياد</div>
+                  <div class="text-muted" style="font-size: 0.72rem;">{% if current_lang == 'ar' %}استشاري جراحة عظام ومفاصل{% else %}Orthopedic Consultant{% endif %}</div>
+                </td>
+
+                <!-- Date & Time -->
+                <td>
+                  <div class="small fw-semibold text-navy">{{ apt.appointment_date|date:"Y-m-d" }}</div>
+                  <div class="text-muted" style="font-size: 0.72rem;">{{ apt.appointment_time }}</div>
+                </td>
+
+                <!-- Service / Disease -->
+                <td>
+                  <span class="badge rounded-pill bg-light text-navy border px-2 py-1" style="font-size: 0.72rem; font-weight: 500;">
+                    {{ apt.service.title_ar|default:"استشارة عظام ومفاصل" }}
+                  </span>
+                </td>
+
+                <!-- Status Badge -->
+                <td>
+                  <span class="badge {{ apt.status_badge_class }}" style="font-size: 0.72rem;">
+                    {{ apt.get_status_display }}
+                  </span>
+                </td>
+
+                <!-- Actions -->
+                <td class="text-end pe-2">
+                  <a href="{% url 'dashboard:appointment_detail' apt.id %}" class="btn btn-sm btn-light rounded-pill px-2 py-1 text-muted border" title="{% if current_lang == 'ar' %}معاينة وتحديث{% else %}View / Edit{% endif %}">
+                    <i class="bi bi-eye"></i>
+                  </a>
+                </td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="6" class="text-center py-4 text-muted small">
+                  <i class="bi bi-calendar-x fs-4 d-block mb-1 text-muted"></i>
+                  {% if current_lang == 'ar' %}لا توجد حجوزات مسجلة حتى الآن.{% else %}No appointments found yet.{% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Column: Our Specialist Card & Team List -->
+  <div class="col-lg-4">
+    <div class="saas-panel-card h-100">
+      <!-- Card Title & Link -->
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <div class="d-flex align-items-center gap-2">
+          <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 28px; height: 28px; background-color: #EFF6FF; color: #2A72F8;">
+            <i class="bi bi-person-badge"></i>
+          </div>
+          <h3 class="h6 fw-bold text-navy mb-0">
+            {% if current_lang == 'ar' %}الكادر التخصصي للعيادة{% else %}Our Specialist{% endif %}
+          </h3>
+        </div>
+        <a href="{% url 'dashboard:doctor_profile' %}" class="btn btn-sm btn-light rounded-circle p-1 text-navy" title="{% if current_lang == 'ar' %}الملف التعريفي{% else %}Profile{% endif %}">
+          <i class="bi bi-arrow-up-right"></i>
+        </a>
+      </div>
+
+      <!-- Doctor Highlight Card (Dr. Mohammed Al-Sayyad) -->
+      <div class="specialist-card mb-4">
+        <!-- Badge top right -->
+        <div class="d-flex justify-content-end mb-2">
+          <span class="badge rounded-pill" style="background-color: #2A72F8; color: #FFFFFF; font-size: 0.72rem; font-weight: 600; padding: 0.35rem 0.75rem;">
+            {% if current_lang == 'ar' %}استشاري جراحة عظام ومفاصل{% else %}Orthopedic Consultant{% endif %}
+          </span>
+        </div>
+
+        <!-- Doctor Surgical Image -->
+        <div class="text-center mb-3">
+          <img src="{% static 'img/dr_mohammed_alsayyad.jpg' %}" alt="Dr. Mohammed Al-Sayyad" class="specialist-avatar-img shadow-sm">
+        </div>
+
+        <!-- Doctor Details -->
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <div>
+            <h4 class="h6 fw-bold text-navy mb-0">{% if current_lang == 'ar' %}الدكتور محمد الصياد{% else %}Dr. Mohammed Al-Sayyad{% endif %}</h4>
+            <div class="text-muted" style="font-size: 0.75rem;">
+              {% if current_lang == 'ar' %}أستاذ جراحة العظام - جامعة صنعاء{% else %}Prof. of Orthopedic Surgery - Sana'a Univ.{% endif %}
+            </div>
+          </div>
+          <a href="tel:783517733" class="btn btn-primary rounded-circle d-flex align-items-center justify-content-center text-white" style="width: 38px; height: 38px; background-color: #2A72F8; border: none;" title="{% if current_lang == 'ar' %}الاتصال المباشر{% else %}Direct Call{% endif %}">
+            <i class="bi bi-telephone-fill small"></i>
+          </a>
+        </div>
+
+        <div class="p-2 rounded-3 bg-white border small text-muted" style="font-size: 0.74rem;">
+          <div class="d-flex justify-content-between mb-1">
+            <span class="fw-semibold text-navy">{% if current_lang == 'ar' %}مواعيد العيادة:{% else %}Clinic Hours:{% endif %}</span>
+            <span class="text-success fw-bold">{% if current_lang == 'ar' %}السبت - الخميس{% else %}Sat - Thu{% endif %}</span>
+          </div>
+          <div>
+            {% if current_lang == 'ar' %}4:00 عصراً - 9:00 مساءً (عيادات الرازي التخصصية){% else %}4:00 PM - 9:00 PM (Al-Razi Clinics){% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Team Members / Clinical Support List -->
+      <div>
+        <div class="text-muted small fw-bold mb-2" style="font-size: 0.72rem; text-transform: uppercase;">
+          {% if current_lang == 'ar' %}فريق العمل والخدمات السريرية{% else %}Clinic Team & Support{% endif %}
+        </div>
+
+        <!-- Staff 1: Dr. Mohammed -->
+        <div class="specialist-team-item">
+          <img src="{% static 'img/dr_mohammed_alsayyad.jpg' %}" alt="Avatar" class="rounded-circle object-fit-cover flex-shrink-0" style="width: 40px; height: 40px; border: 1px solid #E2E8F0;">
+          <div class="flex-grow-1" style="line-height: 1.2;">
+            <div class="fw-bold text-navy small">{% if current_lang == 'ar' %}د. محمد الصياد{% else %}Dr. Mohammed Al-Sayyad{% endif %}</div>
+            <div class="text-muted" style="font-size: 0.72rem;">{% if current_lang == 'ar' %}جراحة العظام والمفاصل الصناعية{% else %}Joint Replacement Surgeon{% endif %}</div>
+          </div>
+          <span class="badge-available">{% if current_lang == 'ar' %}متاح بالعيادة{% else %}Available{% endif %}</span>
+        </div>
+
+        <!-- Staff 2: Reception & Booking -->
+        <div class="specialist-team-item">
+          <div class="rounded-circle d-flex align-items-center justify-content-center text-white flex-shrink-0" style="width: 40px; height: 40px; background: linear-gradient(135deg, #10B981, #059669);">
+            <i class="bi bi-headset"></i>
+          </div>
+          <div class="flex-grow-1" style="line-height: 1.2;">
+            <div class="fw-bold text-navy small">{% if current_lang == 'ar' %}قسم الاستقبال والتنسيق{% else %}Reception & Coordination{% endif %}</div>
+            <div class="text-muted" style="font-size: 0.72rem;">{% if current_lang == 'ar' %}خدمة المرضى والحجوزات{% else %}Patient Helpdesk{% endif %}</div>
+          </div>
+          <span class="badge-onduty">{% if current_lang == 'ar' %}على رأس العمل{% else %}On duty{% endif %}</span>
+        </div>
+
+        <!-- Staff 3: Nursing & Plaster Unit -->
+        <div class="specialist-team-item">
+          <div class="rounded-circle d-flex align-items-center justify-content-center text-white flex-shrink-0" style="width: 40px; height: 40px; background: linear-gradient(135deg, #6366F1, #4F46E5);">
+            <i class="bi bi-bandaid"></i>
+          </div>
+          <div class="flex-grow-1" style="line-height: 1.2;">
+            <div class="fw-bold text-navy small">{% if current_lang == 'ar' %}التمريض ووحدة الجبائر{% else %}Nursing & Ortho Casting{% endif %}</div>
+            <div class="text-muted" style="font-size: 0.72rem;">{% if current_lang == 'ar' %}الرعاية السريرية وتضميد الكسور{% else %}Clinical Wound & Cast Care{% endif %}</div>
+          </div>
+          <span class="badge-available">{% if current_lang == 'ar' %}متاح{% else %}Available{% endif %}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const chartCanvas = document.getElementById('patientArrivalChart');
+  if (chartCanvas) {
+    const ctx = chartCanvas.getContext('2d');
+
+    // Create gradient
+    const gradient = ctx.createLinearGradient(0, 0, 0, 240);
+    gradient.addColorStop(0, 'rgba(42, 114, 248, 0.28)');
+    gradient.addColorStop(1, 'rgba(42, 114, 248, 0.01)');
+
+    const labels = {{ month_labels|safe }};
+    const dataValues = {{ month_counts|safe }};
+
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: '{% if current_lang == "ar" %}حجوزات المرضى{% else %}Patient Bookings{% endif %}',
+          data: dataValues,
+          fill: true,
+          backgroundColor: gradient,
+          borderColor: '#2A72F8',
+          borderWidth: 2.5,
+          tension: 0.4,
+          pointBackgroundColor: '#FFFFFF',
+          pointBorderColor: '#2A72F8',
+          pointBorderWidth: 2,
+          pointRadius: 4,
+          pointHoverRadius: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#0F172A',
+            titleFont: { family: 'Cairo, Inter', size: 12 },
+            bodyFont: { family: 'Cairo, Inter', size: 12 },
+            padding: 10,
+            cornerRadius: 8
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: {
+              color: '#F1F5F9',
+              drawBorder: false
+            },
+            ticks: {
+              stepSize: 1,
+              font: { family: 'Inter', size: 11 },
+              color: '#94A3B8'
+            }
+          },
+          x: {
+            grid: { display: false },
+            ticks: {
+              font: { family: 'Cairo, Inter', size: 11 },
+              color: '#94A3B8'
+            }
+          }
+        }
+      }
+    });
+  }
+});
+</script>
+{% endblock %}

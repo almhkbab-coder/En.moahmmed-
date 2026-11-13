@@ -1,0 +1,95 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load static i18n %}
+
+{% block dashboard_content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card border-0 rounded-4 shadow-sm bg-white p-4 p-md-5">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="row g-3">
+          <div class="col-12">
+            <label class="form-label small fw-semibold">السلسلة التوعوية التابع لها الفيديو *</label>
+            {{ form.series }}
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label small fw-semibold">عنوان الحلقة (عربي) *</label>
+            {{ form.title_ar }}
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label small fw-semibold">عنوان الحلقة (إنجليزي) *</label>
+            {{ form.title_en }}
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label small fw-semibold">منصة الفيديو *</label>
+            {{ form.video_platform }}
+            <div class="form-text">اختر فيسبوك أو يوتيوب (يتم الاكتشاف تلقائياً بمجرد إدخال الرابط)</div>
+          </div>
+
+          <div class="col-md-8">
+            <label class="form-label small fw-semibold">رابط الفيديو (من فيسبوك أو يوتيوب) *</label>
+            {{ form.video_url }}
+            <div class="form-text">
+              <i class="bi bi-info-circle me-1"></i>
+              يدعم روابط <strong>فيسبوك</strong> (مثل: <code>https://www.facebook.com/...</code> أو روابط مشاركة <code>share/v/...</code> أو ريلز <code>reel</code>) وروابط <strong>يوتيوب</strong> بمختلف صيغها.
+            </div>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label small fw-semibold">صورة مصغرة للغلاف (اختياري - مفيدة جداً لفيديوهات فيسبوك)</label>
+            {{ form.custom_thumbnail }}
+            {% if form.instance.custom_thumbnail %}
+              <div class="mt-2 d-flex align-items-center gap-2">
+                <img src="{{ form.instance.custom_thumbnail.url }}" alt="غلاف الفيديو" class="rounded border shadow-sm" style="max-height: 80px;">
+                <span class="text-muted small">الغلاف الحالي</span>
+              </div>
+            {% endif %}
+            <div class="form-text">إذا تم تركها فارغة، سيتم اعتماد الصورة المصغرة التلقائية من يوتيوب أو غلاف السلسلة.</div>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label small fw-semibold">رقم الحلقة بالسلسلة</label>
+            {{ form.episode_number }}
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label small fw-semibold">المدة (بالدقائق)</label>
+            {{ form.duration_minutes }}
+          </div>
+
+          <div class="col-md-4 d-flex align-items-center mt-4">
+            <div class="form-check form-switch">
+              {{ form.is_published }}
+              <label class="form-check-label small fw-semibold">منشور بالموقع</label>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label small fw-semibold">شرح ونقاط الفيديو (عربي)</label>
+            {{ form.description_ar }}
+          </div>
+
+          <div class="col-12">
+            <label class="form-label small fw-semibold">شرح ونقاط الفيديو (إنجليزي)</label>
+            {{ form.description_en }}
+          </div>
+
+          <div class="col-12 mt-4 pt-3 border-top d-flex gap-2">
+            <button type="submit" class="btn btn-medical px-4">
+              <i class="bi bi-save me-1"></i> حفظ بيانات الفيديو
+            </button>
+            <a href="{% url 'dashboard:education_series_list' %}" class="btn btn-light border px-4">
+              إلغاء
+            </a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,315 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+<!-- 1. Hero Section (Dr. Lynskey Australian Orthopaedic Style - Desktop & Mobile Matching Exact Screenshots) -->
+<section class="hero-lynskey-container position-relative overflow-hidden">
+  
+  <!-- Desktop Full-Bleed Doctor Background Column (Image 3) -->
+  <div class="hero-doctor-bg-col d-none d-lg-block">
+    <img src="{% if doctor.profile_photo %}{{ doctor.profile_photo.url }}{% else %}{% static 'img/dr_mohammed_alsayyad.jpg' %}{% endif %}" alt="{{ doctor.name_ar }}" class="hero-doctor-img">
+  </div>
+
+  <!-- Mobile Hero Doctor Photo with Floating Pill Badge (Image 4) -->
+  <div class="d-lg-none hero-mobile-photo-wrapper">
+    <img src="{% if doctor.profile_photo %}{{ doctor.profile_photo.url }}{% else %}{% static 'img/dr_mohammed_alsayyad.jpg' %}{% endif %}" alt="{{ doctor.name_ar }}" class="img-fluid">
+    <!-- Floating Glassy Doctor Name Pill on Mobile (Matching Image 4) -->
+    <div class="hero-mobile-pill-float">
+      <div class="doctor-name-pill">
+        {% if current_lang == 'ar' %}{{ doctor.name_ar|default:site_settings.doctor_name_ar }}{% else %}{{ doctor.name_en|default:site_settings.doctor_name_en }}{% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="container py-4 py-lg-5 position-relative" style="z-index: 2;">
+    <div class="row align-items-center">
+      <!-- Content Column (Left in LTR, Right in RTL) -->
+      <div class="col-lg-6 col-xl-6 text-white py-3 py-lg-4">
+        
+        <!-- Desktop Glassy Doctor Name Pill Badge (Matching Image 3) -->
+        <div class="mb-3 d-none d-lg-inline-block">
+          <div class="doctor-name-pill">
+            {% if current_lang == 'ar' %}{{ doctor.name_ar|default:site_settings.doctor_name_ar }}{% else %}{{ doctor.name_en|default:site_settings.doctor_name_en }}{% endif %}
+          </div>
+        </div>
+        
+        <!-- Headline in Serif Editorial Style (Like 'Orthopaedic Surgeon' in Image 3) -->
+        <h1 class="display-3 fw-bold mb-3 hero-editorial-title">
+          {% if current_lang == 'ar' %}استشاري جراحة العظام والمفاصل{% else %}Orthopaedic Surgeon{% endif %}
+        </h1>
+
+        <!-- Subheading with Vertical Dividers (Like 'Knee | Hip | Robotic Joint replacement' in Image 3) -->
+        <h2 class="h3 fw-semibold mb-3" style="color: #64DFDF; font-weight: 600; line-height: 1.4;">
+          {% if current_lang == 'ar' %}
+            الركبة <span class="mx-2 text-white-50">|</span> الحوض <span class="mx-2 text-white-50">|</span> استبدال المفاصل بالروبوت
+          {% else %}
+            Knee <span class="mx-2 text-white-50">|</span> Hip <span class="mx-2 text-white-50">|</span> Robotic Joint replacement
+          {% endif %}
+        </h2>
+
+        <!-- Tagline / Practice Scope (Like 'Caring for patients across Melbourne and Victoria') -->
+        <p class="fs-5 text-white-50 mb-3" style="max-width: 540px; line-height: 1.6;">
+          {% if current_lang == 'ar' %}
+            رعاية جراحية تخصصية متقدمة لمرضى العظام والمفاصل والكسور المعقدة في صنعاء وكافة محافظات اليمن.
+          {% else %}
+            Advanced specialized surgical care for orthopaedic, pelvic trauma, and joint patients across Sana'a and Yemen.
+          {% endif %}
+        </p>
+
+        <!-- Official Vision Quote (Discreet, Elegant) -->
+        <blockquote class="blockquote small text-white-50 fst-italic mb-4 p-2 ps-3 border-start border-2 border-info" style="max-width: 580px; background: rgba(255, 255, 255, 0.04); border-radius: 4px;">
+          {% if current_lang == 'ar' %}
+            "تقديم رعاية طبية متخصصة في جراحة العظام والمفاصل، تعتمد على الخبرة العلمية والتقنيات الجراحية الحديثة، بهدف تخفيف الألم، واستعادة الحركة، وتحسين جودة حياة المرضى."
+          {% else %}
+            "Providing specialized orthopaedic and joint surgical care based on advanced scientific expertise and modern surgical techniques to relieve pain, restore mobility, and improve patients' quality of life."
+          {% endif %}
+        </blockquote>
+
+        <!-- Direct Action Buttons -->
+        <div class="d-flex flex-wrap gap-3">
+          <a href="{% url 'public:booking' %}" class="btn btn-medical btn-lg px-4 shadow d-inline-flex align-items-center gap-2">
+            <i class="bi bi-calendar-check-fill"></i>
+            <span>{% if current_lang == 'ar' %}طلب حجز موعد كشف{% else %}Book Consultation{% endif %}</span>
+          </a>
+          <a href="{% url 'public:services' %}" class="btn btn-outline-light btn-lg px-4 d-inline-flex align-items-center gap-2" style="font-weight: 600;">
+            <i class="bi bi-activity"></i>
+            <span>{% if current_lang == 'ar' %}التخصصات الجراحية{% else %}Surgical Procedures{% endif %}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. Core Surgical Pillars with Official Anatomical Images (From D:\DR.MOHAMMED ALSAYYAD\p) -->
+<section class="py-5 bg-white border-bottom">
+  <div class="container py-lg-4">
+    <div class="text-center max-w-700 mx-auto mb-5">
+      <span class="badge bg-medical-subtle text-primary px-3 py-2 rounded-pill fw-bold mb-2">
+        {% if current_lang == 'ar' %}خدماتنا وجراحاتنا التخصصية{% else %}Clinical Specialties &amp; Surgeries{% endif %}
+      </span>
+      <h2 class="display-6 fw-bold text-navy">
+        {% if current_lang == 'ar' %}التخصصات الجراحية والمفاصل الصناعية{% else %}Specialized Orthopaedic &amp; Joint Procedures{% endif %}
+      </h2>
+      <p class="text-muted">
+        {% if current_lang == 'ar' %}
+          رعاية جراحية متخصصة لجراحة استبدال المفاصل الصناعية للركبة والحوض، وكسور الحوض والإصابات المعقدة
+        {% else %}
+          Consultant-led surgical care for knee and hip joint replacements, robotic arthroplasty, and complex pelvic trauma
+        {% endif %}
+      </p>
+    </div>
+
+    <!-- The Procedure Cards Featuring Images 1.png, 2.png, 3.png, 4.png, 5.png -->
+    <div class="row g-4">
+      <!-- Card 1: Knee Arthroplasty (1.png) -->
+      <div class="col-md-6 col-lg-4">
+        <div class="procedure-card">
+          <div class="procedure-card-img-wrapper">
+            <img src="{% static 'img/services/knee_replacement.png' %}" alt="{% if current_lang == 'ar' %}جراحة المفاصل الصناعية للركبة{% else %}Knee Arthroplasty{% endif %}">
+            <span class="procedure-card-badge">{% if current_lang == 'ar' %}مفصل الركبة{% else %}Knee Joint{% endif %}</span>
+          </div>
+          <div class="p-4 d-flex flex-column flex-grow-1">
+            <h3 class="h5 fw-bold text-navy mb-2">
+              <a href="{% url 'public:service_detail' slug='knee-joint-replacement' %}" class="text-navy text-decoration-none">
+                {% if current_lang == 'ar' %}جراحة المفاصل الصناعية للركبة{% else %}Knee Joint Replacement (Arthroplasty){% endif %}
+              </a>
+            </h3>
+            <p class="text-muted small flex-grow-1 lh-base">
+              {% if current_lang == 'ar' %}
+                استبدال مفصل الركبة التالف بمفصل صناعي متطور لتخفيف الآلام المزمنة واستعادة القدرة على المشي والحركة الطبيعية.
+              {% else %}
+                Total and partial knee arthroplasty to relieve chronic joint wear and restore natural mobility.
+              {% endif %}
+            </p>
+            <div class="d-flex align-items-center justify-content-between pt-3 border-top mt-auto">
+              <a href="{% url 'public:service_detail' slug='knee-joint-replacement' %}" class="small fw-bold text-primary text-decoration-none">
+                {% if current_lang == 'ar' %}تفاصيل الإجراء{% else %}Learn More{% endif %} <i class="bi bi-arrow-{% if current_lang == 'ar' %}left{% else %}right{% endif %}"></i>
+              </a>
+              <a href="{% url 'public:booking' %}" class="btn btn-sm btn-outline-primary">
+                {% if current_lang == 'ar' %}حجز موعد{% else %}Book Now{% endif %}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Hip Arthroplasty (2.png) -->
+      <div class="col-md-6 col-lg-4">
+        <div class="procedure-card">
+          <div class="procedure-card-img-wrapper">
+            <img src="{% static 'img/services/hip_replacement.png' %}" alt="{% if current_lang == 'ar' %}جراحة المفاصل الصناعية للحوض والورك{% else %}Hip Arthroplasty{% endif %}">
+            <span class="procedure-card-badge">{% if current_lang == 'ar' %}مفصل الحوض والورك{% else %}Hip Joint{% endif %}</span>
+          </div>
+          <div class="p-4 d-flex flex-column flex-grow-1">
+            <h3 class="h5 fw-bold text-navy mb-2">
+              <a href="{% url 'public:service_detail' slug='hip-joint-replacement' %}" class="text-navy text-decoration-none">
+                {% if current_lang == 'ar' %}جراحة المفاصل الصناعية للحوض والورك{% else %}Hip Joint Replacement (Arthroplasty){% endif %}
+              </a>
+            </h3>
+            <p class="text-muted small flex-grow-1 lh-base">
+              {% if current_lang == 'ar' %}
+                عمليات استبدال مفصل الورك باستخدام أحدث المفاصل الصناعية تشريحياً لاستعادة استقرار المفصل ومدى حركته بدون ألم.
+              {% else %}
+                Advanced total hip replacement utilizing anatomical prosthetics for pain relief, stability, and motion.
+              {% endif %}
+            </p>
+            <div class="d-flex align-items-center justify-content-between pt-3 border-top mt-auto">
+              <a href="{% url 'public:service_detail' slug='hip-joint-replacement' %}" class="small fw-bold text-primary text-decoration-none">
+                {% if current_lang == 'ar' %}تفاصيل الإجراء{% else %}Learn More{% endif %} <i class="bi bi-arrow-{% if current_lang == 'ar' %}left{% else %}right{% endif %}"></i>
+              </a>
+              <a href="{% url 'public:booking' %}" class="btn btn-sm btn-outline-primary">
+                {% if current_lang == 'ar' %}حجز موعد{% else %}Book Now{% endif %}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Pelvic Fracture Surgery (3.png) -->
+      <div class="col-md-6 col-lg-4">
+        <div class="procedure-card">
+          <div class="procedure-card-img-wrapper">
+            <img src="{% static 'img/services/pelvic_surgery.png' %}" alt="{% if current_lang == 'ar' %}جراحة كسور الحوض{% else %}Pelvic Fracture Surgery{% endif %}">
+            <span class="procedure-card-badge">{% if current_lang == 'ar' %}كسور الحوض{% else %}Pelvis &amp; Acetabulum{% endif %}</span>
+          </div>
+          <div class="p-4 d-flex flex-column flex-grow-1">
+            <h3 class="h5 fw-bold text-navy mb-2">
+              <a href="{% url 'public:service_detail' slug='pelvic-fracture-surgery' %}" class="text-navy text-decoration-none">
+                {% if current_lang == 'ar' %}جراحة كسور وتفكك الحوض{% else %}Pelvic &amp; Acetabular Fracture Surgery{% endif %}
+              </a>
+            </h3>
+            <p class="text-muted small flex-grow-1 lh-base">
+              {% if current_lang == 'ar' %}
+                علاج جراحي دقيق ومتخصص لكسور وتفككات الحوض المعقدة بالاعتماد على خبرة استشارية جراحية وأكاديمية متقدمة.
+              {% else %}
+                Expert reconstructive surgery for complex pelvic ring and acetabular injuries restoring anatomical integrity.
+              {% endif %}
+            </p>
+            <div class="d-flex align-items-center justify-content-between pt-3 border-top mt-auto">
+              <a href="{% url 'public:service_detail' slug='pelvic-fracture-surgery' %}" class="small fw-bold text-primary text-decoration-none">
+                {% if current_lang == 'ar' %}تفاصيل الإجراء{% else %}Learn More{% endif %} <i class="bi bi-arrow-{% if current_lang == 'ar' %}left{% else %}right{% endif %}"></i>
+              </a>
+              <a href="{% url 'public:booking' %}" class="btn btn-sm btn-outline-primary">
+                {% if current_lang == 'ar' %}حجز موعد{% else %}Book Now{% endif %}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: Fractures & Bone Trauma (4.png) -->
+      <div class="col-md-6 col-lg-4">
+        <div class="procedure-card">
+          <div class="procedure-card-img-wrapper">
+            <img src="{% static 'img/services/trauma_fractures.png' %}" alt="{% if current_lang == 'ar' %}علاج الكسور وإصابات العظام{% else %}Fractures &amp; Trauma{% endif %}">
+            <span class="procedure-card-badge">{% if current_lang == 'ar' %}تثبيت الكسور{% else %}Fracture Fixation{% endif %}</span>
+          </div>
+          <div class="p-4 d-flex flex-column flex-grow-1">
+            <h3 class="h5 fw-bold text-navy mb-2">
+              <a href="{% url 'public:service_detail' slug='fractures-and-bone-injuries' %}" class="text-navy text-decoration-none">
+                {% if current_lang == 'ar' %}علاج الكسور وإصابات العظام بمختلف أنواعها{% else %}Fracture Treatment &amp; Bone Trauma{% endif %}
+              </a>
+            </h3>
+            <p class="text-muted small flex-grow-1 lh-base">
+              {% if current_lang == 'ar' %}
+                علاج وتثبيت مختلف أنواع الكسور البسيطة والمعقدة وإصابات العظام لضمان التئام سليم واستعادة وظيفة الطرف.
+              {% else %}
+                Modern internal and external fixation techniques for simple and complex fractures ensuring proper union.
+              {% endif %}
+            </p>
+            <div class="d-flex align-items-center justify-content-between pt-3 border-top mt-auto">
+              <a href="{% url 'public:service_detail' slug='fractures-and-bone-injuries' %}" class="small fw-bold text-primary text-decoration-none">
+                {% if current_lang == 'ar' %}تفاصيل الإجراء{% else %}Learn More{% endif %} <i class="bi bi-arrow-{% if current_lang == 'ar' %}left{% else %}right{% endif %}"></i>
+              </a>
+              <a href="{% url 'public:booking' %}" class="btn btn-sm btn-outline-primary">
+                {% if current_lang == 'ar' %}حجز موعد{% else %}Book Now{% endif %}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 5: Robotic-Assisted Arthroplasty (5.png) -->
+      <div class="col-md-6 col-lg-8">
+        <div class="procedure-card">
+          <div class="row g-0 h-100 align-items-center">
+            <div class="col-md-6">
+              <div class="procedure-card-img-wrapper h-100" style="min-height: 240px;">
+                <img src="{% static 'img/services/robotic_surgery.png' %}" alt="{% if current_lang == 'ar' %}جراحة المفاصل بالروبوت{% else %}Robotic Arthroplasty{% endif %}">
+                <span class="procedure-card-badge" style="background: var(--medical-cyan);">{% if current_lang == 'ar' %}تقنية الروبوت{% else %}Robotic Solution{% endif %}</span>
+              </div>
+            </div>
+            <div class="col-md-6 p-4 d-flex flex-column justify-content-between h-100">
+              <div>
+                <span class="badge bg-primary text-white mb-2 px-2 py-1 small">{% if current_lang == 'ar' %}تقنية جراحية رائدة{% else %}Advanced Surgical Robotics{% endif %}</span>
+                <h3 class="h5 fw-bold text-navy mb-2">
+                  <a href="{% url 'public:service_detail' slug='robotic-assisted-joint-replacement' %}" class="text-navy text-decoration-none">
+                    {% if current_lang == 'ar' %}جراحات المفاصل الصناعية باستخدام تقنيات الروبوت{% else %}Robotic-Assisted Joint Replacement Surgery{% endif %}
+                  </a>
+                </h3>
+                <p class="text-muted small lh-base mb-3">
+                  {% if current_lang == 'ar' %}
+                    توظيف تقنيات الملاحة والتوجيه الروبوتي لتحقيق أعلى دقة في قطع العظام وموازنة الأربطة المفصلية، مما يرفع ثبات المفصل وعمره التشغيلي.
+                  {% else %}
+                    Utilization of 3D planning and real-time robotic navigation for sub-millimeter precision in implant placement and soft-tissue balance.
+                  {% endif %}
+                </p>
+              </div>
+              <div class="d-flex align-items-center justify-content-between pt-3 border-top mt-3">
+                <a href="{% url 'public:service_detail' slug='robotic-assisted-joint-replacement' %}" class="small fw-bold text-primary text-decoration-none">
+                  {% if current_lang == 'ar' %}تفاصيل الإجراء{% else %}Learn More{% endif %} <i class="bi bi-arrow-{% if current_lang == 'ar' %}left{% else %}right{% endif %}"></i>
+                </a>
+                <a href="{% url 'public:booking' %}" class="btn btn-sm btn-medical">
+                  {% if current_lang == 'ar' %}حجز استشارة{% else %}Book Consultation{% endif %}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- View All 9 Services Link -->
+    <div class="text-center mt-5">
+      <a href="{% url 'public:services' %}" class="btn btn-navy px-4 py-2">
+        {% if current_lang == 'ar' %}عرض كافة التخصصات والخدمات (9 خدمات){% else %}View All 9 Specialties &amp; Services{% endif %} <i class="bi bi-arrow-{% if current_lang == 'ar' %}left{% else %}right{% endif %} me-1 ms-1"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 3. Direct Booking & Consultation CTA Banner (Clean & Concise) -->
+<section class="py-5" style="background: linear-gradient(135deg, #0A223B 0%, #103B63 100%); color: #fff;">
+  <div class="container py-lg-3 text-center">
+    <div class="max-w-700 mx-auto">
+      <span class="badge bg-medical-subtle text-info px-3 py-2 rounded-pill fw-bold mb-2">
+        {% if current_lang == 'ar' %}رعاية طبية تخصصية مباشرة{% else %}Direct Specialist Care{% endif %}
+      </span>
+      <h2 class="display-6 fw-bold text-white mb-3">
+        {% if current_lang == 'ar' %}هل تعاني من آلام المفاصل أو تحتاج لاستشارة جراحية؟{% else %}Experiencing Joint Pain or Need a Surgical Consultation?{% endif %}
+      </h2>
+      <p class="text-white-50 mb-4 fs-6">
+        {% if current_lang == 'ar' %}
+          احجز موعد كشفك التخصصي مع الدكتور محمد الصياد لتشخيص حالتك بدقة وتحديد الخطة العلاجية أو الجراحية الأنسب لحالتك.
+        {% else %}
+          Schedule a specialist consultation with Dr. Mohammed Al-Sayyad for precise diagnostic evaluation and an individualized surgical treatment plan.
+        {% endif %}
+      </p>
+      <div class="d-flex flex-wrap justify-content-center gap-3">
+        <a href="{% url 'public:booking' %}" class="btn btn-medical btn-lg px-5 shadow">
+          <i class="bi bi-calendar-check-fill me-2 ms-2"></i>
+          {% if current_lang == 'ar' %}طلب حجز موعد كشف الآن{% else %}Book Your Consultation Now{% endif %}
+        </a>
+        <a href="tel:783517733" class="btn btn-outline-light btn-lg px-4 d-inline-flex align-items-center gap-2">
+          <i class="bi bi-telephone-fill text-warning"></i>
+          <span>783517733</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Schema.org JSON-LD Markup -->
+{{ schema_markup }}
+{% endblock %}

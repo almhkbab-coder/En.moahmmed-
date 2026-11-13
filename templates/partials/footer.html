@@ -1,0 +1,150 @@
+{% load static i18n %}
+<footer class="medical-footer" style="background: linear-gradient(180deg, #0A223B 0%, #061729 100%); color: #fff; padding: 4.5rem 0 2rem; border-top: 4px solid var(--medical-blue-accent);">
+  <div class="container">
+    <div class="row g-4 mb-5">
+      <!-- Col 1: Identity & Doctor Bio -->
+      <div class="col-lg-4 col-md-6">
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <img src="{% if site_settings.logo %}{{ site_settings.logo.url }}{% else %}{% static 'img/clinic_logo.jpg' %}{% endif %}" alt="شعار العيادة" class="rounded-circle shadow-sm bg-white p-1" style="width: 76px; height: 76px; min-width: 76px; object-fit: contain; border: 2.5px solid rgba(255, 255, 255, 0.25);">
+          <div>
+            <h5 class="mb-1 text-white fw-bold fs-5">
+              {% if current_lang == 'ar' %}{{ site_settings.doctor_name_ar }}{% else %}{{ site_settings.doctor_name_en }}{% endif %}
+            </h5>
+            <div class="text-white-50 small" style="line-height: 1.3;">
+              {% if current_lang == 'ar' %}{{ site_settings.title_ar|default:site_settings.specialty_ar }}{% else %}{{ site_settings.title_en|default:site_settings.specialty_en }}{% endif %}
+            </div>
+          </div>
+        </div>
+        <p class="text-white-50 small lh-base mb-3">
+          {% if current_lang == 'ar' %}
+            عيادة تخصصية متقدمة في جراحة العظام والكسور والحوض والمفاصل الصناعية للركبة والحوض، وتقنيات المفاصل الصناعية باستخدام الروبوت في صنعاء، الجمهورية اليمنية.
+          {% else %}
+            Specialized orthopedic surgery practice dedicated to knee & hip joint replacement, robotic-assisted arthroplasty, and complex pelvic trauma care in Sana'a, Yemen.
+          {% endif %}
+        </p>
+        <div class="p-2 rounded-3 bg-white bg-opacity-10 small text-white-50 d-inline-flex align-items-center gap-2">
+          <i class="bi bi-shield-check text-warning fs-5"></i>
+          <span>{% if current_lang == 'ar' %}مدرب معتمد للجامعة السويسرية لجراحة العظام{% else %}Certified Trainer - Swiss Orthopaedics University{% endif %}</span>
+        </div>
+
+        <!-- Social Channels -->
+        <div class="mt-4 pt-2">
+          <div class="text-white-50 small mb-2 fw-semibold">
+            <i class="bi bi-share me-1 ms-1 text-info"></i>
+            {% if current_lang == 'ar' %}منصات التواصل الاجتماعي الرسمية:{% else %}Official Social Media Channels:{% endif %}
+          </div>
+          <div class="d-flex align-items-center gap-2 flex-wrap">
+            <a href="{{ site_settings.facebook_url|default:'https://facebook.com' }}" target="_blank" rel="noopener noreferrer" class="social-channel-btn btn-facebook" title="Facebook" aria-label="Facebook">
+              <i class="bi bi-facebook"></i>
+            </a>
+            <a href="{{ site_settings.youtube_url|default:'https://youtube.com' }}" target="_blank" rel="noopener noreferrer" class="social-channel-btn btn-youtube" title="YouTube" aria-label="YouTube">
+              <i class="bi bi-youtube"></i>
+            </a>
+            <a href="https://wa.me/967783517733" target="_blank" rel="noopener noreferrer" class="social-channel-btn btn-whatsapp" title="WhatsApp" aria-label="WhatsApp">
+              <i class="bi bi-whatsapp"></i>
+            </a>
+            <a href="{{ site_settings.instagram_url|default:'https://instagram.com' }}" target="_blank" rel="noopener noreferrer" class="social-channel-btn btn-instagram" title="Instagram" aria-label="Instagram">
+              <i class="bi bi-instagram"></i>
+            </a>
+            <a href="{{ site_settings.x_url|default:'https://x.com' }}" target="_blank" rel="noopener noreferrer" class="social-channel-btn btn-x" title="X (Twitter)" aria-label="X">
+              <i class="bi bi-twitter-x"></i>
+            </a>
+            <a href="https://t.me/+967783517733" target="_blank" rel="noopener noreferrer" class="social-channel-btn btn-telegram" title="Telegram" aria-label="Telegram">
+              <i class="bi bi-telegram"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Col 2: Navigation Links -->
+      <div class="col-lg-2 col-md-6">
+        <h5 class="text-white fw-bold mb-3 border-bottom pb-2 border-secondary" style="font-size: 1.05rem;">
+          {% if current_lang == 'ar' %}روابط سريعة{% else %}Quick Links{% endif %}
+        </h5>
+        <ul class="list-unstyled small">
+          <li class="mb-2"><a href="{% url 'public:home' %}" class="text-white-50 text-decoration-none hover-white"><i class="bi bi-chevron-left me-1 ms-1"></i> {% if current_lang == 'ar' %}الرئيسية{% else %}Home{% endif %}</a></li>
+          <li class="mb-2"><a href="{% url 'public:about' %}" class="text-white-50 text-decoration-none hover-white"><i class="bi bi-chevron-left me-1 ms-1"></i> {% if current_lang == 'ar' %}عن الدكتور{% else %}About Doctor{% endif %}</a></li>
+          <li class="mb-2"><a href="{% url 'public:qualifications' %}" class="text-white-50 text-decoration-none hover-white"><i class="bi bi-chevron-left me-1 ms-1"></i> {% if current_lang == 'ar' %}المؤهلات العلمية{% else %}Qualifications{% endif %}</a></li>
+          <li class="mb-2"><a href="{% url 'public:services' %}" class="text-white-50 text-decoration-none hover-white"><i class="bi bi-chevron-left me-1 ms-1"></i> {% if current_lang == 'ar' %}التخصصات والخدمات{% else %}Specialties{% endif %}</a></li>
+          <li class="mb-2"><a href="{% url 'public:expertise' %}" class="text-white-50 text-decoration-none hover-white"><i class="bi bi-chevron-left me-1 ms-1"></i> {% if current_lang == 'ar' %}الخبرات والتميز{% else %}Expertise{% endif %}</a></li>
+          <li class="mb-2"><a href="{% url 'public:booking' %}" class="text-white-50 text-decoration-none hover-white"><i class="bi bi-chevron-left me-1 ms-1"></i> {% if current_lang == 'ar' %}طلب حجز موعد{% else %}Book Appointment{% endif %}</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Medical Vision Statement -->
+      <div class="col-lg-3 col-md-6">
+        <h5 class="text-white fw-bold mb-3 border-bottom pb-2 border-secondary" style="font-size: 1.05rem;">
+          {% if current_lang == 'ar' %}الرؤية والرسالة الطبية{% else %}Medical Vision{% endif %}
+        </h5>
+        <p class="text-white-50 small lh-lg mb-3 fst-italic">
+          {% if current_lang == 'ar' %}
+            "تقديم رعاية طبية متخصصة في جراحة العظام والمفاصل، تعتمد على الخبرة العلمية والتقنيات الجراحية الحديثة، بهدف تخفيف الألم، واستعادة الحركة، وتحسين جودة حياة المرضى، وفق أعلى معايير الممارسة الطبية."
+          {% else %}
+            "Providing specialized medical care in orthopedic and joint surgery, based on scientific expertise and modern surgical techniques, aiming to relieve pain, restore mobility, and improve patients' quality of life in accordance with the highest medical standards."
+          {% endif %}
+        </p>
+        <div class="p-2 px-3 rounded-3 border border-white border-opacity-10 small mb-0 d-flex align-items-center gap-2" style="background-color: rgba(255, 255, 255, 0.08); color: #E8F4FC; font-weight: 500;">
+          <i class="bi bi-info-circle-fill text-warning fs-6"></i>
+          <span>
+            {% if current_lang == 'ar' %}يُرجى حجز الموعد مسبقاً عبر الموقع لتنظيم أوقات الكشف.{% else %}Please book your appointment in advance to schedule your consultation.{% endif %}
+          </span>
+        </div>
+      </div>
+
+      <!-- Col 4: Official Contact & Location -->
+      <div class="col-lg-3 col-md-6">
+        <h5 class="text-white fw-bold mb-3 border-bottom pb-2 border-secondary" style="font-size: 1.05rem;">
+          {% if current_lang == 'ar' %}معلومات التواصل الرسمية{% else %}Official Contact{% endif %}
+        </h5>
+        <ul class="list-unstyled text-white-50 small mb-4">
+          <li class="mb-3 d-flex align-items-start gap-2">
+            <i class="bi bi-geo-alt-fill text-danger fs-5 mt-1"></i>
+            <div>
+              <div class="fw-bold text-white">{% if current_lang == 'ar' %}مقر العيادة في صنعاء:{% else %}Clinic Location:{% endif %}</div>
+              <div>{% if current_lang == 'ar' %}{{ site_settings.address_ar }}{% else %}{{ site_settings.address_en }}{% endif %}</div>
+              <div class="text-success fw-semibold mt-1">{% if current_lang == 'ar' %}عيادات الرازي التخصصية – عمارة الحبيشي{% else %}Al-Razi Specialized Clinics – Al-Hubaishi Bldg.{% endif %}</div>
+              <div class="mt-2">
+                <a href="https://maps.app.goo.gl/Af193GvkHNBb3f358" target="_blank" class="badge bg-primary text-white text-decoration-none px-2 py-1">
+                  <i class="bi bi-geo-alt me-1 ms-1"></i> {% if current_lang == 'ar' %}موقع العيادة على خرائط Google{% else %}Google Maps Location{% endif %}
+                </a>
+              </div>
+            </div>
+          </li>
+          <li class="mb-2 d-flex align-items-center gap-2">
+            <i class="bi bi-telephone-fill text-success fs-5"></i>
+            <div>
+              <span class="text-white-50">{% if current_lang == 'ar' %}الهاتف المعتمد:{% else %}Phone:{% endif %}</span>
+              <a href="tel:783517733" class="text-white fw-bold text-decoration-none ms-1">783517733</a>
+            </div>
+          </li>
+          <li class="mb-2 d-flex align-items-center gap-2">
+            <i class="bi bi-whatsapp text-success fs-5"></i>
+            <div>
+              <span class="text-white-50">{% if current_lang == 'ar' %}واتساب:{% else %}WhatsApp:{% endif %}</span>
+              <a href="https://wa.me/967783517733" target="_blank" class="text-white-50 ms-1">+967 783517733</a>
+            </div>
+          </li>
+        </ul>
+        <a href="{% url 'public:booking' %}" class="btn btn-medical btn-sm w-100 fw-bold">
+          <i class="bi bi-calendar-check me-1 ms-1"></i> {% if current_lang == 'ar' %}طلب حجز موعد بالعيادة{% else %}Request Consultation{% endif %}
+        </a>
+      </div>
+    </div>
+
+    <hr class="my-4 border-secondary opacity-25">
+
+    <div class="row align-items-center text-center text-md-start small text-white-50">
+      <div class="col-md-8 mb-2 mb-md-0">
+        &copy; {{ current_year }} {% if current_lang == 'ar' %}{{ site_settings.clinic_name_ar }}{% else %}{{ site_settings.clinic_name_en }}{% endif %}.
+        {% if current_lang == 'ar' %}جميع الحقوق محفوظة.{% else %}All Rights Reserved.{% endif %}
+        <span class="d-block d-md-inline-block ms-md-2 mt-1 mt-md-0">
+          | {% if current_lang == 'ar' %}الموقع لأغراض التوعية الطبية وحجز المواعيد ولا يُغني عن الفحص السريري المباشر.{% else %}This medical website is for informative and appointment booking purposes only.{% endif %}
+        </span>
+      </div>
+      <div class="col-md-4 text-center text-md-end">
+        <a href="{% url 'public:booking_status' %}" class="text-white-50 text-decoration-none me-3">{% if current_lang == 'ar' %}متابعة الحجز{% else %}Booking Status{% endif %}</a>
+        <a href="{% url 'public:contact' %}" class="text-white-50 text-decoration-none">{% if current_lang == 'ar' %}التواصل والدعم{% else %}Support{% endif %}</a>
+      </div>
+    </div>
+  </div>
+</footer>

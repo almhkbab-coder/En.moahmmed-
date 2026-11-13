@@ -1,0 +1,253 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="py-5 bg-white border-bottom text-center">
+  <div class="container max-w-700">
+    <span class="badge bg-medical-subtle text-primary px-3 py-2 rounded-pill fw-bold mb-2">
+      {% if current_lang == 'ar' %}تواصل مباشر{% else %}Get in Touch{% endif %}
+    </span>
+    <h1 class="display-6 fw-bold text-navy mb-2">
+      {% if current_lang == 'ar' %}معلومات التواصل ومقر العيادة{% else %}Contact Us &amp; Clinic Location{% endif %}
+    </h1>
+    <p class="text-muted fs-6 mb-0">
+      {% if current_lang == 'ar' %}
+        تواصل معنا لحجز المواعيد، الاستفسارات الطبية، أو الدعم المباشر.
+      {% else %}
+        Reach out to us for appointments, inquiries, or emergency support.
+      {% endif %}
+    </p>
+  </div>
+</div>
+
+<div class="py-5" style="background-color: var(--bg-light);">
+  <div class="container">
+    
+    <!-- 3 Cards Row (Matching Exactly Reference Image 2) -->
+    <div class="row g-4 mb-4">
+      <!-- Card 1: VISIT US -->
+      <div class="col-md-4">
+        <div class="card h-100 border-0 rounded-4 shadow-sm p-4 bg-white transition-hover">
+          <div class="d-flex align-items-start gap-3">
+            <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 58px; height: 58px; background-color: #E8F2FA; color: #1D70B8;">
+              <i class="bi bi-geo-alt-fill fs-4"></i>
+            </div>
+            <div>
+              <h2 class="h6 fw-bold text-navy text-uppercase mb-2" style="letter-spacing: 0.5px;">
+                {% if current_lang == 'ar' %}تفضل بزيارتنا (VISIT US){% else %}VISIT US{% endif %}
+              </h2>
+              <div class="text-muted small lh-base mb-2">
+                {% if current_lang == 'ar' %}{{ site_settings.address_ar }}{% else %}{{ site_settings.address_en }}{% endif %}
+              </div>
+              <div class="text-primary small fw-semibold">
+                <i class="bi bi-building me-1 ms-1"></i> {% if current_lang == 'ar' %}عيادات الرازي التخصصية – عمارة الحبيشي{% else %}Al-Razi Clinics – Al-Hubaishi Bldg.{% endif %}
+              </div>
+              <div class="text-muted small mb-3">
+                <i class="bi bi-compass me-1 ms-1"></i> {% if current_lang == 'ar' %}بجوار مستشفى الثورة العام{% else %}Next to Al-Thawra Hospital{% endif %}
+              </div>
+              <a href="https://maps.app.goo.gl/Af193GvkHNBb3f358" target="_blank" class="btn btn-sm btn-outline-primary rounded-pill px-3 py-1 fw-semibold d-inline-flex align-items-center gap-1 shadow-sm">
+                <i class="bi bi-geo-alt"></i>
+                <span>{% if current_lang == 'ar' %}فتح في خرائط Google{% else %}Open in Google Maps{% endif %}</span>
+                <i class="bi bi-box-arrow-up-right small"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: CALL US -->
+      <div class="col-md-4">
+        <div class="card h-100 border-0 rounded-4 shadow-sm p-4 bg-white transition-hover">
+          <div class="d-flex align-items-start gap-3">
+            <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 58px; height: 58px; background-color: #E8F2FA; color: #1D70B8;">
+              <i class="bi bi-telephone-fill fs-4"></i>
+            </div>
+            <div>
+              <h2 class="h6 fw-bold text-navy text-uppercase mb-2" style="letter-spacing: 0.5px;">
+                {% if current_lang == 'ar' %}الاتصال الهاتفي (CALL US){% else %}CALL US{% endif %}
+              </h2>
+              <div class="fs-5 fw-bold mb-1">
+                <a href="tel:783517733" class="text-navy text-decoration-none">783517733</a>
+              </div>
+              <div class="text-muted small">
+                <i class="bi bi-clock me-1 ms-1"></i>
+                {% if current_lang == 'ar' %}السبت - الخميس: 9:00 ص - 8:00 م{% else %}Sat - Thu: 9:00 AM - 8:00 PM{% endif %}
+              </div>
+              <div class="text-muted small mt-1">
+                {% if current_lang == 'ar' %}(الجمعة عطلة العيادة){% else %}(Friday Closed){% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: CONTACT US -->
+      <div class="col-md-4">
+        <div class="card h-100 border-0 rounded-4 shadow-sm p-4 bg-white transition-hover">
+          <div class="d-flex align-items-start gap-3">
+            <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 58px; height: 58px; background-color: #E8F2FA; color: #1D70B8;">
+              <i class="bi bi-chat-dots-fill fs-4"></i>
+            </div>
+            <div>
+              <h2 class="h6 fw-bold text-navy text-uppercase mb-2" style="letter-spacing: 0.5px;">
+                {% if current_lang == 'ar' %}المراسلة والدعم (CONTACT US){% else %}CONTACT US{% endif %}
+              </h2>
+              <div class="mb-1">
+                <a href="https://wa.me/967783517733" target="_blank" class="text-success fw-bold text-decoration-none small">
+                  <i class="bi bi-whatsapp me-1 ms-1"></i> +967 783517733
+                </a>
+              </div>
+              <div class="text-muted small">
+                {% if current_lang == 'ar' %}سنجيب على استفساركم في أقرب وقت ممكن.{% else %}We'll reply as soon as possible.{% endif %}
+              </div>
+              <div class="mt-2 mb-3">
+                <a href="{% url 'public:booking' %}" class="btn btn-sm btn-outline-primary py-1 px-3 rounded-pill fw-bold">
+                  {% if current_lang == 'ar' %}حجز موعد مباشر{% else %}Book Online{% endif %}
+                </a>
+              </div>
+              <div class="pt-2 border-top">
+                <div class="text-muted small fw-semibold mb-2">
+                  <i class="bi bi-share me-1 ms-1 text-primary"></i>
+                  {% if current_lang == 'ar' %}منصات التواصل الاجتماعي:{% else %}Social Channels:{% endif %}
+                </div>
+                <div class="d-flex align-items-center gap-1 flex-wrap">
+                  <a href="{{ site_settings.facebook_url|default:'https://facebook.com' }}" target="_blank" rel="noopener noreferrer" class="social-channel-btn-light facebook" title="Facebook" aria-label="Facebook">
+                    <i class="bi bi-facebook text-primary"></i>
+                  </a>
+                  <a href="{{ site_settings.youtube_url|default:'https://youtube.com' }}" target="_blank" rel="noopener noreferrer" class="social-channel-btn-light youtube" title="YouTube" aria-label="YouTube">
+                    <i class="bi bi-youtube text-danger"></i>
+                  </a>
+                  <a href="https://wa.me/967783517733" target="_blank" rel="noopener noreferrer" class="social-channel-btn-light whatsapp" title="WhatsApp" aria-label="WhatsApp">
+                    <i class="bi bi-whatsapp text-success"></i>
+                  </a>
+                  <a href="{{ site_settings.instagram_url|default:'https://instagram.com' }}" target="_blank" rel="noopener noreferrer" class="social-channel-btn-light instagram" title="Instagram" aria-label="Instagram">
+                    <i class="bi bi-instagram" style="color: #d6249f;"></i>
+                  </a>
+                  <a href="{{ site_settings.x_url|default:'https://x.com' }}" target="_blank" rel="noopener noreferrer" class="social-channel-btn-light x" title="X (Twitter)" aria-label="X">
+                    <i class="bi bi-twitter-x text-dark"></i>
+                  </a>
+                  <a href="https://t.me/+967783517733" target="_blank" rel="noopener noreferrer" class="social-channel-btn-light telegram" title="Telegram" aria-label="Telegram">
+                    <i class="bi bi-telegram text-info"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Map & Location Card (Matching Reference Image 2) -->
+    <div class="card border-0 rounded-4 shadow-sm overflow-hidden mb-5 bg-white position-relative" style="min-height: 380px;">
+      <!-- OpenStreetMap / Map Preview Container -->
+      <div class="position-relative w-100" style="height: 380px; background-color: #e5e3df;">
+        <iframe 
+          width="100%" 
+          height="100%" 
+          style="border:0; filter: contrast(1.02);" 
+          loading="lazy" 
+          allowfullscreen 
+          src="https://www.openstreetmap.org/export/embed.html?bbox=44.208%2C15.335%2C44.238%2C15.355&amp;layer=mapnik&amp;marker=15.345%2C44.223">
+        </iframe>
+
+        <!-- Floating Hospital Card on Top of Map (Matching Image 2) -->
+        <div class="position-absolute shadow-lg bg-white p-3 p-md-4 rounded-4 border" style="top: 24px; {% if current_lang == 'ar' %}right: 24px;{% else %}left: 24px;{% endif %} max-width: 360px; z-index: 10;">
+          <h3 class="h6 fw-bold text-navy mb-1">
+            {% if current_lang == 'ar' %}عيادة الصياد - جراحة العظام والمفاصل{% else %}Al-Sayyad Clinic - Orthopedic Surgery{% endif %}
+          </h3>
+          <div class="text-muted small mb-2">
+            {% if current_lang == 'ar' %}
+              عيادات الرازي التخصصية، شارع خولان، بجوار مستشفى الثورة العام، صنعاء
+            {% else %}
+              Al-Razi Specialized Clinics, Khawlan St., Next to Al-Thawra Hospital, Sana'a
+            {% endif %}
+          </div>
+          <div class="d-flex align-items-center gap-2 small mb-3 text-warning">
+            <span>★★★★★</span>
+            <span class="text-muted small fw-semibold">4.9 (د. محمد الصياد)</span>
+          </div>
+          <div class="d-flex flex-column gap-2">
+            <a href="https://maps.app.goo.gl/Af193GvkHNBb3f358" target="_blank" class="btn btn-sm btn-primary rounded-pill px-3 py-2 fw-semibold text-white d-inline-flex align-items-center justify-content-center gap-2 shadow-sm" style="background-color: #2A72F8; border-color: #2A72F8;">
+              <i class="bi bi-geo-alt-fill"></i>
+              <span>{% if current_lang == 'ar' %}موقع عيادة الدكتور محمد الصياد{% else %}Dr. Mohammed Clinic on Maps{% endif %}</span>
+              <i class="bi bi-box-arrow-up-right small"></i>
+            </a>
+            <a href="https://maps.app.goo.gl/11aaoh1AuvXMSeQx7" target="_blank" class="btn btn-sm btn-light border rounded-pill px-3 py-1 text-muted small d-inline-flex align-items-center justify-content-center gap-2">
+              <i class="bi bi-hospital text-primary"></i>
+              <span>{% if current_lang == 'ar' %}موقع عيادات الرازي التخصصية{% else %}Al-Razi Clinics Location{% endif %}</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact & Inquiry Form Row -->
+    <div class="row justify-content-center">
+      <div class="col-lg-9">
+        <div class="bg-white p-4 p-md-5 rounded-4 border shadow-sm">
+          <div class="text-center mb-4">
+            <span class="badge bg-medical-subtle text-primary px-3 py-1 rounded-pill fw-bold mb-2">
+              {% if current_lang == 'ar' %}المراسلة الفورية{% else %}Online Inquiry{% endif %}
+            </span>
+            <h2 class="h4 fw-bold text-navy mb-1">
+              {% if current_lang == 'ar' %}أرسل لنا استفسارك الطبي{% else %}Send an Online Inquiry{% endif %}
+            </h2>
+            <p class="text-muted small mb-0">
+              {% if current_lang == 'ar' %}
+                يرجى تعبئة الحقول أدناه وسيقوم فريق الاستقبال بالتواصل معكم في أقرب وقت.
+              {% else %}
+                Please fill in the form fields below and our clinic team will respond promptly.
+              {% endif %}
+            </p>
+          </div>
+
+          <form method="post">
+            {% csrf_token %}
+            {{ form.website_hp }}
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">{% if current_lang == 'ar' %}الاسم الكامل *{% else %}Full Name *{% endif %}</label>
+                {{ form.full_name }}
+                {% if form.full_name.errors %}<div class="text-danger small">{{ form.full_name.errors.0 }}</div>{% endif %}
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">{% if current_lang == 'ar' %}رقم الهاتف *{% else %}Phone Number *{% endif %}</label>
+                {{ form.phone }}
+                {% if form.phone.errors %}<div class="text-danger small">{{ form.phone.errors.0 }}</div>{% endif %}
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">{% if current_lang == 'ar' %}البريد الإلكتروني (اختياري){% else %}Email Address (Optional){% endif %}</label>
+                {{ form.email }}
+                {% if form.email.errors %}<div class="text-danger small">{{ form.email.errors.0 }}</div>{% endif %}
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">{% if current_lang == 'ar' %}موضوع الرسالة *{% else %}Subject *{% endif %}</label>
+                {{ form.subject }}
+                {% if form.subject.errors %}<div class="text-danger small">{{ form.subject.errors.0 }}</div>{% endif %}
+              </div>
+
+              <div class="col-12">
+                <label class="form-label fw-semibold">{% if current_lang == 'ar' %}نص الرسالة أو الاستفسار *{% else %}Message or Inquiry Details *{% endif %}</label>
+                {{ form.message }}
+                {% if form.message.errors %}<div class="text-danger small">{{ form.message.errors.0 }}</div>{% endif %}
+              </div>
+
+              <div class="col-12 mt-4">
+                <button type="submit" class="btn btn-navy btn-lg w-100 py-3 fw-bold">
+                  <i class="bi bi-send-fill me-1 ms-1"></i> {% if current_lang == 'ar' %}إرسال الرسالة الآن{% else %}Submit Inquiry{% endif %}
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

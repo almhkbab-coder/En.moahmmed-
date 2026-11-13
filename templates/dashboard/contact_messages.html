@@ -1,0 +1,43 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load static i18n %}
+
+{% block dashboard_content %}
+<div class="card border-0 rounded-4 shadow-sm bg-white overflow-hidden">
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-light small">
+        <tr>
+          <th>المرسل</th>
+          <th>رقم الهاتف</th>
+          <th>البريد</th>
+          <th>موضوع الرسالة</th>
+          <th>نص الرسالة</th>
+          <th>تاريخ الإرسال</th>
+          <th>IP</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for msg in page_obj %}
+          <tr>
+            <td class="fw-bold">{{ msg.full_name }}</td>
+            <td>
+              <a href="tel:{{ msg.phone }}" class="text-muted small">{{ msg.phone }}</a>
+              <a href="https://wa.me/{{ msg.phone|cut:' '|cut:'+' }}" target="_blank" class="text-success ms-1"><i class="bi bi-whatsapp"></i></a>
+            </td>
+            <td class="small">{{ msg.email|default:"-" }}</td>
+            <td class="fw-semibold">{{ msg.subject }}</td>
+            <td class="small text-muted" style="max-width: 320px;">{{ msg.message }}</td>
+            <td class="small text-muted">{{ msg.created_at|date:"Y-m-d H:i" }}</td>
+            <td class="small text-muted">{{ msg.ip_address|default:"-" }}</td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="7" class="text-center py-4 text-muted">لا توجد رسائل واردة حتى الآن.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+

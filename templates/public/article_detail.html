@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+<div class="py-3 bg-white border-bottom">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0 small">
+        <li class="breadcrumb-item">
+          <a href="{% url 'public:home' %}" class="text-decoration-none">
+            <i class="bi bi-house-door me-1 ms-1"></i>{% if current_lang == 'ar' %}الرئيسية{% else %}Home{% endif %}
+          </a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="{% url 'public:blog' %}" class="text-decoration-none">
+            {% if current_lang == 'ar' %}المقالات الطبية{% else %}Articles Blog{% endif %}
+          </a>
+        </li>
+        <li class="breadcrumb-item active text-navy fw-semibold" aria-current="page">
+          {% if current_lang == 'ar' %}{{ article.title_ar }}{% else %}{{ article.title_en }}{% endif %}
+        </li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
+<div class="py-5" style="background-color: var(--bg-light);">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-8">
+        <article class="bg-white p-4 p-md-5 rounded-4 border shadow-sm">
+          <div class="d-flex flex-wrap align-items-center gap-3 text-muted small mb-3">
+            <span class="badge bg-medical-subtle text-primary px-3 py-1 rounded-pill fw-bold">
+              {% if current_lang == 'ar' %}{{ article.category.name_ar }}{% else %}{{ article.category.name_en }}{% endif %}
+            </span>
+            <span><i class="bi bi-calendar3 me-1 ms-1"></i> {{ article.published_at|date:"Y-m-d" }}</span>
+            <span><i class="bi bi-clock me-1 ms-1"></i> {{ article.reading_time }} {% if current_lang == 'ar' %}دقائق قراءة{% else %}min read{% endif %}</span>
+            <span><i class="bi bi-eye me-1 ms-1"></i> {{ article.view_count }} {% if current_lang == 'ar' %}مشاهدة{% else %}views{% endif %}</span>
+          </div>
+
+          <h1 class="display-6 fw-bold text-navy mb-4">
+            {% if current_lang == 'ar' %}{{ article.title_ar }}{% else %}{{ article.title_en }}{% endif %}
+          </h1>
+
+          <div class="lead text-muted mb-4 p-3 bg-light rounded-3 border-start border-4 border-primary">
+            {% if current_lang == 'ar' %}{{ article.excerpt_ar }}{% else %}{{ article.excerpt_en }}{% endif %}
+          </div>
+
+          <hr class="my-4">
+
+          <div class="article-content lh-lg text-dark fs-6" style="white-space: pre-line;">
+            {% if current_lang == 'ar' %}{{ article.content_ar }}{% else %}{{ article.content_en }}{% endif %}
+          </div>
+
+          <!-- Medical Disclaimer Box -->
+          <div class="alert alert-warning border-0 rounded-4 mt-5 p-4 d-flex align-items-start gap-3">
+            <i class="bi bi-exclamation-triangle-fill fs-3 text-warning"></i>
+            <div>
+              <div class="fw-bold fs-6 mb-1">
+                {% if current_lang == 'ar' %}تنبيه وإخلاء مسؤولية طبية{% else %}Medical Disclaimer{% endif %}
+              </div>
+              <div class="small text-muted">
+                {% if current_lang == 'ar' %}
+                  {{ article.medical_disclaimer_ar|default:"المعلومات الواردة في هذا المقال هي لأغراض تثقيفية وتوعوية فقط ولا تغني عن استشارة الطبيب المختص أو الفحص السريري المباشر." }}
+                {% else %}
+                  {{ article.medical_disclaimer_en|default:"The information provided in this article is for educational purposes only and is not a substitute for professional clinical medical advice or diagnosis." }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="col-lg-4">
+        <!-- Author Profile Box -->
+        <div class="bg-white p-4 rounded-4 border shadow-sm mb-4 text-center">
+          <img src="{% static 'img/clinic_logo.jpg' %}" alt="شعار العيادة" class="rounded-circle shadow-sm mb-2" style="width: 70px; height: 70px; object-fit: contain;">
+          <h2 class="h5 fw-bold text-navy mb-1">{% if current_lang == 'ar' %}{{ site_settings.doctor_name_ar }}{% else %}{{ site_settings.doctor_name_en }}{% endif %}</h2>
+          <div class="text-muted small mb-3">{% if current_lang == 'ar' %}{{ site_settings.title_ar|default:site_settings.specialty_ar }}{% else %}{{ site_settings.title_en|default:site_settings.specialty_en }}{% endif %}</div>
+          <a href="{% url 'public:booking' %}" class="btn btn-medical w-100 fw-bold">
+            <i class="bi bi-calendar-check me-1 ms-1"></i> {% if current_lang == 'ar' %}حجز استشارة طبية{% else %}Book Consultation{% endif %}
+          </a>
+        </div>
+
+        <!-- Related Articles -->
+        {% if related_articles %}
+          <div class="bg-white p-4 rounded-4 border shadow-sm">
+            <h2 class="h5 fw-bold text-navy mb-3">{% if current_lang == 'ar' %}مقالات ذات صلة{% else %}Related Articles{% endif %}</h2>
+            <div class="d-flex flex-column gap-3">
+              {% for rel in related_articles %}
+                <a href="{{ rel.get_absolute_url }}" class="text-dark p-2 rounded hover-bg-light text-decoration-none">
+                  <div class="fw-bold small mb-1 text-navy">{% if current_lang == 'ar' %}{{ rel.title_ar }}{% else %}{{ rel.title_en }}{% endif %}</div>
+                  <div class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-calendar3 me-1 ms-1"></i> {{ rel.published_at|date:"Y-m-d" }}</div>
+                </a>
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

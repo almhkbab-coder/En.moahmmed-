@@ -1,0 +1,42 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load static i18n %}
+
+{% block dashboard_content %}
+<div class="row g-4">
+  {% for cal_date, apts in appointments_by_date.items %}
+    <div class="col-md-6 col-lg-4">
+      <div class="card border-0 rounded-4 shadow-sm bg-white h-100 overflow-hidden">
+        <div class="card-header bg-navy text-white p-3 d-flex justify-content-between align-items-center" style="background: var(--primary-navy);">
+          <div class="fw-bold">{{ cal_date|date:"l d F" }}</div>
+          <span class="badge bg-success">{{ apts.count }} مواعيد</span>
+        </div>
+        <div class="card-body p-3">
+          {% if apts %}
+            <div class="d-flex flex-column gap-2">
+              {% for apt in apts %}
+                <a href="{% url 'dashboard:appointment_detail' apt.id %}" class="p-2 rounded bg-light border text-decoration-none d-flex align-items-center justify-content-between text-dark hover-bg-light">
+                  <div>
+                    <div class="fw-bold small">{{ apt.patient.full_name }}</div>
+                    <div class="text-muted" style="font-size: 0.75rem;">
+                      <i class="bi bi-clock me-1"></i> {{ apt.appointment_time }}
+                    </div>
+                  </div>
+                  <span class="badge {{ apt.status_badge_class }}" style="font-size: 0.7rem;">
+                    {{ apt.get_status_display }}
+                  </span>
+                </a>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="text-center py-4 text-muted small">
+              <i class="bi bi-calendar2-x fs-3 d-block mb-1 text-muted opacity-50"></i>
+              لا توجد حجوزات مجدولة
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}
+

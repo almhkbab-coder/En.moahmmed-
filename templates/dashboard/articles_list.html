@@ -1,0 +1,72 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load static i18n %}
+
+{% block dashboard_content %}
+<div class="d-flex align-items-center justify-content-between mb-4">
+  <div class="text-muted small">إجمالي المقالات: {{ articles.count }}</div>
+  <a href="{% url 'dashboard:article_create' %}" class="btn btn-medical">
+    <i class="bi bi-plus-circle me-1"></i> كتابة مقال طبي جديد
+  </a>
+</div>
+
+<div class="card border-0 rounded-4 shadow-sm bg-white overflow-hidden">
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-light small">
+        <tr>
+          <th>عنوان المقال (عربي)</th>
+          <th>التصنيف</th>
+          <th>الكاتب</th>
+          <th>الحالة</th>
+          <th>المشاهدات</th>
+          <th>تاريخ النشر</th>
+          <th>الإجراءات</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in articles %}
+          <tr>
+            <td>
+              <div class="fw-bold text-navy">{{ a.title_ar }}</div>
+              <div class="text-muted small">{{ a.title_en }}</div>
+            </td>
+            <td>
+              <span class="badge bg-light text-dark border">{{ a.category.name_ar|default:"-" }}</span>
+            </td>
+            <td>
+              {% if a.author %}
+                {{ a.author.get_full_name|default:a.author.username }}
+              {% else %}
+                الطبيب
+              {% endif %}
+            </td>
+            <td>
+              {% if a.is_published %}
+                <span class="badge bg-success">منشور</span>
+              {% else %}
+                <span class="badge bg-warning text-dark">مسودة</span>
+              {% endif %}
+            </td>
+            <td>{{ a.view_count }}</td>
+            <td class="small text-muted">{{ a.published_at|date:"Y-m-d" }}</td>
+            <td>
+              <div class="btn-group btn-group-sm">
+                <a href="{{ a.get_absolute_url }}" target="_blank" class="btn btn-light border" title="معاينة بالموقع"><i class="bi bi-box-arrow-up-right"></i></a>
+                <a href="{% url 'dashboard:article_edit' a.id %}" class="btn btn-light border" title="تعديل"><i class="bi bi-pencil"></i></a>
+                <a href="{% url 'dashboard:article_delete' a.id %}" class="btn btn-light border text-danger" title="حذف"><i class="bi bi-trash"></i></a>
+              </div>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="7" class="text-center py-4 text-muted">
+              لا توجد مقالات مضافة بعد.
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+

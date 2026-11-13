@@ -1,0 +1,286 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="py-5 bg-white border-bottom">
+  <div class="container text-center max-w-700">
+    <span class="badge bg-medical-subtle text-primary px-3 py-2 rounded-pill fw-bold mb-2">
+      {% if current_lang == 'ar' %}حجز فوري منظم{% else %}Online Consultation Booking{% endif %}
+    </span>
+    <h1 class="display-6 fw-bold text-navy mb-3">
+      {% if current_lang == 'ar' %}طلب حجز موعد كشف طبي{% else %}Book Your Consultation{% endif %}
+    </h1>
+    <p class="text-muted">
+      {% if current_lang == 'ar' %}
+        يمكنكم تقديم طلب موعد كشف بالعيادة دون الحاجة لإنشاء حساب مسبق. اختر الفرع والوقت المناسب وسيتواصل معكم فريق الاستقبال لتأكيد الحجز.
+      {% else %}
+        You can request a clinic consultation online without prior registration. Select your branch and preferred time, and our team will contact you to confirm.
+      {% endif %}
+    </p>
+  </div>
+</div>
+
+<div class="py-5" style="background-color: var(--bg-light);">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="bg-white p-4 p-md-5 rounded-4 border shadow-sm">
+          
+          <form method="post" id="appointmentBookingForm">
+            {% csrf_token %}
+            <!-- Honeypot anti-spam field -->
+            <div style="display:none;" aria-hidden="true">
+              <input type="text" name="website_hp" tabindex="-1" autocomplete="off">
+            </div>
+
+            <!-- Step 1: Branch and Service -->
+            <h2 class="h5 fw-bold text-navy mb-3 d-flex align-items-center gap-2">
+              <span class="badge bg-navy rounded-circle p-2" style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; background-color: var(--primary-navy);">1</span>
+              {% if current_lang == 'ar' %}اختيار فرع العيادة والخدمة الطبية{% else %}Select Consulting Branch &amp; Specialty{% endif %}
+            </h2>
+
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <label for="branchSelect" class="form-label fw-semibold">
+                  {% if current_lang == 'ar' %}فرع العيادة *{% else %}Clinic Branch *{% endif %}
+                </label>
+                <select name="branch" id="branchSelect" class="form-select" required>
+                  {% for b in branches %}
+                    <option value="{{ b.id }}" {% if b.is_primary %}selected{% endif %}>
+                      {% if current_lang == 'ar' %}{{ b.name_ar }} - {{ b.city_ar }}{% else %}{{ b.name_en }} - {{ b.city_en }}{% endif %}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label for="serviceSelect" class="form-label fw-semibold">
+                  {% if current_lang == 'ar' %}الخدمة أو الجراحة المطلوبة (اختياري){% else %}Requested Specialty or Surgery (Optional){% endif %}
+                </label>
+                <select name="service" id="serviceSelect" class="form-select">
+                  <option value="">-- {% if current_lang == 'ar' %}استشارة / فحص عام لآلام العظام والمفاصل{% else %}General Orthopaedic &amp; Joint Consultation{% endif %} --</option>
+                  {% for s in services %}
+                    <option value="{{ s.id }}" {% if selected_service and selected_service.id == s.id %}selected{% endif %}>
+                      {% if current_lang == 'ar' %}{{ s.title_ar }}{% else %}{{ s.title_en }}{% endif %}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <!-- Step 2: Date & Available Slots -->
+            <h2 class="h5 fw-bold text-navy mb-3 d-flex align-items-center gap-2">
+              <span class="badge bg-navy rounded-circle p-2" style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; background-color: var(--primary-navy);">2</span>
+              {% if current_lang == 'ar' %}تحديد تاريخ ووقت الموعد{% else %}Select Appointment Date &amp; Time Slot{% endif %}
+            </h2>
+
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <label for="appointmentDate" class="form-label fw-semibold">
+                  {% if current_lang == 'ar' %}تاريخ الموعد *{% else %}Appointment Date *{% endif %}
+                </label>
+                <input type="date" name="appointment_date" id="appointmentDate" class="form-control" required min="{{ today_str }}">
+                <div class="form-text">
+                  {% if current_lang == 'ar' %}العيادة تفتح السبت - الخميس (الجمعة عطلة){% else %}Saturday – Thursday (Friday Closed){% endif %}
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">
+                  {% if current_lang == 'ar' %}الوقت المتاح *{% else %}Available Slot *{% endif %}
+                </label>
+                <input type="hidden" name="appointment_time" id="selectedTimeInput" required>
+                <div id="slotsStatusMessage" class="text-muted small py-2">
+                  <i class="bi bi-info-circle me-1"></i>
+                  {% if current_lang == 'ar' %}يرجى اختيار تاريخ الموعد أولاً لعرض الأوقات المتاحة.{% else %}Please choose a date first to view available slots.{% endif %}
+                </div>
+              </div>
+
+              <!-- Slots Container Area -->
+              <div class="col-12" id="slotsArea" style="display: none;">
+                <div class="p-3 bg-light rounded-3 border">
+                  <div class="fw-semibold text-navy mb-2" id="slotsHeader">
+                    {% if current_lang == 'ar' %}الفترات المتاحة للحجز:{% else %}Available Clinic Time Slots:{% endif %}
+                  </div>
+                  
+                  <div class="mb-2">
+                    <span class="badge bg-secondary me-2">{% if current_lang == 'ar' %}صباحاً{% else %}Morning{% endif %}</span>
+                    <div id="morningSlots" class="d-flex flex-wrap gap-1 mt-1"></div>
+                  </div>
+
+                  <div class="mt-3">
+                    <span class="badge bg-secondary me-2">{% if current_lang == 'ar' %}مساءً{% else %}Evening{% endif %}</span>
+                    <div id="eveningSlots" class="d-flex flex-wrap gap-1 mt-1"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 3: Patient Information -->
+            <h2 class="h5 fw-bold text-navy mb-3 d-flex align-items-center gap-2">
+              <span class="badge bg-navy rounded-circle p-2" style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; background-color: var(--primary-navy);">3</span>
+              {% if current_lang == 'ar' %}بيانات المريض والتواصل{% else %}Patient Information &amp; Contact{% endif %}
+            </h2>
+
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <label for="fullName" class="form-label fw-semibold">
+                  {% if current_lang == 'ar' %}اسم المريض الثلاثي أو الرباعي *{% else %}Patient Full Name *{% endif %}
+                </label>
+                <input type="text" name="full_name" id="fullName" class="form-control" required placeholder="{% if current_lang == 'ar' %}مثال: أحمد محمد علي{% else %}e.g. John Smith{% endif %}">
+              </div>
+
+              <div class="col-md-6">
+                <label for="phoneNumber" class="form-label fw-semibold">
+                  {% if current_lang == 'ar' %}رقم الهاتف / الجوال *{% else %}Phone / Mobile Number *{% endif %}
+                </label>
+                <input type="tel" name="phone_number" id="phoneNumber" class="form-control" required placeholder="{% if current_lang == 'ar' %}مثال: 777000000 أو +967...{% else %}e.g. 777000000 or +967...{% endif %}">
+              </div>
+
+              <div class="col-md-6">
+                <label for="emailInput" class="form-label fw-semibold">
+                  {% if current_lang == 'ar' %}البريد الإلكتروني (اختياري){% else %}Email Address (Optional){% endif %}
+                </label>
+                <input type="email" name="email" id="emailInput" class="form-control" placeholder="name@example.com">
+              </div>
+
+              <div class="col-md-6">
+                <label for="visitReason" class="form-label fw-semibold">
+                  {% if current_lang == 'ar' %}سبب الزيارة أو الشكوى الطبية (اختياري){% else %}Reason for Visit or Symptoms (Optional){% endif %}
+                </label>
+                <input type="text" name="visit_reason" id="visitReason" class="form-control" placeholder="{% if current_lang == 'ar' %}مثال: ألم في مفصل الركبة، استشارة تبديل مفصل...{% else %}e.g. Knee pain, joint replacement consult...{% endif %}">
+              </div>
+
+              <div class="col-12">
+                <label for="patientNotes" class="form-label fw-semibold">
+                  {% if current_lang == 'ar' %}ملاحظات إضافية أو تقارير سابقة (اختياري){% else %}Additional Notes or Prior Surgeries (Optional){% endif %}
+                </label>
+                <textarea name="patient_notes" id="patientNotes" class="form-control" rows="2" placeholder="{% if current_lang == 'ar' %}أي تفاصيل أخرى ترغب في إفادة العيادة بها...{% else %}Any further details you wish to inform the clinic...{% endif %}"></textarea>
+              </div>
+            </div>
+
+            <!-- Notice & Submit Button -->
+            <div class="alert alert-info border-0 rounded-3 small mb-4 d-flex align-items-start gap-2">
+              <i class="bi bi-info-circle-fill text-primary fs-5"></i>
+              <div>
+                {% if current_lang == 'ar' %}
+                  تنويه هام: تقديم هذا النموذج يُعد طلباً لحجز موعد مبدئي. سيقوم موظف الاستقبال بمراجعة الموعد والتأكيد معكم عبر الاتصال الهاتفي أو رسائل الواتساب.
+                {% else %}
+                  Important Note: Submitting this form requests an initial appointment. Our reception staff will review your request and confirm via phone call or WhatsApp.
+                {% endif %}
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-medical btn-lg w-100 py-3 fw-bold shadow-sm" id="submitBookingBtn">
+              <i class="bi bi-check-circle-fill me-2 ms-2"></i>
+              {% if current_lang == 'ar' %}تأكيد وإرسال طلب الحجز{% else %}Confirm &amp; Submit Booking Request{% endif %}
+            </button>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const isAr = "{{ current_lang }}" === "ar";
+  const branchSelect = document.getElementById('branchSelect');
+  const appointmentDate = document.getElementById('appointmentDate');
+  const slotsStatusMessage = document.getElementById('slotsStatusMessage');
+  const slotsArea = document.getElementById('slotsArea');
+  const morningSlots = document.getElementById('morningSlots');
+  const eveningSlots = document.getElementById('eveningSlots');
+  const selectedTimeInput = document.getElementById('selectedTimeInput');
+  const form = document.getElementById('appointmentBookingForm');
+
+  const txtLoading = isAr ? 'جاري فحص الأوقات المتاحة بالعيادة...' : 'Checking available clinic time slots...';
+  const txtClosed = isAr ? 'العيادة مغلقة في هذا التاريخ' : 'Clinic is closed on this date';
+  const txtNoSlots = isAr ? 'لا توجد مواعيد متاحة في هذا اليوم' : 'No available slots on this day';
+  const txtSelected = isAr ? 'تم اختيار الوقت:' : 'Selected slot:';
+  const txtClickToSelect = isAr ? 'انقر على أحد الأوقات المتاحة أدناه لاختياره' : 'Click on an available slot below to select';
+  const txtError = isAr ? 'تعذر تحميل الأوقات، يرجى المحاولة مجدداً' : 'Could not load slots, please try again';
+  const txtAlertRequired = isAr ? 'يرجى اختيار أحد الأوقات المتاحة للموعد بالضغط عليه قبل الإرسال.' : 'Please select an available appointment time slot before submitting.';
+
+  // Set default min date to today
+  const today = new Date().toISOString().split('T')[0];
+  appointmentDate.setAttribute('min', today);
+
+  function fetchSlots() {
+    const branchId = branchSelect.value;
+    const dateVal = appointmentDate.value;
+
+    if (!branchId || !dateVal) return;
+
+    slotsStatusMessage.innerHTML = `<span class="spinner-border spinner-border-sm me-1" role="status"></span> ${txtLoading}`;
+    slotsArea.style.display = 'none';
+    selectedTimeInput.value = '';
+
+    fetch(`{% url 'public:api_available_slots' %}?branch_id=${branchId}&date=${dateVal}`)
+      .then(res => res.json())
+      .then(data => {
+        morningSlots.innerHTML = '';
+        eveningSlots.innerHTML = '';
+
+        if (!data.is_open) {
+          slotsStatusMessage.innerHTML = `<span class="text-danger"><i class="bi bi-x-circle me-1"></i> ${data.reason || txtClosed}</span>`;
+          return;
+        }
+
+        if (!data.slots || data.slots.length === 0) {
+          slotsStatusMessage.innerHTML = `<span class="text-warning"><i class="bi bi-exclamation-triangle me-1"></i> ${txtNoSlots}</span>`;
+          return;
+        }
+
+        data.slots.forEach(slot => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'slot-pill';
+          btn.textContent = slot.time_formatted;
+          btn.dataset.time = slot.time;
+
+          if (!slot.is_available) {
+            btn.classList.add(slot.is_booked ? 'booked' : 'past');
+            btn.disabled = true;
+            btn.title = slot.is_booked ? (isAr ? 'محجوز مسبقاً' : 'Already Booked') : (isAr ? 'وقت سابق' : 'Past Slot');
+          } else {
+            btn.addEventListener('click', function() {
+              document.querySelectorAll('.slot-pill').forEach(el => el.classList.remove('selected'));
+              btn.classList.add('selected');
+              selectedTimeInput.value = slot.time;
+              slotsStatusMessage.innerHTML = `<span class="text-success fw-bold"><i class="bi bi-check-circle me-1"></i> ${txtSelected} ${slot.time_formatted}</span>`;
+            });
+          }
+
+          if (slot.shift === 'morning') {
+            morningSlots.appendChild(btn);
+          } else {
+            eveningSlots.appendChild(btn);
+          }
+        });
+
+        slotsStatusMessage.innerHTML = `<span class="text-success"><i class="bi bi-check2 me-1"></i> ${txtClickToSelect}</span>`;
+        slotsArea.style.display = 'block';
+      })
+      .catch(err => {
+        slotsStatusMessage.innerHTML = `<span class="text-danger">${txtError}</span>`;
+      });
+  }
+
+  appointmentDate.addEventListener('change', fetchSlots);
+  branchSelect.addEventListener('change', fetchSlots);
+
+  // Form submission check
+  form.addEventListener('submit', function(e) {
+    if (!selectedTimeInput.value) {
+      e.preventDefault();
+      alert(txtAlertRequired);
+    }
+  });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+<div class="py-5" style="background-color: var(--bg-light);">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-7 text-center">
+        <div class="bg-white p-4 p-md-5 rounded-4 border shadow-sm">
+          <div class="rounded-circle bg-success bg-opacity-10 text-success d-inline-flex p-4 mb-3">
+            <i class="bi bi-check-circle-fill" style="font-size: 3.5rem;"></i>
+          </div>
+
+          <h1 class="display-6 fw-bold text-navy mb-2">
+            {% if current_lang == 'ar' %}تم استلام طلب الحجز بنجاح!{% else %}Appointment Request Received Successfully!{% endif %}
+          </h1>
+          <p class="text-muted mb-4">
+            {% if current_lang == 'ar' %}
+              شكراً لثقتكم بعيادة الدكتور محمد الصياد. تم تسجيل طلبكم في النظام برقم الحجز المرجعي التالي:
+            {% else %}
+              Thank you for trusting Dr. Mohammed Al-Sayyad Orthopaedic Clinic. Your request has been registered with reference code:
+            {% endif %}
+          </p>
+
+          <div class="p-3 bg-light rounded-3 border d-inline-block px-5 mb-4">
+            <div class="text-muted small">{% if current_lang == 'ar' %}رمز الحجز المرجعي{% else %}Booking Reference Code{% endif %}</div>
+            <div class="display-6 fw-bold text-success tracking-wide">{{ appointment.booking_reference }}</div>
+          </div>
+
+          <!-- Appointment Summary Table -->
+          <div class="text-start bg-light p-4 rounded-3 border mb-4">
+            <h2 class="h6 fw-bold text-navy mb-3 border-bottom pb-2">
+              {% if current_lang == 'ar' %}تفاصيل الموعد المطلوب:{% else %}Requested Appointment Details:{% endif %}
+            </h2>
+            <div class="row g-2 small">
+              <div class="col-6 text-muted">{% if current_lang == 'ar' %}اسم المريض:{% else %}Patient Name:{% endif %}</div>
+              <div class="col-6 fw-bold text-end">{{ appointment.patient.full_name }}</div>
+
+              <div class="col-6 text-muted">{% if current_lang == 'ar' %}رقم الهاتف:{% else %}Phone Number:{% endif %}</div>
+              <div class="col-6 fw-bold text-end">{{ appointment.patient.phone_number }}</div>
+
+              <div class="col-6 text-muted">{% if current_lang == 'ar' %}تاريخ الزيارة:{% else %}Consultation Date:{% endif %}</div>
+              <div class="col-6 fw-bold text-end">{{ appointment.appointment_date|date:"Y-m-d" }}</div>
+
+              <div class="col-6 text-muted">{% if current_lang == 'ar' %}وقت الموعد:{% else %}Appointment Slot:{% endif %}</div>
+              <div class="col-6 fw-bold text-end">{{ appointment.appointment_time }}</div>
+
+              <div class="col-6 text-muted">{% if current_lang == 'ar' %}الفرع:{% else %}Branch Location:{% endif %}</div>
+              <div class="col-6 fw-bold text-end">{% if current_lang == 'ar' %}{{ appointment.branch.name_ar }}{% else %}{{ appointment.branch.name_en }}{% endif %}</div>
+
+              <div class="col-6 text-muted">{% if current_lang == 'ar' %}الحالة الحالية:{% else %}Current Status:{% endif %}</div>
+              <div class="col-6 text-end">
+                <span class="badge {{ appointment.status_badge_class }}">
+                  {% if current_lang == 'ar' %}
+                    {{ appointment.get_status_display }}
+                  {% else %}
+                    {% if appointment.status == 'pending' %}Pending Review{% elif appointment.status == 'confirmed' %}Confirmed{% elif appointment.status == 'cancelled' %}Cancelled{% else %}Completed{% endif %}
+                  {% endif %}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert alert-info border-0 rounded-3 small text-start mb-4">
+            <i class="bi bi-info-circle-fill text-primary me-2 ms-2"></i>
+            {% if current_lang == 'ar' %}
+              سيتواصل معكم فريق الاستقبال بالعيادة خلال أوقات الدوام الرسمي لتأكيد الموعد النهائي وإعطائكم التعليمات الطبية الأولية.
+            {% else %}
+              Our clinic reception staff will contact you during consulting hours to confirm your scheduled appointment and provide preparatory guidance.
+            {% endif %}
+          </div>
+
+          <div class="d-flex flex-wrap justify-content-center gap-3">
+            <a href="https://wa.me/{{ site_settings.whatsapp|cut:' '|cut:'+' }}?text=السلام%20عليكم%2C%20أريد%20الاستفسار%20عن%20حجز%20الموعد%20رقم%20{{ appointment.booking_reference }}" target="_blank" class="btn btn-outline-success">
+              <i class="bi bi-whatsapp me-1 ms-1"></i> {% if current_lang == 'ar' %}مراسلة العيادة عبر واتساب{% else %}WhatsApp Clinic Support{% endif %}
+            </a>
+            <a href="{% url 'public:home' %}" class="btn btn-navy">
+              <i class="bi bi-house-door me-1 ms-1"></i> {% if current_lang == 'ar' %}العودة للرئيسية{% else %}Back to Home{% endif %}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

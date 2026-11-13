@@ -1,0 +1,159 @@
+{% load static i18n %}
+<!-- Main Navigation Bar (Dr. Lynskey Style) -->
+<nav class="navbar navbar-expand-lg medical-navbar-blue sticky-top">
+  <div class="container position-relative">
+    <!-- Brand / Logo Area -->
+    <a class="navbar-brand d-flex align-items-center gap-3" href="{% url 'public:home' %}">
+      <img src="{% if site_settings.logo %}{{ site_settings.logo.url }}{% else %}{% static 'img/clinic_logo.jpg' %}{% endif %}" alt="شعار عيادة الدكتور محمد الصياد" class="clinic-logo-nav bg-white p-1 rounded-circle" style="height: 68px; width: 68px; min-width: 68px; object-fit: contain; box-shadow: 0 4px 14px rgba(13,45,77,0.16); border: 2px solid rgba(40, 123, 168, 0.25);">
+      <div>
+        <div class="fw-bold fs-5 text-navy lh-1 mb-1">
+          {% if current_lang == 'ar' %}{{ site_settings.doctor_name_ar }}{% else %}{{ site_settings.doctor_name_en }}{% endif %}
+        </div>
+        <div class="text-muted fw-semibold" style="font-size: 0.74rem; letter-spacing: 0.4px;">
+          {% if current_lang == 'ar' %}{{ site_settings.title_ar|default:site_settings.specialty_ar }}{% else %}ORTHOPAEDIC SURGEON KNEE &amp; HIP{% endif %}
+        </div>
+      </div>
+    </a>
+
+    <!-- Mobile Toggler -->
+    <button class="navbar-toggler border-0 text-navy" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="bi bi-list fs-1 text-navy"></i>
+    </button>
+
+    <!-- Navigation Menu Items -->
+    <div class="collapse navbar-collapse" id="mainNavbar">
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0 py-2 py-lg-0 align-items-lg-center">
+        <!-- 1. Home -->
+        <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'public:home' %}">
+            {% if current_lang == 'ar' %}الرئيسية{% else %}Home{% endif %}
+          </a>
+        </li>
+
+        <!-- 2. About -->
+        <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" href="{% url 'public:about' %}">
+            {% if current_lang == 'ar' %}عن الدكتور{% else %}About{% endif %}
+          </a>
+        </li>
+
+        <!-- 3. Qualifications -->
+        <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.url_name == 'qualifications' %}active{% endif %}" href="{% url 'public:qualifications' %}">
+            {% if current_lang == 'ar' %}المؤهلات العلمية{% else %}Qualifications{% endif %}
+          </a>
+        </li>
+
+        <!-- 4. Services & Surgeries (Mega Menu) -->
+        <li class="nav-item has-megamenu">
+          <a class="nav-link dropdown-toggle {% if 'service' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'public:services' %}" role="button">
+            {% if current_lang == 'ar' %}الخدمات والعمليات الجراحية{% else %}Services &amp; Surgeries{% endif %}
+          </a>
+          <!-- Services Mega Menu Container -->
+          <div class="megamenu">
+            <div class="container">
+              <div class="row g-4 align-items-center">
+                <!-- Column 1: Joint Arthroplasty -->
+                <div class="col-lg-4">
+                  <div class="megamenu-title">
+                    <i class="bi bi-shield-plus text-primary me-1 ms-1"></i>
+                    {% if current_lang == 'ar' %}جراحات استبدال المفاصل الصناعية{% else %}Joint Arthroplasty{% endif %}
+                  </div>
+                  <ul class="megamenu-list">
+                    <li><a href="{% url 'public:service_detail' slug='robotic-assisted-joint-replacement' %}"><i class="bi bi-chevron-{% if current_lang == 'ar' %}left{% else %}right{% endif %} text-muted small"></i> {% if current_lang == 'ar' %}تقنيات المفاصل الصناعية بالروبوت{% else %}Robotic Joint Replacement{% endif %}</a></li>
+                    <li><a href="{% url 'public:service_detail' slug='knee-joint-replacement' %}"><i class="bi bi-chevron-{% if current_lang == 'ar' %}left{% else %}right{% endif %} text-muted small"></i> {% if current_lang == 'ar' %}استبدال مفصل الركبة (كامل وجزئي){% else %}Knee Arthroplasty (Total/Partial){% endif %}</a></li>
+                    <li><a href="{% url 'public:service_detail' slug='hip-joint-replacement' %}"><i class="bi bi-chevron-{% if current_lang == 'ar' %}left{% else %}right{% endif %} text-muted small"></i> {% if current_lang == 'ar' %}استبدال مفصل الورك والحوض الصناعي{% else %}Total Hip Arthroplasty{% endif %}</a></li>
+                    <li><a href="{% url 'public:service_detail' slug='artificial-joint-replacement-surgeries' %}"><i class="bi bi-chevron-{% if current_lang == 'ar' %}left{% else %}right{% endif %} text-muted small"></i> {% if current_lang == 'ar' %}عمليات المراجعة وتبديل المفاصل{% else %}Revision Joint Replacement{% endif %}</a></li>
+                    <li><a href="{% url 'public:service_detail' slug='assessment-osteoarthritis-joint-wear' %}"><i class="bi bi-chevron-{% if current_lang == 'ar' %}left{% else %}right{% endif %} text-muted small"></i> {% if current_lang == 'ar' %}علاج وتقييم الخشونة وتآكل الغضاريف{% else %}Osteoarthritis &amp; Wear Care{% endif %}</a></li>
+                  </ul>
+                </div>
+
+                <!-- Column 2: Trauma & Pelvic Surgeries -->
+                <div class="col-lg-4">
+                  <div class="megamenu-title">
+                    <i class="bi bi-activity text-success me-1 ms-1"></i>
+                    {% if current_lang == 'ar' %}جراحات الحوض والكسور المعقدة{% else %}Trauma &amp; Pelvic Surgery{% endif %}
+                  </div>
+                  <ul class="megamenu-list">
+                    <li><a href="{% url 'public:service_detail' slug='pelvic-fracture-surgery' %}"><i class="bi bi-chevron-{% if current_lang == 'ar' %}left{% else %}right{% endif %} text-muted small"></i> {% if current_lang == 'ar' %}جراحات كسور وتفكك الحوض المعقدة{% else %}Complex Pelvic Fractures{% endif %}</a></li>
+                    <li><a href="{% url 'public:service_detail' slug='fractures-and-bone-injuries' %}"><i class="bi bi-chevron-{% if current_lang == 'ar' %}left{% else %}right{% endif %} text-muted small"></i> {% if current_lang == 'ar' %}علاج وتثبيت كسور العظام المتعددة{% else %}Complex Fractures &amp; Trauma{% endif %}</a></li>
+                    <li><a href="{% url 'public:service_detail' slug='complex-fractures-and-bone-deformities' %}"><i class="bi bi-chevron-{% if current_lang == 'ar' %}left{% else %}right{% endif %} text-muted small"></i> {% if current_lang == 'ar' %}جراحة وتصحيح تشوهات العظام{% else %}Bone Deformity Correction{% endif %}</a></li>
+                    <li><a href="{% url 'public:service_detail' slug='general-orthopedic-surgery' %}"><i class="bi bi-chevron-{% if current_lang == 'ar' %}left{% else %}right{% endif %} text-muted small"></i> {% if current_lang == 'ar' %}جراحة العظام العامة والإصابات{% else %}General Orthopedic Surgery{% endif %}</a></li>
+                    <li><a href="{% url 'public:service_detail' slug='post-op-followup-and-rehabilitation' %}"><i class="bi bi-chevron-{% if current_lang == 'ar' %}left{% else %}right{% endif %} text-muted small"></i> {% if current_lang == 'ar' %}بروتوكولات التأهيل والتعافي الطبي{% else %}Post-Op Rehabilitation Care{% endif %}</a></li>
+                  </ul>
+                </div>
+
+                <!-- Column 3: Featured Visual & CTA Card -->
+                <div class="col-lg-4">
+                  <div class="megamenu-card p-3 text-center bg-white rounded-3 border">
+                    <img src="{% static 'img/services/knee_replacement.png' %}" alt="الرعاية الجراحية المتخصصة" class="img-fluid rounded mb-2" style="max-height: 130px; width: 100%; object-fit: contain; background: #f8fafc;">
+                    <div class="fw-bold text-navy small mb-1">
+                      {% if current_lang == 'ar' %}رعاية جراحية متقدمة بمعايير عالمية{% else %}Advanced Orthopaedic Care{% endif %}
+                    </div>
+                    <p class="text-muted" style="font-size: 0.76rem; line-height: 1.4;">
+                      {% if current_lang == 'ar' %}أحدث التقنيات وأساليب التدريب السويسرية لاستعادة الحركة الطبيعية.{% else %}Swiss-standard surgical methods to restore pain-free movement.{% endif %}
+                    </p>
+                    <a href="{% url 'public:booking' %}" class="btn btn-sm btn-medical w-100 fw-bold">
+                      <i class="bi bi-calendar-check me-1 ms-1"></i> {% if current_lang == 'ar' %}طلب حجز موعد كشف{% else %}Book Consultation{% endif %}
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <!-- 5. Expertise -->
+        <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.url_name == 'expertise' %}active{% endif %}" href="{% url 'public:expertise' %}">
+            {% if current_lang == 'ar' %}مجالات التميز{% else %}Expertise{% endif %}
+          </a>
+        </li>
+
+        <!-- 6. Education & Blog -->
+        <li class="nav-item">
+          <a class="nav-link {% if 'education' in request.resolver_match.url_name or 'blog' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'public:education' %}">
+            {% if current_lang == 'ar' %}المكتبة والتثقيف{% else %}Education{% endif %}
+          </a>
+        </li>
+
+        <!-- 7. Contact -->
+        <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" href="{% url 'public:contact' %}">
+            {% if current_lang == 'ar' %}اتصل بنا{% else %}Contact{% endif %}
+          </a>
+        </li>
+      </ul>
+
+      <!-- Right Side Phone Pill & Language Switcher -->
+      <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
+        <!-- Direct Phone Pill Button (Dr. Lynskey style) -->
+        <a href="tel:783517733" class="phone-pill-btn">
+          <i class="bi bi-telephone-fill"></i>
+          <span>(783517733)</span>
+        </a>
+
+        <!-- Language Switcher Pill -->
+        <form action="{% url 'set_language' %}" method="post" class="d-inline m-0">
+          {% csrf_token %}
+          <input name="next" type="hidden" value="{{ request.get_full_path }}">
+          {% if current_lang == 'ar' %}
+            <button type="submit" name="language" value="en" class="btn btn-sm btn-outline-navy py-1 px-3 fw-bold rounded-pill" style="border: 1px solid #0D2D4D; color: #0D2D4D; font-size: 0.82rem;" title="Switch to English">
+              <i class="bi bi-globe me-1"></i> EN
+            </button>
+          {% else %}
+            <button type="submit" name="language" value="ar" class="btn btn-sm btn-outline-navy py-1 px-3 fw-bold rounded-pill" style="border: 1px solid #0D2D4D; color: #0D2D4D; font-size: 0.82rem;" title="التحويل للغة العربية">
+              <i class="bi bi-globe me-1"></i> عربي
+            </button>
+          {% endif %}
+        </form>
+
+        {% if user.is_authenticated and user.is_staff %}
+          <a href="{% url 'dashboard:index' %}" class="badge bg-warning text-dark text-decoration-none px-2 py-2 rounded-pill">
+            <i class="bi bi-speedometer2 me-1"></i> {% trans "لوحة التحكم" %}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</nav>

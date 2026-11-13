@@ -1,0 +1,243 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+<div class="py-3 bg-white border-bottom">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0 small">
+        <li class="breadcrumb-item">
+          <a href="{% url 'public:home' %}" class="text-decoration-none">
+            <i class="bi bi-house-door me-1 ms-1"></i>{% if current_lang == 'ar' %}الرئيسية{% else %}Home{% endif %}
+          </a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="{% url 'public:education' %}" class="text-decoration-none">
+            {% if current_lang == 'ar' %}المكتبة المرئية{% else %}Video Library{% endif %}
+          </a>
+        </li>
+        <li class="breadcrumb-item active text-navy fw-semibold" aria-current="page">
+          {% if current_lang == 'ar' %}{{ series.title_ar }}{% else %}{{ series.title_en }}{% endif %}
+        </li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
+<div class="py-5" style="background-color: var(--bg-light);">
+  <div class="container">
+    <div class="row g-4">
+      <!-- Video Player Column -->
+      <div class="col-lg-8">
+        <div class="bg-white p-3 p-md-4 rounded-4 border shadow-sm mb-4">
+          {% if current_video and current_video.embed_url %}
+            {% if current_video.is_facebook %}
+              <!-- Facebook Smart Player with Interactive Card & Embedded Fallback -->
+              <div class="position-relative rounded-3 overflow-hidden mb-4 shadow-sm" style="background: linear-gradient(135deg, #0A223B 0%, #154575 100%);">
+                <!-- Embedded iFrame (Shown when user clicks Try Embedded) -->
+                <div id="fb-embed-container" class="d-none">
+                  <div class="bg-dark p-2 px-3 text-white small d-flex align-items-center justify-content-between flex-wrap gap-2 border-bottom border-secondary">
+                    <span class="text-white-50">
+                      <i class="bi bi-info-circle text-warning me-1 ms-1"></i>
+                      {% if current_lang == 'ar' %}
+                        إذا ظهرت لك شاشة "الفيديو غير متوفر" من فيسبوك لعدم تسجيل الدخول:
+                      {% else %}
+                        If Facebook shows "Video unavailable" due to login policy:
+                      {% endif %}
+                    </span>
+                    <div class="d-flex align-items-center gap-2">
+                      <a href="{{ current_video.watch_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm rounded-pill px-3 py-1 fw-bold">
+                        <i class="bi bi-facebook me-1 ms-1"></i>
+                        {% if current_lang == 'ar' %}مشاهدة على فيسبوك مباشرة{% else %}Open in Facebook{% endif %}
+                      </a>
+                      <button type="button" class="btn btn-outline-light btn-sm rounded-pill px-2 py-1" onclick="toggleFbEmbedBack()">
+                        <i class="bi bi-arrow-return-right me-1 ms-1"></i>
+                        {% if current_lang == 'ar' %}رجوع للبطاقة{% else %}Back to Card{% endif %}
+                      </button>
+                    </div>
+                  </div>
+                  <div class="ratio ratio-16x9">
+                    <iframe 
+                      id="fb-video-iframe"
+                      data-src="{{ current_video.embed_url }}" 
+                      title="{{ current_video.title_ar }}" 
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                      allowfullscreen
+                      style="border:none; overflow:hidden;"
+                      scrolling="no"
+                      frameborder="0">
+                    </iframe>
+                  </div>
+                </div>
+
+                <!-- Default Interactive Card for Facebook Video -->
+                <div id="fb-card-overlay" class="p-4 p-md-5 d-flex flex-column justify-content-center align-items-center text-center text-white" style="min-height: 380px; background: radial-gradient(circle at center, rgba(24, 119, 242, 0.28) 0%, rgba(10, 34, 59, 0.95) 100%);">
+                  <div class="mb-3">
+                    <span class="badge text-white px-3 py-2 rounded-pill shadow-sm" style="background-color: #1877F2; font-size: 0.88rem;">
+                      <i class="bi bi-facebook me-1 ms-1"></i> {% if current_lang == 'ar' %}فيديو من صفحة الدكتور على فيسبوك{% else %}Facebook Clinical Video{% endif %}
+                    </span>
+                  </div>
+
+                  <h2 class="h4 fw-bold mb-3 text-white" style="max-width: 620px; line-height: 1.5;">
+                    {% if current_lang == 'ar' %}{{ current_video.title_ar }}{% else %}{{ current_video.title_en }}{% endif %}
+                  </h2>
+
+                  <p class="text-white-50 small mb-4" style="max-width: 520px; line-height: 1.6;">
+                    {% if current_lang == 'ar' %}
+                      نظراً لسياسات الخصوصية في شركة فيسبوك (Meta) التي تشترط تسجيل الدخول لتشغيل مقاطع الريلز المدمجة، يمكنك تشغيل الفيديو فوراً وبكامل الدقة عبر تطبيق فيسبوك بنقرة واحدة، أو تجربة المشغل المدمج أدناه:
+                    {% else %}
+                      Due to Meta privacy policies requiring Facebook login for embedded Reels, you can play directly in the Facebook app with one tap or try the embedded player below:
+                    {% endif %}
+                  </p>
+
+                  <div class="d-flex align-items-center gap-2 flex-wrap justify-content-center">
+                    <a href="{{ current_video.watch_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg rounded-pill px-4 py-2 fw-bold shadow-lg d-inline-flex align-items-center gap-2" style="background-color: #1877F2; border-color: #1877F2;">
+                      <i class="bi bi-play-circle-fill fs-4"></i>
+                      <span>{% if current_lang == 'ar' %}تشغيل ومشاهدة على فيسبوك مباشرة{% else %}Play on Facebook Directly{% endif %}</span>
+                      <i class="bi bi-box-arrow-up-right small"></i>
+                    </a>
+
+                    <button type="button" class="btn btn-outline-light rounded-pill px-3 py-2 fw-semibold small" onclick="toggleFbEmbed()">
+                      <i class="bi bi-display me-1 ms-1"></i>
+                      <span>{% if current_lang == 'ar' %}تجربة المشغل الداخلي للصفحة{% else %}Try Embedded Player{% endif %}</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            {% else %}
+              <!-- YouTube Clean Embed Player -->
+              <div class="ratio ratio-16x9 rounded-3 overflow-hidden bg-dark mb-4 shadow-sm position-relative">
+                <iframe 
+                  src="{{ current_video.embed_url }}" 
+                  title="{{ current_video.title_ar }}" 
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                  allowfullscreen
+                  style="border:none; overflow:hidden;"
+                  scrolling="no"
+                  frameborder="0">
+                </iframe>
+              </div>
+            {% endif %}
+
+            <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+              <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-primary px-3 py-1 rounded-pill">
+                  {% if current_lang == 'ar' %}الحلقة{% else %}Episode{% endif %} {{ current_video.episode_number }}
+                </span>
+                {% if current_video.is_facebook %}
+                  <span class="badge px-2 py-1 rounded-pill small text-white" style="background-color: #1877F2;">
+                    <i class="bi bi-facebook me-1 ms-1"></i> {% if current_lang == 'ar' %}فيديو فيسبوك{% else %}Facebook Video{% endif %}
+                  </span>
+                {% else %}
+                  <span class="badge bg-danger px-2 py-1 rounded-pill small text-white">
+                    <i class="bi bi-youtube me-1 ms-1"></i> {% if current_lang == 'ar' %}فيديو يوتيوب{% else %}YouTube Video{% endif %}
+                  </span>
+                {% endif %}
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                <span class="text-muted small">
+                  <i class="bi bi-clock me-1 ms-1"></i> {{ current_video.duration_minutes }} {% if current_lang == 'ar' %}دقائق{% else %}mins{% endif %}
+                </span>
+                {% if current_video.watch_url %}
+                  <a href="{{ current_video.watch_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-secondary rounded-pill px-3 py-1 fw-semibold d-inline-flex align-items-center gap-1 shadow-sm">
+                    {% if current_video.is_facebook %}
+                      <i class="bi bi-facebook text-primary"></i>
+                      <span>{% if current_lang == 'ar' %}فتح في فيسبوك{% else %}Open in Facebook{% endif %}</span>
+                    {% else %}
+                      <i class="bi bi-youtube text-danger"></i>
+                      <span>{% if current_lang == 'ar' %}فتح في يوتيوب{% else %}Open in YouTube{% endif %}</span>
+                    {% endif %}
+                    <i class="bi bi-box-arrow-up-right small"></i>
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+
+            <h1 class="h4 fw-bold text-navy mb-3">
+              {% if current_lang == 'ar' %}{{ current_video.title_ar }}{% else %}{{ current_video.title_en }}{% endif %}
+            </h1>
+
+            {% if current_video.description_ar or current_video.description_en %}
+              <div class="text-muted lh-lg" style="white-space: pre-line;">
+                {% if current_lang == 'ar' %}{{ current_video.description_ar }}{% else %}{{ current_video.description_en }}{% endif %}
+              </div>
+            {% endif %}
+          {% else %}
+            <div class="p-5 text-center text-muted">
+              <i class="bi bi-play-btn fs-1 mb-2"></i>
+              <p>{% if current_lang == 'ar' %}لا توجد حلقة محددة حالياً.{% else %}No video selected currently.{% endif %}</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Episodes Playlist Column -->
+      <div class="col-lg-4">
+        <div class="bg-white p-4 rounded-4 border shadow-sm">
+          <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-3">
+            <h2 class="h5 fw-bold text-navy mb-0">
+              {% if current_lang == 'ar' %}حلقات السلسلة{% else %}Series Episodes{% endif %}
+            </h2>
+            <span class="badge bg-light text-navy border">{{ videos.count }} {% if current_lang == 'ar' %}حلقات{% else %}episodes{% endif %}</span>
+          </div>
+
+          <div class="list-group list-group-flush">
+            {% for vid in videos %}
+              <a href="?v={{ vid.id }}" class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3 border-0 rounded-3 mb-2 {% if current_video.id == vid.id %}bg-medical-subtle text-primary fw-bold{% endif %}">
+                <span class="badge {% if current_video.id == vid.id %}bg-primary text-white{% else %}bg-secondary text-white{% endif %} rounded-circle p-2" style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+                  {{ vid.episode_number }}
+                </span>
+                <div class="flex-grow-1">
+                  <div class="small line-clamp-2">
+                    {% if current_lang == 'ar' %}{{ vid.title_ar }}{% else %}{{ vid.title_en }}{% endif %}
+                  </div>
+                  <div class="text-muted d-flex align-items-center gap-2" style="font-size: 0.75rem;">
+                    <span><i class="bi bi-clock me-1 ms-1"></i> {{ vid.duration_minutes }} {% if current_lang == 'ar' %}دقائق{% else %}mins{% endif %}</span>
+                    {% if vid.is_facebook %}
+                      <span class="text-primary"><i class="bi bi-facebook"></i> {% if current_lang == 'ar' %}فيسبوك{% else %}Facebook{% endif %}</span>
+                    {% else %}
+                      <span class="text-danger"><i class="bi bi-youtube"></i> {% if current_lang == 'ar' %}يوتيوب{% else %}YouTube{% endif %}</span>
+                    {% endif %}
+                  </div>
+                </div>
+                <i class="bi bi-play-circle-fill fs-5 {% if current_video.id == vid.id %}text-primary{% else %}text-muted{% endif %}"></i>
+              </a>
+            {% empty %}
+              <p class="text-muted small">
+                {% if current_lang == 'ar' %}لا توجد حلقات مضافة بعد.{% else %}No episodes added yet.{% endif %}
+              </p>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function toggleFbEmbed() {
+  var container = document.getElementById('fb-embed-container');
+  var overlay = document.getElementById('fb-card-overlay');
+  var iframe = document.getElementById('fb-video-iframe');
+  if (container && overlay && iframe) {
+    var dataSrc = iframe.getAttribute('data-src');
+    if (dataSrc && (!iframe.src || iframe.src.indexOf('facebook.com') === -1)) {
+      iframe.src = dataSrc;
+    }
+    container.classList.remove('d-none');
+    overlay.classList.add('d-none');
+  }
+}
+
+function toggleFbEmbedBack() {
+  var container = document.getElementById('fb-embed-container');
+  var overlay = document.getElementById('fb-card-overlay');
+  if (container && overlay) {
+    container.classList.add('d-none');
+    overlay.classList.remove('d-none');
+  }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+<!-- Breadcrumb Header -->
+<div class="py-4 bg-white border-bottom">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0 small">
+        <li class="breadcrumb-item"><a href="{% url 'public:home' %}" class="text-decoration-none">{% if current_lang == 'ar' %}الرئيسية{% else %}Home{% endif %}</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'public:about' %}" class="text-decoration-none">{% if current_lang == 'ar' %}عن الدكتور{% else %}About Doctor{% endif %}</a></li>
+        <li class="breadcrumb-item active text-navy fw-semibold" aria-current="page">{% if current_lang == 'ar' %}الخبرات والتميز{% else %}Clinical Distinction & Expertise{% endif %}</li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
+<!-- Header Section -->
+<section class="py-5 bg-white border-bottom text-center">
+  <div class="container max-w-700">
+    <span class="badge bg-medical-subtle text-primary px-3 py-2 rounded-pill fw-bold mb-2">
+      {% if current_lang == 'ar' %}الخبرة والريادة السريرية{% else %}Clinical Leadership & Distinction{% endif %}
+    </span>
+    <h1 class="display-6 fw-bold text-navy mb-3">
+      {% if current_lang == 'ar' %}الخبرات المهنية والتميز الجراحي{% else %}Professional Expertise & Surgical Excellence{% endif %}
+    </h1>
+    <p class="text-muted fs-6">
+      {% if current_lang == 'ar' %}
+        سجل تخصصي رائد في جراحة المفاصل الصناعية للركبة والحوض وكسور الحوض المعقدة وتقنيات الروبوت الجراحي
+      {% else %}
+        Pioneering record in knee and hip arthroplasty, complex pelvic reconstruction, and robotic-assisted joint replacement
+      {% endif %}
+    </p>
+  </div>
+</section>
+
+<!-- Distinction Points Section -->
+<section class="py-5" style="background-color: var(--bg-light);">
+  <div class="container py-lg-3">
+    <div class="row g-4 justify-content-center">
+      {% for exp in experiences %}
+        <div class="col-lg-8">
+          <div class="card border-0 shadow-sm rounded-4 p-4 bg-white border-start border-5 border-primary transition-hover">
+            <div class="d-flex align-items-start gap-3">
+              <div class="rounded-circle p-3 bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center flex-shrink-0" style="width: 55px; height: 55px;">
+                <i class="bi bi-patch-check-fill fs-3"></i>
+              </div>
+              <div class="flex-grow-1">
+                <div class="d-flex align-items-center justify-content-between mb-1">
+                  <span class="badge border px-2 py-1 small fw-bold" style="color: #287BA8 !important; background-color: rgba(40, 123, 168, 0.08); border-color: rgba(40, 123, 168, 0.3) !important; font-size: 0.8rem;">
+                    {% if current_lang == 'ar' %}مرتكز تخصصي{% else %}Clinical Pillar{% endif %} #0{{ forloop.counter }}
+                  </span>
+                </div>
+                <h2 class="h5 fw-bold text-navy mb-2">
+                  {% if current_lang == 'ar' %}{{ exp.hospital_ar }}{% else %}{{ exp.hospital_en }}{% endif %}
+                </h2>
+                <p class="text-muted small mb-0 lh-base">
+                  {% if current_lang == 'ar' %}{{ exp.position_ar }}{% else %}{{ exp.position_en }}{% endif %}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Dedicated Robotic Surgery Section with Image 5.png -->
+    <div class="row justify-content-center mt-5">
+      <div class="col-lg-10">
+        <div class="card border-0 rounded-4 shadow-sm overflow-hidden bg-white border-top border-5 border-primary">
+          <div class="row g-0 align-items-center">
+            <div class="col-md-5">
+              <img src="{% static 'img/services/robotic_surgery.png' %}" alt="Robotic Surgery" class="img-fluid w-100 h-100" style="min-height: 280px; object-fit: cover;">
+            </div>
+            <div class="col-md-7 p-4 p-md-5">
+              <span class="badge bg-primary text-white px-3 py-1 rounded-pill small mb-2">
+                {% if current_lang == 'ar' %}تكنولوجيا طبية متقدمة{% else %}Advanced Surgical Technology{% endif %}
+              </span>
+              <h3 class="h4 fw-bold text-navy mb-3">
+                {% if current_lang == 'ar' %}جراحة استبدال المفاصل الصناعية باستخدام تقنيات الروبوت{% else %}Robotic-Assisted Joint Replacement Surgery{% endif %}
+              </h3>
+              <p class="text-muted lh-lg mb-3">
+                {% if current_lang == 'ar' %}
+                  تمثل تقنيات الروبوت والملاحة الجراحية في استبدال مفاصل الركبة والحوض نقلة نوعية في دقة العمليات. حيث يتيح التخطيط الرقمي المسبق والتحكم الروبوتي الدقيق أثناء الجراحة تحقيق تطابق تشريحي مثالي، وتوازن متقن للأربطة المحيطة بالمفصل، مما يعزز استقرار المفصل ويدعم سرعة تعافي المريض.
+                {% else %}
+                  Robotic-assisted joint replacement introduces sub-millimeter precision to knee and hip arthroplasty. By combining individualized 3D anatomical modeling with real-time robotic guidance, surgical cuts and ligament balancing are optimized for longevity and stability.
+                {% endif %}
+              </p>
+              <div class="p-3 bg-light rounded-3 small text-muted border">
+                <i class="bi bi-check-circle-fill text-success me-1 ms-1"></i>
+                {% if current_lang == 'ar' %}
+                  تدريب تخصصي وزمالة معتمدة في تقنيات المفاصل الصناعية باستخدام الروبوت في الهند.
+                {% else %}
+                  Specialized fellowship and certified clinical training in robotic joint replacement technology in India.
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Swiss Orthopaedics Role -->
+    <div class="row justify-content-center mt-4">
+      <div class="col-lg-10">
+        <div class="card border-0 rounded-4 shadow-sm p-4 bg-white border-top border-4 border-warning">
+          <div class="d-flex align-items-center gap-3">
+            <div class="rounded-circle p-3 bg-warning bg-opacity-10 text-warning d-flex align-items-center justify-content-center flex-shrink-0" style="width: 60px; height: 60px;">
+              <i class="bi bi-award-fill fs-2"></i>
+            </div>
+            <div>
+              <h4 class="h5 fw-bold text-navy mb-1">
+                {% if current_lang == 'ar' %}اعتماد التدريب الجراحي – الجامعة السويسرية لجراحة العظام{% else %}Surgical Training Faculty – Swiss Orthopaedics University{% endif %}
+              </h4>
+              <p class="text-muted small mb-0 lh-lg">
+                {% if current_lang == 'ar' %}
+                  بصفته مدرباً معتمداً للجامعة السويسرية لجراحة العظام في منطقة الشرق الأوسط وشمال أفريقيا، يسهم الدكتور محمد الصياد في تدريب وتطوير المهارات الجراحية المتقدمة لزملائه الأطباء وفق أعلى المعايير الدولية المعتمدة.
+                {% else %}
+                  As an accredited trainer for the Swiss Orthopaedics University in the MENA region, Dr. Mohammed Al-Sayyad actively contributes to surgical education and advanced trauma and arthroplasty training.
+                {% endif %}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Booking CTA -->
+    <div class="text-center mt-5">
+      <a href="{% url 'public:booking' %}" class="btn btn-medical btn-lg px-4 shadow-sm">
+        <i class="bi bi-calendar-check me-1 ms-1"></i> {% if current_lang == 'ar' %}حجز موعد كشف أو استشارة{% else %}Book Consultation{% endif %}
+      </a>
+    </div>
+  </div>
+</section>
+
+{{ schema_markup }}
+{% endblock %}

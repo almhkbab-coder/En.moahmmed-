@@ -1,0 +1,97 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html lang="{{ current_lang }}" dir="{% if is_rtl %}rtl{% else %}ltr{% endif %}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if page_title %}{{ page_title }} | {% endif %}{% if current_lang == 'ar' %}{{ site_settings.clinic_name_ar }}{% else %}{{ site_settings.clinic_name_en }}{% endif %}</title>
+  
+  <meta name="description" content="{% if meta_desc %}{{ meta_desc }}{% else %}{% if current_lang == 'ar' %}{{ site_settings.meta_description_ar }}{% else %}{{ site_settings.meta_description_en }}{% endif %}{% endif %}">
+  <meta name="author" content="{% if current_lang == 'ar' %}{{ site_settings.doctor_name_ar }}{% else %}{{ site_settings.doctor_name_en }}{% endif %}">
+  
+  <!-- Open Graph / Facebook / WhatsApp / LinkedIn / Telegram Card Previews -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{% if current_lang == 'ar' %}{{ site_settings.clinic_name_ar }}{% else %}{{ site_settings.clinic_name_en }}{% endif %}">
+  <meta property="og:title" content="{% if page_title %}{{ page_title }} | {% endif %}{% if current_lang == 'ar' %}{{ site_settings.clinic_name_ar }}{% else %}{{ site_settings.clinic_name_en }}{% endif %}">
+  <meta property="og:description" content="{% if meta_desc %}{{ meta_desc }}{% else %}{% if current_lang == 'ar' %}{{ site_settings.meta_description_ar }}{% else %}{{ site_settings.meta_description_en }}{% endif %}{% endif %}">
+  <meta property="og:url" content="{{ request.build_absolute_uri }}">
+  <meta property="og:locale" content="{% if current_lang == 'ar' %}ar_YE{% else %}en_US{% endif %}">
+  <meta property="og:image" content="{% if site_settings.logo %}{{ request.scheme }}://{{ request.get_host }}{{ site_settings.logo.url }}{% else %}{{ request.scheme }}://{{ request.get_host }}{% static 'img/clinic_logo.jpg' %}{% endif %}">
+  <meta property="og:image:secure_url" content="{% if site_settings.logo %}{{ request.scheme }}://{{ request.get_host }}{{ site_settings.logo.url }}{% else %}{{ request.scheme }}://{{ request.get_host }}{% static 'img/clinic_logo.jpg' %}{% endif %}">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="{% if current_lang == 'ar' %}{{ site_settings.clinic_name_ar }}{% else %}{{ site_settings.clinic_name_en }}{% endif %}">
+
+  <!-- Twitter / X Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{% if page_title %}{{ page_title }} | {% endif %}{% if current_lang == 'ar' %}{{ site_settings.clinic_name_ar }}{% else %}{{ site_settings.clinic_name_en }}{% endif %}">
+  <meta name="twitter:description" content="{% if meta_desc %}{{ meta_desc }}{% else %}{% if current_lang == 'ar' %}{{ site_settings.meta_description_ar }}{% else %}{{ site_settings.meta_description_en }}{% endif %}{% endif %}">
+  <meta name="twitter:image" content="{% if site_settings.logo %}{{ request.scheme }}://{{ request.get_host }}{{ site_settings.logo.url }}{% else %}{{ request.scheme }}://{{ request.get_host }}{% static 'img/clinic_logo.jpg' %}{% endif %}">
+  <meta name="twitter:url" content="{{ request.build_absolute_uri }}">
+
+  <!-- Mobile In-App Browsers, WebViews & Device Capabilities -->
+  <meta name="format-detection" content="telephone=yes, address=yes, email=yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="{% if current_lang == 'ar' %}{{ site_settings.clinic_name_ar }}{% else %}{{ site_settings.clinic_name_en }}{% endif %}">
+  <meta name="theme-color" content="#1D70B8">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="{% if site_settings.favicon %}{{ site_settings.favicon.url }}{% else %}{% static 'img/clinic_logo.jpg' %}{% endif %}">
+  <link rel="apple-touch-icon" href="{% if site_settings.logo %}{{ site_settings.logo.url }}{% else %}{% static 'img/clinic_logo.jpg' %}{% endif %}">
+
+  <!-- Google Fonts: Cairo, Tajawal (Arabic), Inter, Playfair Display (Luxury Editorial) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Tajawal:wght@400;500;700;800&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5 CSS (RTL/LTR Dynamic) -->
+  {% if is_rtl %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css">
+  {% else %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  {% endif %}
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Custom Medical Theme -->
+  <link rel="stylesheet" href="{% static 'css/medical_theme.css' %}">
+
+  {% block schema_markup %}
+    {% if schema_markup %}{{ schema_markup }}{% endif %}
+  {% endblock %}
+
+  {% block extra_css %}{% endblock %}
+</head>
+<body class="{% if current_lang == 'en' %}lang-en{% endif %}">
+
+  {% include 'partials/navbar.html' %}
+  {% include 'partials/messages.html' %}
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  {% include 'partials/footer.html' %}
+
+  <!-- Floating WhatsApp Quick Connect Button -->
+  <a href="https://wa.me/967783517733" 
+     target="_blank" 
+     rel="noopener noreferrer" 
+     class="floating-whatsapp-btn shadow-lg" 
+     title="{% if current_lang == 'ar' %}تواصل فوري عبر واتساب{% else %}Chat via WhatsApp{% endif %}"
+     aria-label="WhatsApp">
+    <i class="bi bi-whatsapp"></i>
+    <span class="floating-whatsapp-text d-none d-sm-inline ms-1 me-1">{% if current_lang == 'ar' %}واتساب العيادة{% else %}WhatsApp{% endif %}</span>
+  </a>
+
+  <!-- Bootstrap 5 Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>
+

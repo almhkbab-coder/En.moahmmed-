@@ -1,0 +1,224 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html lang="{{ current_lang }}" dir="{% if is_rtl %}rtl{% else %}ltr{% endif %}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page_title }} | لوحة التحكم - عيادة الصياد | جراحة العظام والمفاصل</title>
+
+  <!-- Google Fonts: Cairo, Tajawal & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5 CSS (RTL/LTR Dynamic) -->
+  {% if is_rtl %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css">
+  {% else %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  {% endif %}
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Custom Medical Theme -->
+  <link rel="stylesheet" href="{% static 'css/medical_theme.css' %}">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  {% block extra_css %}{% endblock %}
+</head>
+<body class="bg-light {% if current_lang == 'en' %}lang-en{% endif %}">
+
+  <div class="saas-dashboard-wrapper">
+    <!-- Clean White SaaS Sidebar (Matching Image 3) -->
+    <aside class="saas-sidebar">
+      <!-- Brand Header -->
+      <div class="saas-sidebar-brand">
+        <img src="{% if site_settings.logo %}{{ site_settings.logo.url }}{% else %}{% static 'img/clinic_logo.jpg' %}{% endif %}" alt="شعار عيادة الصياد" class="rounded-circle shadow-sm bg-white p-1 flex-shrink-0" style="width: 50px; height: 50px; min-width: 50px; object-fit: contain; border: 2px solid #E2E8F0;">
+        <div>
+          <div class="fw-bold fs-6 text-navy lh-1 mb-1">{% if current_lang == 'ar' %}عيادة الصياد{% else %}Al-Sayyad Clinic{% endif %}</div>
+          <div class="text-muted" style="font-size: 0.72rem;">{% if current_lang == 'ar' %}جراحة العظام والمفاصل{% else %}Orthopaedic Practice{% endif %}</div>
+        </div>
+      </div>
+
+      <!-- Quick Search Bar inside Sidebar (⌘K) -->
+      <div class="saas-sidebar-search">
+        <div class="d-flex align-items-center gap-2">
+          <i class="bi bi-search"></i>
+          <span>{% if current_lang == 'ar' %}بحث سريع...{% else %}Search{% endif %}</span>
+        </div>
+        <kbd class="bg-white border rounded px-1 text-muted small" style="font-size: 0.68rem;">⌘K</kbd>
+      </div>
+
+      <!-- Navigation Menu Groups -->
+      <nav class="flex-grow-1 overflow-auto pe-1">
+        <div class="saas-menu-heading">{% if current_lang == 'ar' %}القائمة الرئيسية{% else %}Menu{% endif %}</div>
+
+        <!-- 1. Dashboard -->
+        <a class="saas-nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}" href="{% url 'dashboard:index' %}">
+          <i class="bi bi-grid-fill"></i>
+          <span class="flex-grow-1">{% if current_lang == 'ar' %}لوحة الإحصائيات{% else %}Dashboard{% endif %}</span>
+          {% if request.resolver_match.url_name == 'index' %}<i class="bi bi-chevron-{% if is_rtl %}left{% else %}right{% endif %} small text-primary"></i>{% endif %}
+        </a>
+
+        <!-- 2. Doctors -->
+        <a class="saas-nav-link {% if 'doctor_profile' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'dashboard:doctor_profile' %}">
+          <i class="bi bi-person-badge"></i>
+          <span class="flex-grow-1">{% if current_lang == 'ar' %}ملف الطبيب{% else %}Doctors{% endif %}</span>
+        </a>
+
+        <!-- 3. Patient -->
+        <a class="saas-nav-link {% if 'patient' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'dashboard:patients_list' %}">
+          <i class="bi bi-person-lines-fill"></i>
+          <span class="flex-grow-1">{% if current_lang == 'ar' %}سجل المرضى{% else %}Patient{% endif %}</span>
+        </a>
+
+        <!-- 4. Appointment -->
+        <a class="saas-nav-link {% if 'appointment' in request.resolver_match.url_name and 'calendar' not in request.resolver_match.url_name %}active{% endif %}" href="{% url 'dashboard:appointments_list' %}">
+          <i class="bi bi-calendar-check"></i>
+          <span class="flex-grow-1">{% if current_lang == 'ar' %}إدارة المواعيد{% else %}Appointment{% endif %}</span>
+          {% if pending_appointments_count %}
+            <span class="badge rounded-pill bg-danger" style="font-size: 0.7rem;">{{ pending_appointments_count }}</span>
+          {% endif %}
+        </a>
+
+        <!-- 5. Departments / Services -->
+        <a class="saas-nav-link {% if 'service' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'dashboard:services_list' %}">
+          <i class="bi bi-hospital"></i>
+          <span class="flex-grow-1">{% if current_lang == 'ar' %}الخدمات والعمليات{% else %}Departments{% endif %}</span>
+        </a>
+
+        <!-- 6. Analytics & Reports -->
+        <a class="saas-nav-link {% if 'calendar' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'dashboard:appointments_calendar' %}">
+          <i class="bi bi-graph-up-arrow"></i>
+          <span class="flex-grow-1">{% if current_lang == 'ar' %}التقويم والتقارير{% else %}Analytics &amp; Reports{% endif %}</span>
+        </a>
+
+        <!-- 7. Billing & Inquiries -->
+        <a class="saas-nav-link {% if 'messages' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'dashboard:contact_messages' %}">
+          <i class="bi bi-chat-left-text"></i>
+          <span class="flex-grow-1">{% if current_lang == 'ar' %}استفسارات الموقع{% else %}Billing &amp; Messages{% endif %}</span>
+        </a>
+
+        <div class="saas-menu-heading mt-3">{% if current_lang == 'ar' %}الإدارة والإعدادات{% else %}Other Menu{% endif %}</div>
+
+        <!-- 8. Staff / Audit -->
+        <a class="saas-nav-link {% if 'activity_logs' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'dashboard:activity_logs' %}">
+          <i class="bi bi-shield-check"></i>
+          <span class="flex-grow-1">{% if current_lang == 'ar' %}سجلات الأمان والرقابة{% else %}Staff &amp; Audit Logs{% endif %}</span>
+        </a>
+
+        <!-- 9. Education Management -->
+        <a class="saas-nav-link {% if 'education' in request.resolver_match.url_name or 'video' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'dashboard:education_series_list' %}">
+          <i class="bi bi-play-circle"></i>
+          <span class="flex-grow-1">{% if current_lang == 'ar' %}المحتوى المرئي{% else %}Education Series{% endif %}</span>
+        </a>
+
+        <!-- 10. Articles Management -->
+        <a class="saas-nav-link {% if 'article' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'dashboard:articles_list' %}">
+          <i class="bi bi-journal-medical"></i>
+          <span class="flex-grow-1">{% if current_lang == 'ar' %}المدونة الطبية{% else %}Medical Articles{% endif %}</span>
+        </a>
+
+        <!-- 11. Setting -->
+        <a class="saas-nav-link {% if 'site_settings' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'dashboard:site_settings' %}">
+          <i class="bi bi-gear"></i>
+          <span class="flex-grow-1">{% if current_lang == 'ar' %}إعدادات العيادة{% else %}Setting{% endif %}</span>
+        </a>
+
+        <!-- 12. Django Admin Panel -->
+        <a class="saas-nav-link" href="/admin/" target="_blank">
+          <i class="bi bi-person-lock"></i>
+          <span class="flex-grow-1">{% if current_lang == 'ar' %}لوحة دجانغو الكاملة{% else %}Admin Panel{% endif %}</span>
+          <i class="bi bi-box-arrow-up-right small text-muted"></i>
+        </a>
+      </nav>
+
+      <!-- Sidebar Bottom Action -->
+      <div class="pt-3 border-top mt-auto">
+        <a href="{% url 'public:home' %}" target="_blank" class="saas-nav-link py-2 mb-2 text-decoration-none">
+          <i class="bi bi-arrow-up-right-circle text-primary"></i>
+          <span>{% if current_lang == 'ar' %}عرض الموقع العام{% else %}Public Website{% endif %}</span>
+        </a>
+        <a href="{% url 'dashboard:logout' %}" class="saas-nav-link py-2 text-danger text-decoration-none">
+          <i class="bi bi-box-arrow-right text-danger"></i>
+          <span>{% if current_lang == 'ar' %}تسجيل الخروج{% else %}Log Out{% endif %}</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main SaaS Content Area -->
+    <div class="saas-main-area">
+      <!-- Modern Topbar (Matching Image 3) -->
+      <header class="saas-topbar">
+        <!-- Search Bar Pill in Center -->
+        <div class="d-none d-md-flex align-items-center bg-light border rounded-pill px-3 py-1" style="width: 320px;">
+          <i class="bi bi-search text-muted me-2 ms-2"></i>
+          <input type="text" class="form-control form-control-sm border-0 bg-transparent shadow-none" placeholder="{% if current_lang == 'ar' %}بحث في المواعيد أو المرضى...{% else %}Search appointments, patients...{% endif %}">
+        </div>
+
+        <div class="d-md-none fw-bold text-navy">
+          {{ page_title }}
+        </div>
+
+        <!-- Right Side Icons & Profile Pill (Matching Image 3) -->
+        <div class="d-flex align-items-center gap-3">
+          <!-- Direct Patient Booking Screen Button -->
+          <a href="{% url 'public:booking' %}" target="_blank" class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-semibold d-none d-sm-inline-flex align-items-center gap-1">
+            <i class="bi bi-plus-circle"></i>
+            <span>{% if current_lang == 'ar' %}حجز مريض جديد{% else %}New Booking{% endif %}</span>
+          </a>
+
+          <!-- Notification Bell -->
+          <a href="{% url 'dashboard:appointments_list' %}?status=pending" class="rounded-circle p-2 bg-light text-muted position-relative text-decoration-none d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+            <i class="bi bi-bell"></i>
+            {% if pending_appointments_count %}
+              <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+            {% endif %}
+          </a>
+
+          <!-- Inquiries Envelope -->
+          <a href="{% url 'dashboard:contact_messages' %}" class="rounded-circle p-2 bg-light text-muted text-decoration-none d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+            <i class="bi bi-envelope"></i>
+          </a>
+
+          <!-- User Profile Chip (Matching Sullivan / Doctor in Image 3) -->
+          <div class="d-flex align-items-center gap-2 ps-2 border-start">
+            <img src="{% static 'img/dr_mohammed_alsayyad.jpg' %}" alt="User Avatar" class="rounded-circle object-fit-cover shadow-sm" style="width: 40px; height: 40px; border: 2px solid #E2E8F0;">
+            <div class="d-none d-lg-block text-start" style="line-height: 1.2;">
+              <div class="fw-bold text-navy small">{% if current_lang == 'ar' %}د. محمد الصياد{% else %}Dr. Mohammed{% endif %}</div>
+              <div class="text-muted" style="font-size: 0.72rem;">{% if current_lang == 'ar' %}جراحة العظام والمفاصل{% else %}Orthopaedic Consultant{% endif %}</div>
+            </div>
+            <a href="{% url 'dashboard:site_settings' %}" class="text-muted text-decoration-none ms-1">
+              <i class="bi bi-gear fs-6"></i>
+            </a>
+          </div>
+        </div>
+      </header>
+
+      <!-- Alert Messages -->
+      {% if messages %}
+        <div class="px-4 pt-3 pb-0">
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show shadow-sm mb-2 rounded-3" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <!-- Content Container -->
+      <main class="p-4 flex-grow-1">
+        {% block dashboard_content %}{% endblock %}
+      </main>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,122 @@
+{% load i18n static %}
+
+{% if app_list %}
+  <div class="admin-apps-container">
+    {% for app in app_list %}
+      <div class="admin-app-card module app-{{ app.app_label }}{% if app.app_url in request.path|urlencode %} current-app{% endif %}">
+        <div class="admin-app-header">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span class="admin-app-icon">
+              {% if app.app_label == 'appointments' %}
+                <i class="bi bi-calendar-check"></i>
+              {% elif app.app_label == 'patients' %}
+                <i class="bi bi-person-lines-fill"></i>
+              {% elif app.app_label == 'doctors' %}
+                <i class="bi bi-person-badge"></i>
+              {% elif app.app_label == 'services' %}
+                <i class="bi bi-hospital"></i>
+              {% elif app.app_label == 'clinics' %}
+                <i class="bi bi-building"></i>
+              {% elif app.app_label == 'education' %}
+                <i class="bi bi-play-circle"></i>
+              {% elif app.app_label == 'blog' %}
+                <i class="bi bi-journal-medical"></i>
+              {% elif app.app_label == 'contact' %}
+                <i class="bi bi-chat-left-text"></i>
+              {% elif app.app_label == 'core' %}
+                <i class="bi bi-gear"></i>
+              {% elif app.app_label == 'auth' or app.app_label == 'accounts' %}
+                <i class="bi bi-shield-lock"></i>
+              {% else %}
+                <i class="bi bi-folder2-open"></i>
+              {% endif %}
+            </span>
+            <a href="{{ app.app_url }}" class="section-title" title="{% blocktranslate with name=app.name %}Models in the {{ name }} application{% endblocktranslate %}">{{ app.name }}</a>
+          </div>
+          <span class="badge-count">{{ app.models|length }} {% translate 'Models' %}</span>
+        </div>
+
+        <div class="admin-models-list">
+          {% for model in app.models %}
+            {% with model_name=model.object_name|lower %}
+              <div class="admin-model-row model-{{ model_name }}{% if model.admin_url in request.path|urlencode %} current-model{% endif %}">
+                <div class="admin-model-title" style="display: flex; align-items: center; gap: 8px;">
+                  <span class="model-mini-icon">
+                    {% if 'appointment' in model_name %}
+                      <i class="bi bi-calendar2-event text-primary"></i>
+                    {% elif 'patient' in model_name %}
+                      <i class="bi bi-person-heart text-success"></i>
+                    {% elif 'service' in model_name %}
+                      <i class="bi bi-heart-pulse text-danger"></i>
+                    {% elif 'category' in model_name %}
+                      <i class="bi bi-grid-3x3-gap text-secondary"></i>
+                    {% elif 'doctor' in model_name %}
+                      <i class="bi bi-person-vcard text-primary"></i>
+                    {% elif 'video' in model_name %}
+                      <i class="bi bi-film text-danger"></i>
+                    {% elif 'series' in model_name %}
+                      <i class="bi bi-collection-play text-primary"></i>
+                    {% elif 'article' in model_name %}
+                      <i class="bi bi-newspaper text-info"></i>
+                    {% elif 'tag' in model_name %}
+                      <i class="bi bi-tag text-muted"></i>
+                    {% elif 'branch' in model_name %}
+                      <i class="bi bi-geo-alt text-danger"></i>
+                    {% elif 'clinic' in model_name %}
+                      <i class="bi bi-hospital text-primary"></i>
+                    {% elif 'working' in model_name or 'hour' in model_name %}
+                      <i class="bi bi-clock-history text-success"></i>
+                    {% elif 'holiday' in model_name %}
+                      <i class="bi bi-calendar-x text-warning"></i>
+                    {% elif 'contact' in model_name or 'message' in model_name %}
+                      <i class="bi bi-envelope-paper text-primary"></i>
+                    {% elif 'setting' in model_name %}
+                      <i class="bi bi-sliders text-secondary"></i>
+                    {% elif 'log' in model_name %}
+                      <i class="bi bi-shield-check text-info"></i>
+                    {% elif 'user' in model_name %}
+                      <i class="bi bi-person-gear text-dark"></i>
+                    {% elif 'group' in model_name %}
+                      <i class="bi bi-people text-secondary"></i>
+                    {% else %}
+                      <i class="bi bi-file-earmark-medical text-muted"></i>
+                    {% endif %}
+                  </span>
+                  {% if model.admin_url %}
+                    <a href="{{ model.admin_url }}"{% if model.admin_url in request.path|urlencode %} aria-current="page"{% endif %}>
+                      {{ model.name }}
+                    </a>
+                  {% else %}
+                    <span>{{ model.name }}</span>
+                  {% endif %}
+                </div>
+
+                <div class="admin-model-actions">
+                  {% if model.add_url %}
+                    <a href="{{ model.add_url }}" class="admin-btn-action btn-add" title="{% translate 'Add' %}">
+                      <i class="bi bi-plus-lg"></i>
+                      <span>{% translate 'Add' %}</span>
+                    </a>
+                  {% endif %}
+
+                  {% if model.admin_url and show_changelinks %}
+                    <a href="{{ model.admin_url }}" class="admin-btn-action btn-change" title="{% translate 'Change' %}">
+                      <i class="bi bi-pencil-square"></i>
+                      <span>{% if model.view_only %}{% translate 'View' %}{% else %}{% translate 'Change' %}{% endif %}</span>
+                    </a>
+                  {% endif %}
+                </div>
+              </div>
+            {% endwith %}
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="p-4 bg-white rounded-4 border text-center text-muted">
+    <i class="bi bi-shield-x fs-1 mb-2"></i>
+    <p>{% translate 'You don’t have permission to view or edit anything.' %}</p>
+  </div>
+{% endif %}
+

@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+<!-- Breadcrumb Header -->
+<div class="py-4 bg-white border-bottom">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0 small">
+        <li class="breadcrumb-item"><a href="{% url 'public:home' %}" class="text-decoration-none">{% if current_lang == 'ar' %}الرئيسية{% else %}Home{% endif %}</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'public:services' %}" class="text-decoration-none">{% if current_lang == 'ar' %}الخدمات الطبية{% else %}Specialties{% endif %}</a></li>
+        <li class="breadcrumb-item active text-navy fw-semibold" aria-current="page">{% if current_lang == 'ar' %}{{ service.title_ar }}{% else %}{{ service.title_en }}{% endif %}</li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
+<div class="py-5" style="background-color: var(--bg-light);">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-8">
+        <div class="bg-white p-4 p-md-5 rounded-4 border shadow-sm">
+          <!-- Featured Image Display if available -->
+          {% if service.featured_image %}
+            <div class="rounded-4 overflow-hidden mb-4 shadow-sm border text-center bg-light" style="max-height: 380px;">
+              <img src="{{ service.featured_image.url }}" alt="{% if current_lang == 'ar' %}{{ service.title_ar }}{% else %}{{ service.title_en }}{% endif %}" class="img-fluid w-100" style="max-height: 380px; object-fit: contain;">
+            </div>
+          {% endif %}
+
+          <div class="d-flex align-items-center gap-3 mb-4">
+            <div class="service-icon-wrapper mb-0" style="width: 60px; height: 60px; font-size: 1.8rem; background: var(--medical-blue-light); color: var(--medical-blue-accent);">
+              <i class="bi {{ service.icon }}"></i>
+            </div>
+            <div>
+              <span class="badge bg-primary text-white px-3 py-1 rounded-pill small">
+                {% if current_lang == 'ar' %}{{ service.category.name_ar|default:"جراحة العظام والمفاصل" }}{% else %}{{ service.category.name_en|default:"Orthopaedic Surgery" }}{% endif %}
+              </span>
+              <h1 class="h3 fw-bold text-navy mt-1 mb-0">
+                {% if current_lang == 'ar' %}{{ service.title_ar }}{% else %}{{ service.title_en }}{% endif %}
+              </h1>
+            </div>
+          </div>
+
+          <div class="lead text-muted mb-4 fs-6 lh-lg">
+            {% if current_lang == 'ar' %}{{ service.short_desc_ar }}{% else %}{{ service.short_desc_en }}{% endif %}
+          </div>
+
+          <hr class="my-4">
+
+          <h2 class="h4 fw-bold text-navy mb-3">
+            {% if current_lang == 'ar' %}تفاصيل الإجراء الجراحي والبروتوكول العلاجي{% else %}Surgical Technique & Treatment Protocol{% endif %}
+          </h2>
+          <div class="lh-lg text-dark mb-4" style="white-space: pre-line;">
+            {% if current_lang == 'ar' %}{{ service.full_desc_ar }}{% else %}{{ service.full_desc_en }}{% endif %}
+          </div>
+
+          <div class="p-4 rounded-4 border mt-5" style="background: linear-gradient(135deg, #f0f7fd 0%, #e2eef7 100%);">
+            <h3 class="h5 fw-bold text-navy mb-2">
+              {% if current_lang == 'ar' %}هل تعاني من أعراض مشابهة وتحتاج لتقييم استشاري؟{% else %}Do you require a clinical consultation for this condition?{% endif %}
+            </h3>
+            <p class="text-muted small mb-3">
+              {% if current_lang == 'ar' %}
+                يمكنك حجز موعد كشف مباشر مع الدكتور محمد الصياد في مركز الرازي الطبي بصنعاء لتقييم حالتك السريرية ووضع الخطة العلاجية الدقيقة.
+              {% else %}
+                Schedule a specialized consultation with Dr. Mohammed Al-Sayyad at Al-Razi Medical Center in Sana'a for accurate clinical evaluation.
+              {% endif %}
+            </p>
+            <a href="{% url 'public:booking' %}?service={{ service.id }}" class="btn btn-medical">
+              <i class="bi bi-calendar-check me-1 ms-1"></i> {% if current_lang == 'ar' %}طلب حجز موعد لهذه الخدمة{% else %}Book Procedure Consultation{% endif %}
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <!-- Quick Clinic Info Card -->
+        <div class="bg-white p-4 rounded-4 border shadow-sm mb-4">
+          <h3 class="h5 fw-bold text-navy mb-3">{% if current_lang == 'ar' %}معلومات العيادة والحجز{% else %}Practice & Booking Info{% endif %}</h3>
+          <ul class="list-unstyled small text-muted mb-4">
+            <li class="mb-3 d-flex align-items-center gap-2">
+              <i class="bi bi-telephone-fill text-primary fs-5"></i>
+              <div>
+                <span class="text-muted d-block" style="font-size: 0.72rem;">{% if current_lang == 'ar' %}الهاتف المعتمد{% else %}Phone Number{% endif %}</span>
+                <a href="tel:783517733" class="text-navy fw-bold text-decoration-none">783517733</a>
+              </div>
+            </li>
+            <li class="mb-3 d-flex align-items-center gap-2">
+              <i class="bi bi-whatsapp text-success fs-5"></i>
+              <div>
+                <span class="text-muted d-block" style="font-size: 0.72rem;">{% if current_lang == 'ar' %}المراسلة الفورية{% else %}WhatsApp{% endif %}</span>
+                <a href="https://wa.me/967783517733" target="_blank" class="text-success fw-bold text-decoration-none">+967 783517733</a>
+              </div>
+            </li>
+            <li class="mb-2 d-flex align-items-start gap-2">
+              <i class="bi bi-geo-alt-fill text-danger fs-5 mt-1"></i>
+              <div>
+                <span class="text-muted d-block" style="font-size: 0.72rem;">{% if current_lang == 'ar' %}المقر في صنعاء{% else %}Location{% endif %}</span>
+                <span class="text-dark">{% if current_lang == 'ar' %}{{ site_settings.address_ar }}{% else %}{{ site_settings.address_en }}{% endif %}</span>
+              </div>
+            </li>
+          </ul>
+          <a href="{% url 'public:booking' %}?service={{ service.id }}" class="btn btn-navy w-100">
+            <i class="bi bi-calendar-check me-1 ms-1"></i> {% if current_lang == 'ar' %}طلب حجز كشف{% else %}Book Consultation{% endif %}
+          </a>
+        </div>
+
+        <!-- Related Services -->
+        {% if related_services %}
+          <div class="bg-white p-4 rounded-4 border shadow-sm">
+            <h3 class="h5 fw-bold text-navy mb-3">{% if current_lang == 'ar' %}خدمات وجراحات ذات صلة{% else %}Related Specialties{% endif %}</h3>
+            <div class="d-flex flex-column gap-3">
+              {% for rel in related_services %}
+                <a href="{{ rel.get_absolute_url }}" class="d-flex align-items-center gap-3 text-dark p-2 rounded hover-bg-light text-decoration-none border-bottom pb-2">
+                  <div class="service-icon-wrapper mb-0" style="width: 42px; height: 42px; font-size: 1.25rem;">
+                    <i class="bi {{ rel.icon }}"></i>
+                  </div>
+                  <div>
+                    <div class="fw-bold small text-navy">{% if current_lang == 'ar' %}{{ rel.title_ar }}{% else %}{{ rel.title_en }}{% endif %}</div>
+                  </div>
+                </a>
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

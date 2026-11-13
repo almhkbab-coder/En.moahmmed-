@@ -1,0 +1,78 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load static i18n %}
+
+{% block dashboard_content %}
+<div class="row justify-content-center">
+  <div class="col-lg-10">
+    <div class="card border-0 rounded-4 shadow-sm bg-white p-4 p-md-5">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label small fw-semibold">عنوان المقال (عربي) *</label>
+            {{ form.title_ar }}
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label small fw-semibold">عنوان المقال (إنجليزي) *</label>
+            {{ form.title_en }}
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label small fw-semibold">التصنيف الطبي</label>
+            {{ form.category }}
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label small fw-semibold">الرابط اللطيف (Slug)</label>
+            {{ form.slug }}
+          </div>
+
+          <div class="col-12">
+            <label class="form-label small fw-semibold">الموجز أو المقدمة (عربي) *</label>
+            {{ form.excerpt_ar }}
+          </div>
+
+          <div class="col-12">
+            <label class="form-label small fw-semibold">الموجز أو المقدمة (إنجليزي) *</label>
+            {{ form.excerpt_en }}
+          </div>
+
+          <div class="col-12">
+            <label class="form-label small fw-semibold">المحتوى الكامل للمقال (عربي) *</label>
+            {{ form.content_ar }}
+          </div>
+
+          <div class="col-12">
+            <label class="form-label small fw-semibold">المحتوى الكامل للمقال (إنجليزي) *</label>
+            {{ form.content_en }}
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label small fw-semibold">تاريخ النشر المجدول</label>
+            {{ form.published_at }}
+          </div>
+
+          <div class="col-md-6 d-flex align-items-center mt-4">
+            <div class="form-check form-switch">
+              {{ form.is_published }}
+              <label class="form-check-label small fw-semibold">نشر المقال فوراً</label>
+            </div>
+          </div>
+
+          <div class="col-12 mt-4 pt-3 border-top d-flex gap-2">
+            <button type="submit" class="btn btn-medical px-4">
+              <i class="bi bi-save me-1"></i> حفظ المقال
+            </button>
+            <a href="{% url 'dashboard:articles_list' %}" class="btn btn-light border px-4">
+              إلغاء
+            </a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

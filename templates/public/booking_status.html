@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="py-5 bg-white border-bottom">
+  <div class="container text-center max-w-700">
+    <span class="badge bg-medical-subtle text-primary px-3 py-2 rounded-pill fw-bold mb-2">
+      {% if current_lang == 'ar' %}الاستعلام المباشر الآمن{% else %}Secure Online Lookup{% endif %}
+    </span>
+    <h1 class="display-6 fw-bold text-navy mb-3">
+      {% if current_lang == 'ar' %}متابعة حالة حجز الموعد{% else %}Track Appointment Status{% endif %}
+    </h1>
+    <p class="text-muted">
+      {% if current_lang == 'ar' %}
+        لحماية خصوصية بيانات المرضى، يلزم إدخال رمز الحجز المرجعي ورقم الهاتف المسجل معاً للاستعلام عن الموعد.
+      {% else %}
+        To protect patient privacy, please enter your booking reference code and registered phone number together to query your appointment.
+      {% endif %}
+    </p>
+  </div>
+</div>
+
+<div class="py-5" style="background-color: var(--bg-light);">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-7">
+        
+        <!-- Search Card -->
+        <div class="bg-white p-4 p-md-5 rounded-4 border shadow-sm mb-4">
+          <form method="get" class="row g-3">
+            <div class="col-md-6">
+              <label for="refInput" class="form-label fw-semibold">
+                {% if current_lang == 'ar' %}رمز الحجز المرجعي *{% else %}Booking Reference Code *{% endif %}
+              </label>
+              <input type="text" name="ref" id="refInput" value="{{ query_ref }}" class="form-control" placeholder="APT-XXXXXXXX" required minlength="8">
+              <div class="form-text small text-muted">
+                {% if current_lang == 'ar' %}رمز الحجز المكون من 8 خانات فأكثر{% else %}Reference code with 8 or more characters{% endif %}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="phoneInput" class="form-label fw-semibold">
+                {% if current_lang == 'ar' %}رقم هاتف المريض المسجل *{% else %}Registered Patient Phone *{% endif %}
+              </label>
+              <input type="tel" name="phone" id="phoneInput" value="{{ query_phone }}" class="form-control" placeholder="777000000" required>
+              <div class="form-text small text-muted">
+                {% if current_lang == 'ar' %}رقم الهاتف المستخدم أثناء الحجز{% else %}Phone number used during booking{% endif %}
+              </div>
+            </div>
+            <div class="col-12 mt-4">
+              <button type="submit" class="btn btn-navy w-100 py-3 fw-bold">
+                <i class="bi bi-search me-1 ms-1"></i>
+                {% if current_lang == 'ar' %}بحث آمن عن الموعد{% else %}Securely Lookup Appointment{% endif %}
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Result -->
+        {% if searched %}
+          {% if appointment %}
+            <div class="bg-white p-4 rounded-4 border shadow-sm">
+              <div class="d-flex align-items-center justify-content-between border-bottom pb-3 mb-3">
+                <div>
+                  <div class="text-muted small">{% if current_lang == 'ar' %}رمز الحجز:{% else %}Booking Ref:{% endif %}</div>
+                  <div class="fw-bold fs-5 text-navy">{{ appointment.booking_reference }}</div>
+                </div>
+                <div>
+                  <span class="badge {{ appointment.status_badge_class }} fs-6 px-3 py-2">
+                    {% if current_lang == 'ar' %}
+                      {{ appointment.get_status_display }}
+                    {% else %}
+                      {% if appointment.status == 'pending' %}Pending Review{% elif appointment.status == 'confirmed' %}Confirmed{% elif appointment.status == 'cancelled' %}Cancelled{% else %}Completed{% endif %}
+                    {% endif %}
+                  </span>
+                </div>
+              </div>
+
+              <div class="row g-3 small">
+                <div class="col-6 text-muted">{% if current_lang == 'ar' %}اسم المريض (مشفر للخصوصية):{% else %}Patient Name (Masked for Privacy):{% endif %}</div>
+                <div class="col-6 fw-bold text-end">{{ masked_name }}</div>
+
+                <div class="col-6 text-muted">{% if current_lang == 'ar' %}تاريخ الموعد:{% else %}Appointment Date:{% endif %}</div>
+                <div class="col-6 fw-bold text-end">{{ appointment.appointment_date|date:"Y-m-d" }}</div>
+
+                <div class="col-6 text-muted">{% if current_lang == 'ar' %}وقت الموعد:{% else %}Appointment Time Slot:{% endif %}</div>
+                <div class="col-6 fw-bold text-end">{{ appointment.appointment_time }}</div>
+
+                <div class="col-6 text-muted">{% if current_lang == 'ar' %}الفرع:{% else %}Branch Location:{% endif %}</div>
+                <div class="col-6 fw-bold text-end">{% if current_lang == 'ar' %}{{ appointment.branch.name_ar }}{% else %}{{ appointment.branch.name_en }}{% endif %}</div>
+
+                {% if appointment.service %}
+                  <div class="col-6 text-muted">{% if current_lang == 'ar' %}الخدمة المطلوبة:{% else %}Requested Specialty:{% endif %}</div>
+                  <div class="col-6 fw-bold text-end">{% if current_lang == 'ar' %}{{ appointment.service.title_ar }}{% else %}{{ appointment.service.title_en }}{% endif %}</div>
+                {% endif %}
+              </div>
+
+              <div class="alert alert-light border mt-4 mb-0 small text-muted d-flex align-items-center gap-2">
+                <i class="bi bi-shield-lock-fill text-success"></i>
+                <span>
+                  {% if current_lang == 'ar' %}
+                    تم حجب البيانات الشخصية الحساسة وملاحظات الطاقم الداخلي وفقاً لسياسات خصوصية وأمان المرضى.
+                  {% else %}
+                    Sensitive personal information and clinical notes are masked in accordance with healthcare privacy standards.
+                  {% endif %}
+                </span>
+              </div>
+            </div>
+          {% else %}
+            <div class="alert alert-warning border-0 rounded-4 p-4 text-center">
+              <i class="bi bi-exclamation-circle fs-1 text-warning d-block mb-2"></i>
+              <div class="fw-bold mb-1">
+                {% if current_lang == 'ar' %}لم يتم العثور على موعد مطابق{% else %}No Matching Appointment Found{% endif %}
+              </div>
+              <p class="small text-muted mb-0">
+                {% if current_lang == 'ar' %}
+                  يرجى التأكد من كتابة رمز الحجز ورقم الهاتف المسجل بشكل صحيح والمحاولة مجدداً.
+                {% else %}
+                  Please verify that the booking reference code and phone number are entered correctly and try again.
+                {% endif %}
+              </p>
+            </div>
+          {% endif %}
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

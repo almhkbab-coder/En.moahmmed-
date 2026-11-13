@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+<!-- Breadcrumb Header -->
+<div class="py-3 bg-white border-bottom">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0 small">
+        <li class="breadcrumb-item">
+          <a href="{% url 'public:home' %}" class="text-decoration-none text-muted">
+            <i class="bi bi-house-door me-1 ms-1"></i>{% if current_lang == 'ar' %}الرئيسية{% else %}Home{% endif %}
+          </a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="{% url 'public:about' %}" class="text-decoration-none text-muted">
+            {% if current_lang == 'ar' %}عن الدكتور{% else %}About Doctor{% endif %}
+          </a>
+        </li>
+        <li class="breadcrumb-item active text-navy fw-bold" aria-current="page">
+          {% if current_lang == 'ar' %}المؤهلات العلمية{% else %}Academic Qualifications{% endif %}
+        </li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
+<!-- Page Hero Section -->
+<section class="py-5 text-center" style="background: linear-gradient(135deg, #f8fbfd 0%, #edf4f8 100%); border-bottom: 1px solid var(--border-color);">
+  <div class="container py-lg-3">
+    <div class="max-w-800 mx-auto">
+      <div class="mb-3">
+        <span class="badge rounded-pill px-3 py-2 fw-bold text-primary shadow-sm" style="background-color: #E2F0FD; font-size: 0.85rem; border: 1px solid rgba(29, 112, 184, 0.25);">
+          {% if current_lang == 'ar' %}السجل الأكاديمي والزمالات السريرية الرسمية{% else %}Official Academic &amp; Fellowship Record{% endif %}
+        </span>
+      </div>
+
+      <h1 class="display-6 fw-bold mb-3" style="color: #0A223B; letter-spacing: -0.5px;">
+        {% if current_lang == 'ar' %}المؤهلات العلمية والدرجات التخصصية{% else %}Academic Qualifications &amp; Specializations{% endif %}
+      </h1>
+
+      <p class="fs-6 mb-4" style="color: #334155; line-height: 1.9; max-width: 720px; margin-left: auto; margin-right: auto;">
+        {% if current_lang == 'ar' %}
+          السجل العلمي والشهادات والزمالات الأكاديمية والجراحية المعتمدة للدكتور محمد الصياد الصادرة عن أرقى الجامعات والمجالس الطبية المرموقة.
+        {% else %}
+          The authoritative medical degrees, professorship, and clinical fellowships of Dr. Mohammed Al-Sayyad awarded by leading universities and surgical boards.
+        {% endif %}
+      </p>
+
+      <!-- Academic Summary Ribbon -->
+      <div class="row g-3 justify-content-center pt-2">
+        <div class="col-6 col-md-3">
+          <div class="academic-metric-pill">
+            <div class="fw-bold text-navy" style="font-size: 1.05rem;">{% if current_lang == 'ar' %}درجة الأستاذية{% else %}Professorship{% endif %}</div>
+            <div class="text-muted small">{% if current_lang == 'ar' %}جامعة صنعاء{% else %}Sana'a University{% endif %}</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="academic-metric-pill">
+            <div class="fw-bold text-navy" style="font-size: 1.05rem;">{% if current_lang == 'ar' %}دكتوراه الجراحة{% else %}Doctorate (Ph.D){% endif %}</div>
+            <div class="text-muted small">{% if current_lang == 'ar' %}جامعة القاهرة{% else %}Cairo University{% endif %}</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="academic-metric-pill">
+            <div class="fw-bold text-navy" style="font-size: 1.05rem;">{% if current_lang == 'ar' %}البورد العربي{% else %}Arab Board{% endif %}</div>
+            <div class="text-muted small">{% if current_lang == 'ar' %}بيروت{% else %}Beirut{% endif %}</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="academic-metric-pill">
+            <div class="fw-bold text-navy" style="font-size: 1.05rem;">{% if current_lang == 'ar' %}مدرب معتمد{% else %}Certified Trainer{% endif %}</div>
+            <div class="text-muted small">{% if current_lang == 'ar' %}الجامعة السويسرية{% else %}Swiss Orthopaedics{% endif %}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Official Qualifications Grid -->
+<section class="py-5" style="background-color: #F8FAFD;">
+  <div class="container py-lg-4">
+    <div class="text-center mb-5">
+      <span class="badge rounded-pill px-3 py-1 bg-white border text-muted small fw-bold mb-2">
+        {% if current_lang == 'ar' %}الدرجات الأكاديمية والزمالات{% else %}Academic Degrees &amp; Fellowships{% endif %}
+      </span>
+      <h2 class="h3 fw-bold mb-2" style="color: #0A223B;">
+        {% if current_lang == 'ar' %}المؤهلات والشهادات الطبية الرسمية{% else %}Official Medical Qualifications{% endif %}
+      </h2>
+      <div class="text-muted small">
+        {% if current_lang == 'ar' %}مؤهلات تخصصية معتمدة وفق أعلى معايير التدريب الجراحي والأكاديمي{% else %}Recognized surgical and academic credentials matching international standards{% endif %}
+      </div>
+    </div>
+
+    <!-- Structured Editorial Grid -->
+    <div class="row g-4 justify-content-center">
+      {% for qual in qualifications %}
+        <div class="col-md-6 col-lg-6">
+          <div class="qual-card">
+            <div>
+              <!-- Top Row: Number Monogram & Credential Category Ribbon -->
+              <div class="d-flex align-items-center justify-content-between mb-3">
+                <div class="qual-number-badge">
+                  0{{ forloop.counter }}
+                </div>
+                <span class="qual-tag">
+                  {% if forloop.counter == 1 %}
+                    {% if current_lang == 'ar' %}درجة الأستاذية الجامعية{% else %}University Professorship{% endif %}
+                  {% elif forloop.counter == 2 %}
+                    {% if current_lang == 'ar' %}درجة الدكتوراه التخصصية{% else %}Doctorate Degree (Ph.D){% endif %}
+                  {% elif forloop.counter == 3 %}
+                    {% if current_lang == 'ar' %}شهادة الاختصاص العالي{% else %}Higher Specialty Board{% endif %}
+                  {% elif forloop.counter == 4 %}
+                    {% if current_lang == 'ar' %}زمالة التخصص الدقيق{% else %}Clinical Fellowship{% endif %}
+                  {% else %}
+                    {% if current_lang == 'ar' %}زمالة الجراحة الروبوتية المتقدمة{% else %}Robotic Arthroplasty Fellowship{% endif %}
+                  {% endif %}
+                </span>
+              </div>
+
+              <!-- Degree Title -->
+              <h3 class="h5 fw-bold mb-3" style="color: #0A223B; line-height: 1.45;">
+                {% if current_lang == 'ar' %}{{ qual.degree_ar }}{% else %}{{ qual.degree_en }}{% endif %}
+              </h3>
+
+              <!-- Granting Institution & Country Badge -->
+              <div class="p-2 px-3 rounded-3 bg-light border d-inline-flex align-items-center gap-2 mb-3">
+                <span class="fw-bold" style="color: #1D70B8; font-size: 0.92rem;">
+                  {% if current_lang == 'ar' %}{{ qual.institution_ar }}{% else %}{{ qual.institution_en }}{% endif %}
+                </span>
+              </div>
+            </div>
+
+            <!-- Card Bottom: Verified Credential Stamp -->
+            <div class="pt-3 border-top mt-3 d-flex align-items-center justify-content-between text-muted small">
+              <span class="d-inline-flex align-items-center gap-1 text-success fw-bold" style="font-size: 0.82rem;">
+                <i class="bi bi-patch-check-fill"></i>
+                {% if current_lang == 'ar' %}مؤهل معتمد رسمياً{% else %}Officially Verified{% endif %}
+              </span>
+              <span class="text-muted" style="font-size: 0.8rem;">
+                {% if forloop.counter == 1 %}
+                  {% if current_lang == 'ar' %}كلية الطب – جامعة صنعاء{% else %}Faculty of Medicine{% endif %}
+                {% elif forloop.counter == 2 %}
+                  {% if current_lang == 'ar' %}جمهورية مصر العربية{% else %}Cairo, Egypt{% endif %}
+                {% elif forloop.counter == 3 %}
+                  {% if current_lang == 'ar' %}المجلس العربي للاختصاصات الصحية{% else %}Arab Board{% endif %}
+                {% elif forloop.counter == 4 %}
+                  {% if current_lang == 'ar' %}جامعة أسيوط – مصر{% else %}Assiut, Egypt{% endif %}
+                {% else %}
+                  {% if current_lang == 'ar' %}جراحة المفاصل بالروبوت{% else %}Robotic Surgery{% endif %}
+                {% endif %}
+              </span>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <div class="col-12 text-center text-muted py-5">
+          {% if current_lang == 'ar' %}لا توجد مؤهلات مسجلة حالياً.{% else %}No credentials recorded.{% endif %}
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Featured International Trainer Section -->
+    <div class="mt-5">
+      <div class="card border-0 rounded-4 shadow-sm p-4 p-md-5 bg-white border" style="border: 1px solid #E2E8F0 !important;">
+        <div class="row align-items-center g-4">
+          <!-- Doctor Conference Photo -->
+          <div class="col-lg-4 text-center">
+            <div class="position-relative d-inline-block">
+              <img src="{% static 'img/dr_conference.jpg' %}" alt="الدكتور محمد الصياد - مدرب الجامعة السويسرية لجراحة العظام" class="img-fluid rounded-4 shadow-sm" style="width: 100%; max-width: 320px; height: 380px; object-fit: cover; object-position: center top; border: 3px solid #EDF4F8;">
+              <div class="position-absolute shadow-sm bg-white py-1 px-3 rounded-pill border" style="bottom: -12px; left: 50%; transform: translateX(-50%); white-space: nowrap;">
+                <span class="text-navy fw-bold small">
+                  <i class="bi bi-award-fill text-warning me-1 ms-1"></i>
+                  {% if current_lang == 'ar' %}مدرب الجامعة السويسرية{% else %}Swiss Orthopaedics Trainer{% endif %}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Trainer Details & Mission -->
+          <div class="col-lg-8">
+            <div class="mb-2">
+              <span class="badge rounded-pill px-3 py-2 fw-bold text-success shadow-sm" style="background-color: #ECFDF5; font-size: 0.82rem; border: 1px solid rgba(16, 185, 129, 0.25);">
+                {% if current_lang == 'ar' %}الاعتماد والتدريب الجراحي الدولي{% else %}International Surgical Training Certification{% endif %}
+              </span>
+            </div>
+
+            <h3 class="h4 fw-bold mb-3" style="color: #0A223B; line-height: 1.4;">
+              {% if current_lang == 'ar' %}
+                المدرب المعتمد للجامعة السويسرية لجراحة العظام (Swiss Orthopaedics / AO)
+              {% else %}
+                Certified Trainer for the Swiss Orthopaedics University (AO MENA)
+              {% endif %}
+            </h3>
+
+            <p class="fs-6 mb-3" style="color: #1E293B; line-height: 2.0;">
+              {% if current_lang == 'ar' %}
+                يعمل الدكتور محمد الصياد مدرباً معتمداً للجامعة السويسرية لجراحة العظام في منطقة الشرق الأوسط وشمال أفريقيا (MENA)، حيث يشارك بانتظام في تدريب وتأهيل جراحي العظام ونقل أحدث الممارسات الجراحية والتقنيات العالمية المتطورة في التثبيت الداخلي للكسور المعقدة واستبدال المفاصل الصناعية.
+              {% else %}
+                Dr. Mohammed Al-Sayyad serves as an accredited trainer for the Swiss Orthopaedics University in the Middle East and North Africa (MENA), leading specialized workshops on complex fracture reconstruction and modern arthroplasty techniques.
+              {% endif %}
+            </p>
+
+            <div class="d-flex flex-wrap gap-2 pt-2">
+              <span class="badge bg-light text-navy border px-3 py-2 rounded-pill fw-bold" style="font-size: 0.82rem;">
+                {% if current_lang == 'ar' %}منطقة الشرق الأوسط وشمال أفريقيا (MENA){% else %}MENA Region{% endif %}
+              </span>
+              <span class="badge bg-light text-navy border px-3 py-2 rounded-pill fw-bold" style="font-size: 0.82rem;">
+                {% if current_lang == 'ar' %}تطوير الممارسات السريرية والجراحية{% else %}Advanced Clinical Standards{% endif %}
+              </span>
+              <span class="badge bg-light text-navy border px-3 py-2 rounded-pill fw-bold" style="font-size: 0.82rem;">
+                {% if current_lang == 'ar' %}التدريب العملي ونقل الخبرات الدولية{% else %}Hands-on Surgical Training{% endif %}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Booking CTA Card -->
+    <div class="mt-5">
+      <div class="card max-w-800 mx-auto border-0 rounded-4 shadow-sm p-4 p-md-5 text-center bg-white border" style="border: 1px solid #E2E8F0 !important;">
+        <h3 class="h4 fw-bold mb-2" style="color: #0A223B;">
+          {% if current_lang == 'ar' %}هل ترغب في استشارة جراحية متخصصة؟{% else %}Looking for a specialized clinical consultation?{% endif %}
+        </h3>
+        <p class="small mb-4" style="color: #475569; max-width: 580px; margin-left: auto; margin-right: auto; line-height: 1.8;">
+          {% if current_lang == 'ar' %}
+            احجز موعد كشف أو استشارة طبية مباشرة بإشراف الدكتور محمد الصياد في عيادات الرازي التخصصية بصنعاء.
+          {% else %}
+            Book an appointment or in-person surgical consultation with Dr. Mohammed Al-Sayyad at Al-Razi Clinics in Sana'a.
+          {% endif %}
+        </p>
+        <div class="d-flex flex-wrap justify-content-center gap-3">
+          <a href="{% url 'public:booking' %}" class="btn btn-medical px-4 py-2 fw-bold shadow-sm rounded-pill">
+            <i class="bi bi-calendar-check me-1 ms-1"></i>
+            {% if current_lang == 'ar' %}طلب حجز موعد كشف بالعيادة{% else %}Book Consultation Now{% endif %}
+          </a>
+          <a href="tel:783517733" class="btn btn-outline-navy px-4 py-2 fw-bold rounded-pill" style="border: 2px solid #0D2D4D; color: #0D2D4D;">
+            <i class="bi bi-telephone-fill me-1 ms-1 text-primary"></i>
+            <span>783517733</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{{ schema_markup }}
+{% endblock %}

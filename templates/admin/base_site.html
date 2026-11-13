@@ -1,0 +1,50 @@
+{% extends "admin/base.html" %}
+{% load i18n static %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:"لوحة إدارة عيادة الصياد" }}{% endblock %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <!-- Google Fonts: Cairo, Tajawal, Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
+  <!-- Custom Medical Admin Theme -->
+  <link rel="stylesheet" href="{% static 'css/custom_admin.css' %}">
+{% endblock %}
+
+{% block branding %}
+<div id="branding">
+  <div style="display: flex; align-items: center; gap: 14px;">
+    <a href="{% url 'admin:index' %}" style="display: flex; align-items: center; gap: 14px; text-decoration: none;">
+      <img src="{% static 'img/clinic_logo.jpg' %}" alt="شعار عيادة الصياد" class="clinic-admin-logo">
+      <div>
+        <div style="font-size: 1.15rem; font-weight: 800; color: #FFFFFF; line-height: 1.2;">
+          {{ site_header|default:"عيادة الصياد | جراحة العظام والمفاصل" }}
+        </div>
+        <div class="clinic-admin-subtitle" style="font-size: 0.72rem; color: #93C5FD; font-weight: 500;">
+          بوابة الإدارة الطبية الشاملة
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
+{% endblock %}
+
+{% block nav-global %}
+  <div style="display: flex; align-items: center; gap: 10px; margin-inline-start: auto; padding: 0 16px;">
+    <a href="/dashboard/" class="admin-header-pill dashboard-link" title="الذهاب للوحة إحصائيات وتحكم العيادة">
+      <i class="bi bi-grid-fill"></i>
+      <span>لوحة الإحصائيات (Dashboard)</span>
+    </a>
+    <a href="/" target="_blank" class="admin-header-pill" title="فتح الموقع العام للعيادة">
+      <i class="bi bi-globe2"></i>
+      <span>الموقع العام</span>
+    </a>
+  </div>
+{% endblock %}
+

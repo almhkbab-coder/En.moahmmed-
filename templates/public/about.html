@@ -1,0 +1,343 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+<!-- Breadcrumb Header -->
+<div class="py-3 bg-white border-bottom">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0 small">
+        <li class="breadcrumb-item">
+          <a href="{% url 'public:home' %}" class="text-decoration-none text-muted">
+            <i class="bi bi-house-door me-1 ms-1"></i>{% if current_lang == 'ar' %}الرئيسية{% else %}Home{% endif %}
+          </a>
+        </li>
+        <li class="breadcrumb-item active text-navy fw-bold" aria-current="page">
+          {% if current_lang == 'ar' %}عن الدكتور{% else %}About Doctor{% endif %}
+        </li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
+<!-- Doctor Hero Profile Header -->
+<section class="py-5" style="background: linear-gradient(135deg, #f8fbfd 0%, #edf4f8 100%); border-bottom: 1px solid var(--border-color);">
+  <div class="container py-lg-3">
+    <div class="row align-items-center g-5">
+      <!-- Doctor Presentation Photo in Academic Conference -->
+      <div class="col-lg-5 text-center">
+        <div class="position-relative d-inline-block">
+          <div class="doctor-photo-frame shadow-lg" style="border-radius: 28px; padding: 10px; background: linear-gradient(145deg, #0D2D4D 0%, #1D70B8 100%); max-width: 100%;">
+            <img src="{% static 'img/dr_conference.jpg' %}" alt="{{ doctor.name_ar }} - أستاذ جراحة العظام ومحاضر دولي" class="img-fluid" style="border-radius: 22px; width: 100%; max-width: 400px; height: 480px; object-fit: cover; object-position: center top; box-shadow: 0 8px 24px rgba(10,34,59,0.18);">
+            
+            <!-- Circular Clinic Logo Badge -->
+            <div class="position-absolute shadow-lg bg-white p-2 rounded-circle" style="top: -14px; {% if current_lang == 'ar' %}right: -14px;{% else %}left: -14px;{% endif %} width: 92px; height: 92px; z-index: 5; border: 2.5px solid rgba(40, 123, 168, 0.25);">
+              <img src="{% if site_settings.logo %}{{ site_settings.logo.url }}{% else %}{% static 'img/clinic_logo.jpg' %}{% endif %}" alt="شعار العيادة" style="width: 100%; height: 100%; object-fit: contain; border-radius: 50%;">
+            </div>
+
+            <!-- Floating Subtitle Pill -->
+            <div class="position-absolute shadow-sm bg-white py-2 px-3 rounded-pill border" style="bottom: -15px; left: 50%; transform: translateX(-50%); z-index: 6; white-space: nowrap;">
+              <span class="text-navy fw-bold small d-inline-flex align-items-center gap-1">
+                <i class="bi bi-patch-check-fill text-primary"></i>
+                {% if current_lang == 'ar' %}أستاذ جراحة العظام - جامعة صنعاء{% else %}Prof. of Orthopedic Surgery - Sana'a Univ.{% endif %}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Doctor Official Bio Overview -->
+      <div class="col-lg-7">
+        <div class="mb-2">
+          <span class="badge rounded-pill px-3 py-2 fw-bold text-primary shadow-sm" style="background-color: #E2F0FD; font-size: 0.85rem; border: 1px solid rgba(29, 112, 184, 0.25);">
+            <i class="bi bi-person-badge-fill me-1 ms-1"></i>
+            {% if current_lang == 'ar' %}السيرة الذاتية والمكانة الأكاديمية والسريرية{% else %}Professional &amp; Academic Biography{% endif %}
+          </span>
+        </div>
+
+        <h1 class="display-5 fw-bold mb-2 text-navy" style="color: #0A223B; letter-spacing: -0.5px;">
+          {% if current_lang == 'ar' %}{{ doctor.name_ar }}{% else %}{{ doctor.name_en }}{% endif %}
+        </h1>
+
+        <h2 class="h4 fw-bold mb-4" style="color: #1D70B8; line-height: 1.5;">
+          {% if current_lang == 'ar' %}{{ doctor.title_ar }}{% else %}{{ doctor.title_en }}{% endif %}
+        </h2>
+
+        <!-- Credential Badges -->
+        <div class="d-flex flex-wrap gap-2 mb-4">
+          <span class="badge bg-white text-navy border px-3 py-2 shadow-sm rounded-pill fw-bold" style="color: #0F172A; font-size: 0.84rem;">
+            <i class="bi bi-mortarboard-fill text-primary me-1 ms-1"></i>
+            {% if current_lang == 'ar' %}أستاذ جراحة العظام – كلية الطب، جامعة صنعاء{% else %}Professor of Orthopaedic Surgery – Sana'a University{% endif %}
+          </span>
+          <span class="badge bg-white text-navy border px-3 py-2 shadow-sm rounded-pill fw-bold" style="color: #0F172A; font-size: 0.84rem;">
+            <i class="bi bi-award-fill text-warning me-1 ms-1"></i>
+            {% if current_lang == 'ar' %}مدرب معتمد للجامعة السويسرية لجراحة العظام (MENA){% else %}Certified Trainer – Swiss Orthopaedics University{% endif %}
+          </span>
+          <span class="badge bg-white text-navy border px-3 py-2 shadow-sm rounded-pill fw-bold" style="color: #0F172A; font-size: 0.84rem;">
+            <i class="bi bi-cpu-fill text-success me-1 ms-1"></i>
+            {% if current_lang == 'ar' %}تقنيات المفاصل الصناعية المتقدمة والروبوت الجراحي{% else %}Robotic Arthroplasty Specialist{% endif %}
+          </span>
+        </div>
+
+        <!-- Action CTA Buttons -->
+        <div class="d-flex flex-wrap gap-3 pt-2">
+          <a href="{% url 'public:booking' %}" class="btn btn-medical btn-lg px-4 shadow-sm fw-bold">
+            <i class="bi bi-calendar-check me-1 ms-1"></i>
+            {% if current_lang == 'ar' %}طلب حجز موعد كشف بالعيادة{% else %}Book Consultation{% endif %}
+          </a>
+          <a href="{% url 'public:qualifications' %}" class="btn btn-outline-navy btn-lg px-4 fw-bold" style="border: 2px solid #0D2D4D; color: #0D2D4D;">
+            <i class="bi bi-file-earmark-medical me-1 ms-1"></i>
+            {% if current_lang == 'ar' %}استعراض المؤهلات العلمية{% else %}View Qualifications{% endif %}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Detailed Editorial Profile -->
+<section class="py-5 bg-white">
+  <div class="container py-lg-4">
+    <div class="row g-5">
+      <!-- Main Content Column -->
+      <div class="col-lg-8">
+        <!-- Biography Content Card -->
+        <article class="p-4 p-md-5 rounded-4 border bg-white shadow-sm mb-5">
+          <div class="d-flex align-items-center gap-3 border-bottom pb-3 mb-4">
+            <div class="rounded-circle d-flex align-items-center justify-content-center text-white flex-shrink-0" style="width: 46px; height: 46px; background: linear-gradient(135deg, #1D70B8, #0D2D4D);">
+              <i class="bi bi-person-lines-fill fs-5"></i>
+            </div>
+            <div>
+              <h2 class="h4 fw-bold text-navy mb-0" style="color: #0A223B;">
+                {% if current_lang == 'ar' %}النبذة التعريفية والمسيرة المهنية{% else %}Biography &amp; Professional Background{% endif %}
+              </h2>
+              <div class="text-muted small">
+                {% if current_lang == 'ar' %}الخبرة الأكاديمية والسريرية المعتمدة للدكتور محمد الصياد{% else %}Official Academic &amp; Clinical Biography{% endif %}
+              </div>
+            </div>
+          </div>
+
+          <!-- Crisp, Readable Bio Text -->
+          <div class="about-bio-text" style="color: #1E293B; font-size: 1.1rem; line-height: 2.05;">
+            <p class="mb-4">
+              <strong>الدكتور محمد الصياد</strong> استشاري جراحة العظام والكسور والحوض والمفاصل الصناعية، وأستاذ جراحة العظام بكلية الطب – جامعة صنعاء، يمتلك خلفية علمية وتخصصية متقدمة في مجال جراحة العظام، مع اهتمام خاص بجراحات استبدال المفاصل الصناعية للركبة والحوض، وتقنيات المفاصل الصناعية باستخدام الروبوت.
+            </p>
+
+            <p class="mb-4">
+              حصل الدكتور محمد الصياد على مؤهلات علمية وتخصصية من عدد من المؤسسات والجامعات الطبية، واكتسب خبرات متقدمة في جراحة العظام وجراحات المفاصل الصناعية، من خلال الدراسات العليا والزمالات والتدريب التخصصي داخل وخارج اليمن.
+            </p>
+
+            <p class="mb-4">
+              ويُعد من الأطباء اليمنيين الرواد في مجال التخصص الدقيق للمفاصل الصناعية، وخاصة مفاصل الركبة والحوض، ويسعى إلى توظيف أحدث التقنيات والأساليب الجراحية الحديثة لتقديم رعاية طبية متقدمة، والمساهمة في تحسين جودة حياة المرضى واستعادة قدرتهم على الحركة والنشاط.
+            </p>
+
+            <p class="mb-0">
+              كما يعمل مدرباً معتمداً للجامعة السويسرية لجراحة العظام في منطقة الشرق الأوسط وشمال أفريقيا، ويساهم في نقل الخبرات والمعرفة الطبية المتخصصة وتطوير الممارسات الجراحية الحديثة.
+            </p>
+          </div>
+        </article>
+
+        <!-- Dual Visual Presentation (Academic Leadership & Surgical Excellence) -->
+        <div class="card border-0 rounded-4 shadow-sm p-4 p-md-4 mb-5" style="background-color: #F8FAFD; border: 1px solid #E2E8F0 !important;">
+          <h2 class="h5 fw-bold text-navy mb-4 d-flex align-items-center gap-2" style="color: #0A223B;">
+            <i class="bi bi-camera-fill text-primary"></i>
+            {% if current_lang == 'ar' %}الريادة الأكاديمية والخبرة الجراحية المتقدمة{% else %}Academic Leadership &amp; Surgical Excellence{% endif %}
+          </h2>
+
+          <div class="row g-4 align-items-center">
+            <!-- Conference Photo -->
+            <div class="col-md-6">
+              <div class="bg-white p-3 rounded-4 border shadow-sm h-100 text-center">
+                <img src="{% static 'img/dr_conference.jpg' %}" alt="الدكتور محمد الصياد في المؤتمر الطبي" class="img-fluid rounded-3 mb-3" style="width: 100%; height: 260px; object-fit: cover; object-position: center top;">
+                <h3 class="h6 fw-bold text-navy mb-1" style="color: #0A223B;">
+                  {% if current_lang == 'ar' %}المحاضرات والمؤتمرات الطبية الدولية{% else %}International Medical Symposia{% endif %}
+                </h3>
+                <p class="text-muted small mb-0 lh-base">
+                  {% if current_lang == 'ar' %}
+                    مشاركات وبحوث سريرية ونقل أحدث الممارسات الجراحية كأستاذ بكلية الطب ومدرب معتمد.
+                  {% else %}
+                    Scientific lectures and presentation of modern surgical evidence at medical congresses.
+                  {% endif %}
+                </p>
+              </div>
+            </div>
+
+            <!-- Surgical Scrub Photo -->
+            <div class="col-md-6">
+              <div class="bg-white p-3 rounded-4 border shadow-sm h-100 text-center">
+                <img src="{% static 'img/dr_mohammed_alsayyad.jpg' %}" alt="الدكتور محمد الصياد في غرفة العمليات الجراحية" class="img-fluid rounded-3 mb-3" style="width: 100%; height: 260px; object-fit: cover; object-position: center top;">
+                <h3 class="h6 fw-bold text-navy mb-1" style="color: #0A223B;">
+                  {% if current_lang == 'ar' %}الممارسة السريرية والعمليات الجراحية{% else %}Clinical &amp; Surgical Practice{% endif %}
+                </h3>
+                <p class="text-muted small mb-0 lh-base">
+                  {% if current_lang == 'ar' %}
+                    إجراء العمليات التخصصية الدقيقة للكسور المعقدة واستبدال المفاصل الصناعية وفق أعلى المعايير.
+                  {% else %}
+                    Precision surgical interventions for complex trauma and joint replacement procedures.
+                  {% endif %}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Academic and Clinical Pillars -->
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="p-4 bg-white rounded-4 border shadow-sm h-100">
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="rounded-circle d-flex align-items-center justify-content-center text-white flex-shrink-0" style="width: 44px; height: 44px; background: linear-gradient(135deg, #10B981, #059669);">
+                  <i class="bi bi-building fs-5"></i>
+                </div>
+                <h3 class="h5 fw-bold text-navy mb-0" style="color: #0A223B;">
+                  {% if current_lang == 'ar' %}الدور الأكاديمي والجامعي{% else %}Academic &amp; University Role{% endif %}
+                </h3>
+              </div>
+              <p class="small lh-lg mb-0" style="color: #334155; font-size: 0.96rem;">
+                {% if current_lang == 'ar' %}
+                  أستاذ جراحة العظام بكلية الطب – جامعة صنعاء، يسهم في تأهيل وتدريب الكوادر الطبية الشابة ونقل المعرفة الجراحية المحدثة في جراحة العظام والحوض والمفاصل الصناعية والإشراف على أبحاث الدراسات العليا.
+                {% else %}
+                  Professor of Orthopaedic Surgery at Sana'a University Faculty of Medicine, training postgraduate orthopedic surgeons and supervising advanced clinical research.
+                {% endif %}
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="p-4 bg-white rounded-4 border shadow-sm h-100">
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="rounded-circle d-flex align-items-center justify-content-center text-white flex-shrink-0" style="width: 44px; height: 44px; background: linear-gradient(135deg, #2A72F8, #1D58D8);">
+                  <i class="bi bi-globe-americas fs-5"></i>
+                </div>
+                <h3 class="h5 fw-bold text-navy mb-0" style="color: #0A223B;">
+                  {% if current_lang == 'ar' %}التدريب الجراحي الإقليمي والدولي{% else %}International Surgical Training{% endif %}
+                </h3>
+              </div>
+              <p class="small lh-lg mb-0" style="color: #334155; font-size: 0.96rem;">
+                {% if current_lang == 'ar' %}
+                  مدرب معتمد للجامعة السويسرية لجراحة العظام في منطقة الشرق الأوسط وشمال أفريقيا (MENA)، يشارك بانتظام في الدورات التدريبية المتقدمة ونقل وتطوير الممارسات السريرية والجراحية الحديثة.
+                {% else %}
+                  Certified Trainer for the Swiss Orthopaedics University in the MENA region, leading specialized surgical training courses on fracture fixation and arthroplasty techniques.
+                {% endif %}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar Column -->
+      <div class="col-lg-4">
+        <!-- Medical Vision Card -->
+        <div class="card border-0 rounded-4 shadow p-4 text-white mb-4" style="background: linear-gradient(145deg, #0A223B 0%, #0F3152 100%); border: 1px solid rgba(255,255,255,0.1);">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <i class="bi bi-quote fs-1 text-warning"></i>
+            <span class="badge rounded-pill bg-white bg-opacity-10 text-white px-3 py-1 small fw-bold">
+              {% if current_lang == 'ar' %}الرؤية والرسالة{% else %}Medical Vision{% endif %}
+            </span>
+          </div>
+
+          <h3 class="h5 fw-bold mb-3 text-white">
+            {% if current_lang == 'ar' %}الرسالة المهنية والإنسانية{% else %}Medical Vision &amp; Philosophy{% endif %}
+          </h3>
+
+          <p class="small lh-lg mb-0 text-white-50 fst-italic" style="font-size: 0.96rem; color: #E2E8F0 !important;">
+            {% if current_lang == 'ar' %}
+              "{{ doctor.vision_ar }}"
+            {% else %}
+              "{{ doctor.vision_en }}"
+            {% endif %}
+          </p>
+        </div>
+
+        <!-- Official Qualifications Summary Card -->
+        <div class="card border-0 rounded-4 shadow-sm p-4 bg-white border mb-4">
+          <div class="d-flex align-items-center gap-2 border-bottom pb-3 mb-3">
+            <i class="bi bi-mortarboard-fill text-warning fs-4"></i>
+            <h3 class="h6 fw-bold text-navy mb-0" style="color: #0A223B;">
+              {% if current_lang == 'ar' %}المؤهلات العلمية والتخصصية{% else %}Official Qualifications{% endif %}
+            </h3>
+          </div>
+
+          <ul class="list-unstyled small mb-4" style="color: #334155;">
+            <li class="mb-3 d-flex align-items-start gap-2">
+              <i class="bi bi-check-circle-fill text-success mt-1 flex-shrink-0"></i>
+              <div>
+                <strong>{% if current_lang == 'ar' %}أستاذ جراحة العظام{% else %}Professor of Orthopedic Surgery{% endif %}</strong>
+                <div class="text-muted">{% if current_lang == 'ar' %}كلية الطب – جامعة صنعاء{% else %}Faculty of Medicine, Sana'a University{% endif %}</div>
+              </div>
+            </li>
+            <li class="mb-3 d-flex align-items-start gap-2">
+              <i class="bi bi-check-circle-fill text-success mt-1 flex-shrink-0"></i>
+              <div>
+                <strong>{% if current_lang == 'ar' %}دكتوراه في جراحة العظام{% else %}Doctorate in Orthopedic Surgery{% endif %}</strong>
+                <div class="text-muted">{% if current_lang == 'ar' %}جامعة القاهرة، مصر{% else %}Cairo University, Egypt{% endif %}</div>
+              </div>
+            </li>
+            <li class="mb-3 d-flex align-items-start gap-2">
+              <i class="bi bi-check-circle-fill text-success mt-1 flex-shrink-0"></i>
+              <div>
+                <strong>{% if current_lang == 'ar' %}البورد العربي في جراحة العظام{% else %}Arab Board in Orthopedic Surgery{% endif %}</strong>
+                <div class="text-muted">{% if current_lang == 'ar' %}بيروت{% else %}Beirut{% endif %}</div>
+              </div>
+            </li>
+            <li class="mb-3 d-flex align-items-start gap-2">
+              <i class="bi bi-check-circle-fill text-success mt-1 flex-shrink-0"></i>
+              <div>
+                <strong>{% if current_lang == 'ar' %}زمالة المفاصل الصناعية{% else %}Joint Replacement Fellowship{% endif %}</strong>
+                <div class="text-muted">{% if current_lang == 'ar' %}جامعة أسيوط، مصر{% else %}Assiut University, Egypt{% endif %}</div>
+              </div>
+            </li>
+            <li class="mb-0 d-flex align-items-start gap-2">
+              <i class="bi bi-check-circle-fill text-success mt-1 flex-shrink-0"></i>
+              <div>
+                <strong>{% if current_lang == 'ar' %}زمالة المفاصل الصناعية{% else %}Joint Replacement Fellowship{% endif %}</strong>
+                <div class="text-muted">{% if current_lang == 'ar' %}ألمانيا{% else %}Germany{% endif %}</div>
+              </div>
+            </li>
+          </ul>
+
+          <a href="{% url 'public:qualifications' %}" class="btn btn-sm btn-outline-navy w-100 fw-bold rounded-pill py-2" style="border: 1.5px solid #0D2D4D; color: #0D2D4D;">
+            {% if current_lang == 'ar' %}عرض السجل الأكاديمي الكامل &larr;{% else %}View Full Academic Profile &rarr;{% endif %}
+          </a>
+        </div>
+
+        <!-- Clinic & Contact Card -->
+        <div class="card border-0 rounded-4 shadow-sm p-4 bg-white border">
+          <div class="d-flex align-items-center gap-2 border-bottom pb-3 mb-3">
+            <i class="bi bi-geo-alt-fill text-danger fs-4"></i>
+            <h3 class="h6 fw-bold text-navy mb-0" style="color: #0A223B;">
+              {% if current_lang == 'ar' %}معلومات العيادة والتواصل{% else %}Clinic Location &amp; Booking{% endif %}
+            </h3>
+          </div>
+
+          <ul class="list-unstyled small mb-4" style="color: #334155;">
+            <li class="mb-2 d-flex align-items-start gap-2">
+              <i class="bi bi-building text-success mt-1"></i>
+              <span>{% if current_lang == 'ar' %}صنعاء – شارع خولان – عيادات الرازي التخصصية{% else %}Sana'a - Khawlan St. - Al-Razi Clinics{% endif %}</span>
+            </li>
+            <li class="mb-2 d-flex align-items-start gap-2">
+              <i class="bi bi-compass text-muted mt-1"></i>
+              <span>{% if current_lang == 'ar' %}عمارة الحبيشي – بجوار مستشفى الثورة العام{% else %}Al-Hubaishi Bldg. - Next to Al-Thawra Hospital{% endif %}</span>
+            </li>
+            <li class="mb-2 d-flex align-items-center gap-2">
+              <i class="bi bi-telephone-fill text-primary"></i>
+              <a href="tel:783517733" class="text-navy fw-bold text-decoration-none">783517733</a>
+            </li>
+            <li class="mb-0 d-flex align-items-center gap-2">
+              <i class="bi bi-whatsapp text-success"></i>
+              <a href="https://wa.me/967783517733" target="_blank" class="text-success fw-bold text-decoration-none">+967 783517733</a>
+            </li>
+          </ul>
+
+          <a href="{% url 'public:booking' %}" class="btn btn-medical w-100 py-2 fw-bold shadow-sm">
+            <i class="bi bi-calendar-check me-1 ms-1"></i>
+            {% if current_lang == 'ar' %}طلب حجز موعد كشف الآن{% else %}Book Consultation Now{% endif %}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{{ schema_markup }}
+{% endblock %}
