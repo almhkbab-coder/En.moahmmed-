@@ -54,9 +54,11 @@ class Command(BaseCommand):
         content_group, _ = Group.objects.get_or_create(name='Content Manager')
 
         # 4. Setup Staging Staff Accounts
-        def get_or_create_staff(username, email, role, group, env_var, default_prefix):
+        def get_or_create_staff(username, email, role, group, env_var, default_prefix, legacy_username=None):
             pw = os.getenv(env_var) or f"{default_prefix}@{secrets.token_urlsafe(8)}!"
             user = CustomUser.objects.filter(username=username).first()
+            if not user and legacy_username:
+                user = CustomUser.objects.filter(username=legacy_username).first()
             if not user:
                 user = CustomUser.objects.create_user(
                     username=username,
@@ -69,6 +71,7 @@ class Command(BaseCommand):
                 user.groups.add(group)
                 self.stdout.write(self.style.SUCCESS(f"Created staging user '{username}' with credentials from {env_var}."))
             else:
+                user.username = username
                 user.set_password(pw)
                 user.role = role
                 user.is_staff = True
@@ -77,8 +80,9 @@ class Command(BaseCommand):
             return user
 
         admin_user = get_or_create_staff(
-            'admin_staging', 'admin@staging.alsayyad-clinic.ye',
-            CustomUser.Role.SUPER_ADMIN, admin_group, 'ADMIN_INITIAL_PASSWORD', 'AdminStaging'
+            os.getenv('ADMIN_INITIAL_USERNAME', 'admin_staging'), 'admin@staging.alsayyad-clinic.ye',
+            CustomUser.Role.SUPER_ADMIN, admin_group, 'ADMIN_INITIAL_PASSWORD', 'AdminStaging',
+            legacy_username='admin_staging'
         )
         doctor_user = get_or_create_staff(
             'doctor_staging', 'doctor@staging.alsayyad-clinic.ye',
