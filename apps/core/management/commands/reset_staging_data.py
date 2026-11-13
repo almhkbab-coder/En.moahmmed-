@@ -246,5 +246,7 @@ class Command(BaseCommand):
 
         self.stdout.write(self.style.SUCCESS("Staging data reset completed successfully!"))
         self.stdout.write(self.style.SUCCESS(f"Target Staging Date: {base_target_date}"))
-        self.stdout.write(self.style.SUCCESS("Staff accounts ready: admin_staging, doctor_staging, reception_staging, content_staging."))
+        self.stdout.write(self.style.SUCCESS(
+            f"Staff accounts ready: {admin_user.username}, doctor_staging, reception_staging, content_staging."
+        ))
 
