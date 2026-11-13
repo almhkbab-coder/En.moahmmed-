@@ -3,6 +3,7 @@ from django.http import HttpResponse
 
 def robots_txt(request):
     lines = [
+        "# deploy-version: 30c3f53",
         "User-agent: *",
         "Disallow: /admin/",
         "Disallow: /dashboard/",
