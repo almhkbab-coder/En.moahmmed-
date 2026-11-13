@@ -32,3 +32,7 @@ services:
         value: "True"
       - key: PUBLIC_FORMS_ENABLED
         value: "False"
+      - key: ADMIN_INITIAL_USERNAME
+        value: "admin"
+      - key: ADMIN_INITIAL_PASSWORD
+        value: "admin123!"
