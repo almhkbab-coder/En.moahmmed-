@@ -29,12 +29,19 @@
   --shadow-lg: 0 14px 34px rgba(15, 53, 92, 0.14);
 }
 
+html, body {
+  max-width: 100% !important;
+  width: 100% !important;
+  overflow-x: hidden !important;
+  position: relative;
+  box-sizing: border-box;
+}
+
 body {
   font-family: 'Cairo', 'Tajawal', sans-serif;
   background-color: var(--bg-light);
   color: var(--text-dark);
   line-height: 1.7;
-  overflow-x: hidden;
 }
 
 body.lang-en {

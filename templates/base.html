@@ -3,7 +3,7 @@
 <html lang="{{ current_lang }}" dir="{% if is_rtl %}rtl{% else %}ltr{% endif %}">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>{% if page_title %}{{ page_title }} | {% endif %}{% if current_lang == 'ar' %}{{ site_settings.clinic_name_ar }}{% else %}{{ site_settings.clinic_name_en }}{% endif %}</title>
   
   <meta name="description" content="{% if meta_desc %}{{ meta_desc }}{% else %}{% if current_lang == 'ar' %}{{ site_settings.meta_description_ar }}{% else %}{{ site_settings.meta_description_en }}{% endif %}{% endif %}">
@@ -63,6 +63,25 @@
   {% block schema_markup %}
     {% if schema_markup %}{{ schema_markup }}{% endif %}
   {% endblock %}
+
+  <style>
+    /* Global lock against horizontal scrolling / viewport wobble on mobile */
+    html, body {
+      max-width: 100% !important;
+      width: 100% !important;
+      overflow-x: clip !important;
+      overflow-x: hidden !important;
+      position: relative !important;
+      box-sizing: border-box !important;
+    }
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    img, video, canvas, svg {
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
 
   {% block extra_css %}{% endblock %}
 </head>
