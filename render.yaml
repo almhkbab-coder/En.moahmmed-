@@ -31,7 +31,7 @@ services:
       - key: STAGING_SSL_REDIRECT
         value: "True"
       - key: PUBLIC_FORMS_ENABLED
-        value: "False"
+        value: "True"
       - key: ADMIN_INITIAL_USERNAME
         value: "admin"
       - key: ADMIN_INITIAL_PASSWORD

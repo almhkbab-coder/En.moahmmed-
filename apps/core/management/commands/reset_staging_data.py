@@ -191,62 +191,7 @@ class Command(BaseCommand):
             }
         )
 
-        # 9. Fictional Staging Appointments Lifecycle Scenarios
-        self.stdout.write(self.style.NOTICE("Seeding realistic fictional staging appointments..."))
-        base_target_date = date.today() + timedelta(days=2)
-        # Avoid Friday
-        if base_target_date.weekday() == 4:  # Friday in Python weekday() (where Mon=0, Fri=4)
-            base_target_date += timedelta(days=1)
-
-        fictional_patients_data = [
-            {
-                'name': 'مريض تجريبي أول (حالة قيد المراجعة)',
-                'phone': '+967 770 000 001',
-                'time': time(9, 30),
-                'reason': 'استشارة ألم بمفصل الركبة اليمنى',
-                'status': Appointment.Status.PENDING,
-            },
-            {
-                'name': 'مريض تجريبي ثان (حالة مؤكدة)',
-                'phone': '+967 770 000 002',
-                'time': time(10, 0),
-                'reason': 'فحص دوري بعد عملية المفصل',
-                'status': Appointment.Status.CONFIRMED,
-            },
-            {
-                'name': 'مريض تجريبي ثالث (حالة مكتملة الزيارة)',
-                'phone': '+967 770 000 003',
-                'time': time(10, 30),
-                'reason': 'مراجعة صور الأشعة التشخيصية',
-                'status': Appointment.Status.COMPLETED,
-            },
-            {
-                'name': 'مريض تجريبي رابع (حالة ملغية)',
-                'phone': '+967 770 000 004',
-                'time': time(11, 0),
-                'reason': 'استشارة خشونة ورك',
-                'status': Appointment.Status.CANCELLED,
-            },
-        ]
-
-        for p_data in fictional_patients_data:
-            apt = create_appointment_request(
-                full_name=p_data['name'],
-                phone_number=p_data['phone'],
-                branch=branch,
-                appointment_date=base_target_date,
-                appointment_time=p_data['time'],
-                service=service_knee,
-                visit_reason=p_data['reason']
-            )
-            if p_data['status'] != Appointment.Status.PENDING:
-                update_appointment_status_safe(
-                    appointment_id=apt.id,
-                    new_status=p_data['status'],
-                    staff_user=reception_user,
-                    notes=f"إجراء تجريبي في بيئة Staging: تحويل الحالة إلى {p_data['status']}"
-                )
-
+        # 9. No fictional appointments seeded — keep the database clean for real use
         self.stdout.write(self.style.SUCCESS("Staging data reset completed successfully!"))
         self.stdout.write(self.style.SUCCESS(f"Target Staging Date: {base_target_date}"))
         self.stdout.write(self.style.SUCCESS(

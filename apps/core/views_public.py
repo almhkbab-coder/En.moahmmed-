@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime, date
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse, HttpResponse, Http404
@@ -272,9 +272,15 @@ def booking_view(request):
         visit_reason = request.POST.get('visit_reason', '').strip()
         patient_notes = request.POST.get('patient_notes', '').strip()
 
+        # If no branch_id supplied, fall back to primary branch automatically
+        if not branch_id:
+            primary = ClinicBranch.objects.filter(is_active=True, is_primary=True).first() or ClinicBranch.objects.filter(is_active=True).first()
+            if primary:
+                branch_id = str(primary.id)
+
         # Validation
         if not full_name or not phone_number or not branch_id or not appointment_date_str or not appointment_time_str:
-            messages.error(request, _('يرجى تعبئة كافة الحقول المطلوبة (الاسم، الهاتف، الفرع، التاريخ، والوقت).'))
+            messages.error(request, _('يرجى تعبئة كافة الحقول المطلوبة (الاسم، الهاتف، التاريخ، والوقت).'))
             return redirect('public:booking')
 
         branch = get_object_or_404(ClinicBranch, id=branch_id, is_active=True)
@@ -317,11 +323,14 @@ def booking_view(request):
             messages.error(request, f"{_('حدث خطأ أثناء تسجيل طلب الحجز:')} {str(e)}")
             return redirect('public:booking')
 
+    primary_branch = ClinicBranch.objects.filter(is_active=True, is_primary=True).first() or branches.first()
     context = {
         'page_title': _('حجز موعد طبي - عيادة الدكتور محمد الصياد'),
         'branches': branches,
         'services': services,
         'selected_service': selected_service,
+        'today_str': date.today().isoformat(),
+        'primary_branch_id': primary_branch.id if primary_branch else '',
     }
     return render(request, 'public/booking.html', context)
 
