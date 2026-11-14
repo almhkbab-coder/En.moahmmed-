@@ -10,7 +10,9 @@ if os.getenv('RENDER'):
     if not os.getenv('SECRET_KEY'):
         import secrets
         SECRET_KEY = secrets.token_urlsafe(64)
-    PUBLIC_FORMS_ENABLED = os.getenv('PUBLIC_FORMS_ENABLED', 'False') == 'True'
+
+# Enable public forms (booking & contact) by default on staging
+PUBLIC_FORMS_ENABLED = os.getenv('PUBLIC_FORMS_ENABLED', 'True').lower() in ('true', '1', 'yes')
 
 # Staging Allowed Hosts
 ALLOWED_HOSTS = [
