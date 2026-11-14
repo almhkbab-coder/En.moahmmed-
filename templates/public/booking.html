@@ -4,31 +4,50 @@
 {% block extra_css %}
 <style>
   /* =====================================================
-     Booking Page — Professional Mobile-First Design
+     Booking Page — Streamlined Mobile-First Design
   ===================================================== */
   :root {
     --booking-primary: #173B58;
-    --booking-accent: #1a7bbf;
-    --booking-success: #28a745;
+    --booking-accent: #1D70B8;
+    --booking-accent-hover: #155a96;
+    --booking-success: #198754;
+    --booking-success-hover: #146c43;
+    --booking-bg: #F8FAFC;
+    --booking-card-bg: #FFFFFF;
     --booking-radius: 16px;
+    --booking-border: #E2E8F0;
   }
 
-  /* Hero */
+  /* Hero Section */
   .booking-hero {
-    background: linear-gradient(135deg, #173B58 0%, #1a4f73 100%);
-    padding: 2.5rem 1rem 3rem;
+    background: linear-gradient(135deg, #0A223B 0%, #173B58 100%);
+    padding: 2.2rem 1rem 2.8rem;
     text-align: center;
-    color: #fff;
+    color: #FFFFFF;
   }
-  .booking-hero h1 { font-size: clamp(1.3rem, 5vw, 2rem); font-weight: 800; margin-bottom: .4rem; }
-  .booking-hero p  { font-size: .9rem; color: rgba(255,255,255,.8); max-width: 520px; margin: 0 auto; }
+  .booking-hero h1 {
+    font-size: clamp(1.35rem, 5vw, 1.9rem);
+    font-weight: 800;
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  .booking-hero p {
+    font-size: 0.92rem;
+    color: #E2E8F0;
+    max-width: 520px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
 
-  /* Progress steps */
+  /* Step Progress Bar */
   .booking-steps-bar {
     display: flex;
     justify-content: center;
-    padding: 1.2rem 1rem 0;
-    max-width: 420px;
+    padding: 1rem 1rem 0;
+    max-width: 440px;
     margin: 0 auto;
   }
   .step-item {
@@ -39,193 +58,375 @@
   .step-item:not(:first-child)::before {
     content: '';
     position: absolute;
-    top: 15px; right: 50%; left: -50%;
-    height: 2px;
-    background: #dee2e6;
+    top: 17px;
+    right: 50%;
+    left: -50%;
+    height: 3px;
+    background: #CBD5E1;
     z-index: 0;
   }
   .step-item.active:not(:first-child)::before,
-  .step-item.done:not(:first-child)::before { background: var(--booking-accent); }
+  .step-item.done:not(:first-child)::before {
+    background: var(--booking-accent);
+  }
   .step-dot {
-    width: 32px; height: 32px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    background: #dee2e6; color: #6c757d;
-    display: inline-flex; align-items: center; justify-content: center;
-    font-size: .85rem; font-weight: 700;
-    position: relative; z-index: 1;
-    border: 3px solid #fff;
-    box-shadow: 0 0 0 2px #dee2e6;
-    transition: all .3s;
+    background: #FFFFFF;
+    color: #64748B;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+    border: 2px solid #CBD5E1;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: all 0.25s ease;
   }
-  .step-item.active .step-dot { background: var(--booking-accent); color: #fff; box-shadow: 0 0 0 2px var(--booking-accent); }
-  .step-item.done   .step-dot { background: var(--booking-success); color: #fff; box-shadow: 0 0 0 2px var(--booking-success); }
-  .step-label { font-size: .7rem; color: #6c757d; margin-top: .3rem; display: block; }
-  .step-item.active .step-label { color: var(--booking-accent); font-weight: 700; }
+  .step-item.active .step-dot {
+    background: var(--booking-accent);
+    color: #FFFFFF;
+    border-color: var(--booking-accent);
+  }
+  .step-item.done .step-dot {
+    background: var(--booking-success);
+    color: #FFFFFF;
+    border-color: var(--booking-success);
+  }
+  .step-label {
+    font-size: 0.76rem;
+    color: #64748B;
+    margin-top: 0.35rem;
+    display: block;
+    font-weight: 600;
+  }
+  .step-item.active .step-label {
+    color: var(--booking-accent);
+    font-weight: 700;
+  }
 
-  /* Card wrapper */
+  /* Main Card */
   .booking-card {
-    background: #fff;
+    background: var(--booking-card-bg);
     border-radius: var(--booking-radius);
-    box-shadow: 0 4px 32px rgba(0,0,0,.08);
+    border: 1px solid var(--booking-border);
+    box-shadow: 0 8px 30px rgba(10, 34, 59, 0.08);
     padding: 1.8rem 1.4rem;
-    margin: -1.5rem auto 2rem;
-    max-width: 640px;
+    margin: -1.5rem auto 2.5rem;
+    max-width: 620px;
   }
 
-  /* Step panels */
-  .step-panel { display: none; }
-  .step-panel.active { display: block; animation: fadeIn .25s ease; }
-  @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+  /* Step Panels */
+  .step-panel {
+    display: none;
+  }
+  .step-panel.active {
+    display: block;
+    animation: panelIn 0.25s ease-out;
+  }
+  @keyframes panelIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
-  /* Date grid */
+  /* Section Header */
+  .panel-header {
+    border-bottom: 1px solid var(--booking-border);
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.2rem;
+  }
+  .panel-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--booking-primary);
+    margin-bottom: 0.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+  .panel-subtitle {
+    font-size: 0.85rem;
+    color: #64748B;
+    margin: 0;
+  }
+
+  /* Form Controls */
+  .form-label {
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: #1E293B;
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .form-control {
+    border-radius: 12px;
+    border: 1.5px solid #CBD5E1;
+    font-size: 16px; /* Prevents mobile browser auto-zoom */
+    padding: 0.72rem 1rem;
+    color: #0F172A;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .form-control:focus {
+    border-color: var(--booking-accent);
+    box-shadow: 0 0 0 3px rgba(29, 112, 184, 0.15);
+    outline: none;
+  }
+  textarea.form-control {
+    min-height: 95px;
+    resize: vertical;
+  }
+
+  /* Date Grid */
   .date-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(68px, 1fr));
-    gap: .5rem;
+    grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+    gap: 0.55rem;
     margin-bottom: 1.2rem;
   }
   .date-btn {
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    padding: .6rem .3rem;
-    border: 2px solid #dee2e6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.65rem 0.3rem;
+    border: 2px solid #E2E8F0;
     border-radius: 12px;
-    background: #fff; cursor: pointer;
-    transition: all .2s;
-    font-size: .78rem; color: #333;
-    min-height: 64px;
+    background: #FFFFFF;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 68px;
+    color: #1E293B;
   }
-  .date-btn .day-name { font-size: .68rem; color: #6c757d; margin-bottom: .15rem; }
-  .date-btn .day-num  { font-size: 1.1rem; font-weight: 800; line-height: 1; }
-  .date-btn .month    { font-size: .65rem; color: #888; }
-  .date-btn:hover, .date-btn.selected {
+  .date-btn .day-name {
+    font-size: 0.72rem;
+    color: #64748B;
+    font-weight: 600;
+  }
+  .date-btn .day-num {
+    font-size: 1.15rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0.15rem 0;
+  }
+  .date-btn .month {
+    font-size: 0.68rem;
+    color: #94A3B8;
+  }
+  .date-btn:hover {
+    border-color: var(--booking-accent);
+    background: #F0F9FF;
+  }
+  .date-btn.selected {
     border-color: var(--booking-accent);
     background: var(--booking-accent);
-    color: #fff;
+    color: #FFFFFF;
   }
-  .date-btn:hover .day-name, .date-btn.selected .day-name,
-  .date-btn:hover .month,    .date-btn.selected .month { color: rgba(255,255,255,.8); }
-  .date-btn.today-mark { border-color: #ffc107; }
+  .date-btn.selected .day-name,
+  .date-btn.selected .month {
+    color: rgba(255, 255, 255, 0.9);
+  }
 
-  /* Time slots */
-  .slot-section-title {
-    font-size: .82rem; color: #495057; font-weight: 700;
-    margin: .8rem 0 .4rem; letter-spacing: .02em;
-    display: flex; align-items: center; gap: .4rem;
+  /* Time Slots */
+  .slot-period-title {
+    font-size: 0.84rem;
+    color: #334155;
+    font-weight: 700;
+    margin: 0.9rem 0 0.45rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
   }
   .slots-row {
-    display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: .8rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.8rem;
   }
   .slot-btn {
-    padding: .45rem .9rem;
-    border: 2px solid #dee2e6; border-radius: 20px;
-    background: #fff; cursor: pointer; font-size: .82rem;
-    transition: all .2s;
+    padding: 0.5rem 0.95rem;
+    border: 1.5px solid #CBD5E1;
+    border-radius: 20px;
+    background: #FFFFFF;
+    cursor: pointer;
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: #1E293B;
+    transition: all 0.2s ease;
   }
-  .slot-btn:hover, .slot-btn.selected {
+  .slot-btn:hover {
     border-color: var(--booking-accent);
-    background: var(--booking-accent); color: #fff;
+    background: #F0F9FF;
   }
-  .slot-btn.full { opacity:.45; cursor:not-allowed; border-style:dashed; }
-
-  /* Form inputs */
-  .form-label {
-    font-weight: 600; font-size: .9rem; color: #333; margin-bottom: .3rem;
-    display: flex; align-items: center; gap: .35rem;
-  }
-  .form-control, .form-select {
-    border-radius: 10px; border: 2px solid #e9ecef;
-    font-size: 16px; /* Prevent iOS zoom */
-    padding: .65rem .9rem;
-    transition: border-color .2s;
-  }
-  .form-control:focus, .form-select:focus {
+  .slot-btn.selected {
     border-color: var(--booking-accent);
-    box-shadow: 0 0 0 3px rgba(26,123,191,.12);
+    background: var(--booking-accent);
+    color: #FFFFFF;
   }
-  textarea.form-control { min-height: 90px; resize: vertical; }
 
-  /* Confirm box */
-  .confirm-box {
-    background: #f8fafc; border: 1px solid #e2e8f0;
-    border-radius: 12px; padding: 1.1rem 1.2rem;
+  /* Summary Pill */
+  .summary-pill-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
     margin-bottom: 1rem;
   }
-  .confirm-row { display: flex; justify-content: space-between; align-items: center; padding: .45rem 0; border-bottom: 1px solid #eee; font-size: .88rem; }
-  .confirm-row:last-child { border-bottom: none; }
-  .confirm-row .label { color: #6c757d; display: flex; align-items: center; gap: .4rem; }
-  .confirm-row .value { font-weight: 700; color: #173B58; text-align: left; }
+  .summary-pill {
+    background: #EFF6FF;
+    border: 1px solid #BFDBFE;
+    color: #1E40AF;
+    border-radius: 20px;
+    padding: 0.35rem 0.85rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
 
-  /* Buttons */
+  /* Confirm Summary Box */
+  .confirm-box {
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    padding: 1.1rem 1.2rem;
+    margin-bottom: 1.2rem;
+  }
+  .confirm-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #F1F5F9;
+    font-size: 0.9rem;
+  }
+  .confirm-row:last-child {
+    border-bottom: none;
+  }
+  .confirm-row .label {
+    color: #64748B;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .confirm-row .value {
+    color: var(--booking-primary);
+    font-weight: 800;
+    text-align: left;
+  }
+
+  /* Action Buttons */
   .btn-next, .btn-submit {
-    display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
     width: 100%;
-    padding: .9rem;
-    border-radius: 12px; border: none;
-    font-size: 1rem; font-weight: 700;
-    cursor: pointer; transition: all .2s;
+    padding: 0.9rem;
+    border-radius: 12px;
+    border: none;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
   }
-  .btn-next   { background: var(--booking-accent); color: #fff; }
-  .btn-next:hover { background: #145f96; }
-  .btn-submit { background: var(--booking-success); color: #fff; }
-  .btn-submit:hover { background: #1e7e34; }
+  .btn-next {
+    background: var(--booking-accent);
+    color: #FFFFFF;
+  }
+  .btn-next:hover:not(:disabled) {
+    background: var(--booking-accent-hover);
+  }
+  .btn-next:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+  .btn-submit {
+    background: var(--booking-success);
+    color: #FFFFFF;
+  }
+  .btn-submit:hover:not(:disabled) {
+    background: var(--booking-success-hover);
+  }
   .btn-back {
-    background: none; border: none; color: var(--booking-accent);
-    font-size: .88rem; cursor: pointer; padding: .4rem 0;
-    display: inline-flex; align-items: center; gap: .4rem; font-weight: 600;
+    background: none;
+    border: none;
+    color: var(--booking-accent);
+    font-size: 0.88rem;
+    cursor: pointer;
+    padding: 0.4rem 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 700;
   }
 
-  /* Toast */
+  /* Toast Overlay */
   .booking-toast {
-    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(120px);
-    background: #173B58; color: #fff;
-    padding: 1rem 1.6rem;
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(120px);
+    background: var(--booking-primary);
+    color: #FFFFFF;
+    padding: 0.9rem 1.6rem;
     border-radius: 14px;
-    box-shadow: 0 8px 32px rgba(0,0,0,.25);
+    box-shadow: 0 8px 32px rgba(10, 34, 59, 0.25);
     z-index: 9999;
-    transition: transform .4s cubic-bezier(.34,1.56,.64,1);
-    display: flex; align-items: center; gap: .7rem;
-    font-size: .92rem; white-space: nowrap;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: 0.92rem;
+    white-space: nowrap;
     max-width: calc(100vw - 2rem);
   }
-  .booking-toast.show { transform: translateX(-50%) translateY(0); }
-  .booking-toast.success { background: #28a745; }
-  .booking-toast.error   { background: #dc3545; }
-
-  /* Summary pill */
-  .selected-summary {
-    display: flex; flex-wrap: wrap; gap: .5rem;
-    margin-bottom: 1rem;
+  .booking-toast.show {
+    transform: translateX(-50%) translateY(0);
   }
-  .selected-pill {
-    background: #e8f4fd; color: #1a4f73;
-    border-radius: 20px; padding: .35rem .85rem;
-    font-size: .8rem; font-weight: 600;
-    display: inline-flex; align-items: center; gap: .4rem;
+  .booking-toast.success {
+    background: var(--booking-success);
+  }
+  .booking-toast.error {
+    background: #DC2626;
   }
 
   @media (max-width: 480px) {
-    .booking-card { padding: 1.2rem 1rem; border-radius: 12px; }
-    .date-btn .day-num { font-size: 1rem; }
+    .booking-card {
+      padding: 1.3rem 1rem;
+      border-radius: 12px;
+    }
+    .date-btn .day-num {
+      font-size: 1.05rem;
+    }
   }
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- Hero -->
+<!-- Hero Section -->
 <div class="booking-hero">
-  <h1><i class="bi bi-calendar2-check-fill ms-2"></i>{% trans "احجز موعدك الآن" %}</h1>
-  <p>{% trans "أكمل الخطوات أدناه لتأكيد موعدك مع الدكتور محمد الصياد" %}</p>
+  <h1>
+    <i class="bi bi-calendar2-check-fill"></i>
+    <span>{% trans "حجز موعد طبي" %}</span>
+  </h1>
+  <p>{% trans "يرجى تعبئة البيانات التالية لتأكيد حجز موعدك في عيادة الدكتور محمد الصياد" %}</p>
 </div>
 
-<!-- Progress Bar -->
+<!-- Steps Progress Bar -->
 <div class="booking-steps-bar" id="stepsBar">
   <div class="step-item active" id="si1">
-    <div class="step-dot"><i class="bi bi-calendar-event"></i></div>
-    <span class="step-label">{% trans "الموعد" %}</span>
+    <div class="step-dot"><i class="bi bi-person"></i></div>
+    <span class="step-label">{% trans "البيانات" %}</span>
   </div>
   <div class="step-item" id="si2">
-    <div class="step-dot"><i class="bi bi-person"></i></div>
-    <span class="step-label">{% trans "بياناتك" %}</span>
+    <div class="step-dot"><i class="bi bi-calendar3"></i></div>
+    <span class="step-label">{% trans "الموعد" %}</span>
   </div>
   <div class="step-item" id="si3">
     <div class="step-dot"><i class="bi bi-check2"></i></div>
@@ -233,157 +434,184 @@
   </div>
 </div>
 
-<!-- Messages (Django) -->
+<!-- Django Messages -->
 {% if messages %}
-<div class="container" style="max-width:640px; margin-top:1rem;">
+<div class="container" style="max-width: 620px; margin-top: 1rem;">
   {% for m in messages %}
-    <div class="alert alert-{% if m.tags == 'error' %}danger{% else %}{{ m.tags }}{% endif %} alert-dismissible fade show" role="alert">
-      {{ m }}
+    <div class="alert alert-{% if m.tags == 'error' %}danger{% else %}{{ m.tags }}{% endif %} alert-dismissible fade show shadow-sm" role="alert">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-{% if m.tags == 'error' %}exclamation-octagon-fill text-danger{% else %}check-circle-fill text-success{% endif %} fs-5"></i>
+        <span>{{ m }}</span>
+      </div>
       <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
   {% endfor %}
 </div>
 {% endif %}
 
-<!-- Main Card -->
+<!-- Booking Form Card -->
 <div class="container px-2">
 <div class="booking-card">
   <form id="bookingForm" method="post" action="{% url 'public:booking' %}">
     {% csrf_token %}
-    <!-- Hidden: branch auto-select -->
+    <!-- Auto-branch select (Primary clinic branch) -->
     <input type="hidden" name="branch" id="hiddenBranch" value="{{ primary_branch_id }}">
-    <!-- Honeypot -->
+    <!-- Anti-spam Honeypot -->
     <input type="text" name="website_hp" style="display:none" tabindex="-1" autocomplete="off">
-    <!-- Hidden date/time (filled by JS) -->
+    <!-- Hidden appointment date & time -->
     <input type="hidden" name="appointment_date" id="hiddenDate">
     <input type="hidden" name="appointment_time" id="hiddenTime">
 
-    <!-- ═══ STEP 1: Date & Time ═══ -->
+    <!-- ═══════════════════════════════════════════════
+         الخطوة 1: أولاً - إدخال الاسم الكامل ورقم الهاتف
+    ═══════════════════════════════════════════════ -->
     <div class="step-panel active" id="step1">
-      <h5 class="fw-bold mb-1" style="color:#173B58;">
-        <i class="bi bi-calendar3 text-primary ms-1"></i>{% trans "اختر التاريخ المناسب" %}
-      </h5>
-      <p class="text-muted small mb-3">{% trans "المواعيد متاحة من السبت إلى الخميس" %}</p>
-
-      <div class="date-grid" id="dateGrid"></div>
-
-      <div id="timeSection" style="display:none;">
-        <h5 class="fw-bold mb-2" style="color:#173B58;">
-          <i class="bi bi-clock-fill text-primary ms-1"></i>{% trans "اختر الوقت" %}
-        </h5>
-        <p class="slot-section-title">
-          <i class="bi bi-brightness-high text-warning"></i>
-          {% trans "فترة الصباح" %}
-        </p>
-        <div class="slots-row" id="morningSlots"></div>
-        <p class="slot-section-title">
-          <i class="bi bi-moon-stars text-info"></i>
-          {% trans "فترة المساء" %}
-        </p>
-        <div class="slots-row" id="eveningSlots"></div>
+      <div class="panel-header">
+        <div class="panel-title">
+          <i class="bi bi-person-lines-fill text-primary"></i>
+          <span>{% trans "بيانات المريض" %}</span>
+        </div>
+        <p class="panel-subtitle">{% trans "أدخل الاسم ورقم الهاتف للتواصل معك لتأكيد الموعد" %}</p>
       </div>
 
-      <button type="button" class="btn-next mt-3" id="step1Next" disabled onclick="goToStep(2)">
-        <span>{% trans "التالي: بياناتك" %}</span>
-        <i class="bi bi-arrow-left"></i>
-      </button>
-    </div>
-
-    <!-- ═══ STEP 2: Patient Info ═══ -->
-    <div class="step-panel" id="step2">
-      <div class="selected-summary" id="summaryPills"></div>
-      <button type="button" class="btn-back mb-3" onclick="goToStep(1)">
-        <i class="bi bi-arrow-right"></i>
-        <span>{% trans "تعديل التاريخ / الوقت" %}</span>
-      </button>
-
       <div class="mb-3">
-        <label class="form-label">
+        <label class="form-label" for="fullName">
           <i class="bi bi-person-fill text-primary"></i>
           <span>{% trans "اسم المريض الكامل" %}</span>
           <span class="text-danger">*</span>
         </label>
         <input type="text" name="full_name" id="fullName" class="form-control"
-               placeholder="{% trans 'أدخل الاسم الثلاثي' %}" required>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">
-          <i class="bi bi-telephone-fill text-primary"></i>
-          <span>{% trans "رقم الهاتف" %}</span>
-          <span class="text-danger">*</span>
-        </label>
-        <input type="tel" name="phone_number" id="phoneNumber" class="form-control"
-               placeholder="{% trans 'مثال: 770000001' %}" required>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">
-          <i class="bi bi-clipboard2-pulse-fill text-primary"></i>
-          <span>{% trans "سبب الزيارة" %}</span>
-          <span class="text-danger">*</span>
-        </label>
-        <input type="text" name="visit_reason" id="visitReason" class="form-control"
-               placeholder="{% trans 'مثال: ألم في الركبة، متابعة ما بعد العملية...' %}" required>
+               placeholder="{% trans 'مثال: محمد أحمد علي' %}" required autofocus>
       </div>
 
       <div class="mb-4">
-        <label class="form-label">
-          <i class="bi bi-chat-left-text-fill text-primary"></i>
-          <span>{% trans "ملاحظات إضافية" %}</span>
-          <span class="text-muted small">({% trans "اختياري" %})</span>
+        <label class="form-label" for="phoneNumber">
+          <i class="bi bi-telephone-fill text-primary"></i>
+          <span>{% trans "رقم الهاتف (واتساب / اتصال)" %}</span>
+          <span class="text-danger">*</span>
         </label>
-        <textarea name="patient_notes" id="patientNotes" class="form-control"
-                  placeholder="{% trans 'أي معلومات إضافية تودّ إخبار الطبيب بها...' %}"></textarea>
+        <input type="tel" name="phone_number" id="phoneNumber" class="form-control"
+               placeholder="{% trans 'مثال: 770000001' %}" dir="ltr" style="text-align: right;" required>
       </div>
 
-      <button type="button" class="btn-next" id="step2Next" onclick="goToStep(3)">
-        <span>{% trans "التالي: مراجعة الحجز" %}</span>
+      <button type="button" class="btn-next" onclick="goToStep(2)">
+        <span>{% trans "التالي: اختيار الموعد" %}</span>
         <i class="bi bi-arrow-left"></i>
       </button>
     </div>
 
-    <!-- ═══ STEP 3: Confirm ═══ -->
+    <!-- ═══════════════════════════════════════════════
+         الخطوة 2: ثانياً - اختيار التاريخ ثم الموعد
+    ═══════════════════════════════════════════════ -->
+    <div class="step-panel" id="step2">
+      <button type="button" class="btn-back mb-3" onclick="goToStep(1)">
+        <i class="bi bi-arrow-right"></i>
+        <span>{% trans "الرجوع لتعديل البيانات" %}</span>
+      </button>
+
+      <div class="summary-pill-container" id="patientInfoPill"></div>
+
+      <div class="panel-header">
+        <div class="panel-title">
+          <i class="bi bi-calendar3 text-primary"></i>
+          <span>{% trans "اختر التاريخ والموعد" %}</span>
+        </div>
+        <p class="panel-subtitle">{% trans "العيادة تستقبل المواعيد من السبت إلى الخميس" %}</p>
+      </div>
+
+      <!-- التاريخ -->
+      <div class="mb-3">
+        <label class="form-label">
+          <i class="bi bi-calendar-check text-primary"></i>
+          <span>{% trans "اختر تاريخ الزيارة" %}</span>
+          <span class="text-danger">*</span>
+        </label>
+        <div class="date-grid" id="dateGrid"></div>
+      </div>
+
+      <!-- الموعد / الوقت -->
+      <div id="timeSection" style="display: none;">
+        <label class="form-label">
+          <i class="bi bi-clock-fill text-primary"></i>
+          <span>{% trans "اختر الوقت المناسب" %}</span>
+          <span class="text-danger">*</span>
+        </label>
+
+        <p class="slot-period-title">
+          <i class="bi bi-brightness-high text-warning"></i>
+          <span>{% trans "فترة الصباح" %}</span>
+        </p>
+        <div class="slots-row" id="morningSlots"></div>
+
+        <p class="slot-period-title">
+          <i class="bi bi-moon-stars text-info"></i>
+          <span>{% trans "فترة المساء" %}</span>
+        </p>
+        <div class="slots-row" id="eveningSlots"></div>
+      </div>
+
+      <button type="button" class="btn-next mt-3" id="step2Next" disabled onclick="goToStep(3)">
+        <span>{% trans "التالي: سبب الزيارة والتأكيد" %}</span>
+        <i class="bi bi-arrow-left"></i>
+      </button>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════
+         الخطوة 3: ثالثاً - سبب الزيارة (اختياري) + التأكيد
+    ═══════════════════════════════════════════════ -->
     <div class="step-panel" id="step3">
       <button type="button" class="btn-back mb-3" onclick="goToStep(2)">
         <i class="bi bi-arrow-right"></i>
-        <span>{% trans "تعديل البيانات" %}</span>
+        <span>{% trans "الرجوع لتغيير الموعد" %}</span>
       </button>
-      <h5 class="fw-bold mb-3" style="color:#173B58;">
-        <i class="bi bi-shield-check text-success ms-1"></i>{% trans "مراجعة وتأكيد الحجز" %}
-      </h5>
 
+      <div class="panel-header">
+        <div class="panel-title">
+          <i class="bi bi-shield-check text-success"></i>
+          <span>{% trans "تأكيد طلب الحجز" %}</span>
+        </div>
+        <p class="panel-subtitle">{% trans "راجع تفاصيل موعدك وأدخل سبب الزيارة إن رغبت" %}</p>
+      </div>
+
+      <!-- ملخص الموعد المختار -->
       <div class="confirm-box">
         <div class="confirm-row">
-          <span class="label"><i class="bi bi-calendar-check text-primary"></i> {% trans "التاريخ" %}</span>
+          <span class="label"><i class="bi bi-person text-primary"></i> {% trans "اسم المريض" %}</span>
+          <span class="value" id="cName">—</span>
+        </div>
+        <div class="confirm-row">
+          <span class="label"><i class="bi bi-telephone text-primary"></i> {% trans "رقم الهاتف" %}</span>
+          <span class="value" id="cPhone" dir="ltr">—</span>
+        </div>
+        <div class="confirm-row">
+          <span class="label"><i class="bi bi-calendar-event text-primary"></i> {% trans "التاريخ" %}</span>
           <span class="value" id="cDate">—</span>
         </div>
         <div class="confirm-row">
           <span class="label"><i class="bi bi-clock text-primary"></i> {% trans "الوقت" %}</span>
           <span class="value" id="cTime">—</span>
         </div>
-        <div class="confirm-row">
-          <span class="label"><i class="bi bi-person text-primary"></i> {% trans "الاسم" %}</span>
-          <span class="value" id="cName">—</span>
-        </div>
-        <div class="confirm-row">
-          <span class="label"><i class="bi bi-telephone text-primary"></i> {% trans "الهاتف" %}</span>
-          <span class="value" id="cPhone">—</span>
-        </div>
-        <div class="confirm-row">
-          <span class="label"><i class="bi bi-clipboard2-pulse text-primary"></i> {% trans "سبب الزيارة" %}</span>
-          <span class="value" id="cReason">—</span>
-        </div>
       </div>
 
-      <div class="alert alert-info d-flex align-items-center gap-2 py-2 small mb-3" role="alert">
-        <i class="bi bi-info-circle-fill text-info fs-5"></i>
-        <span>{% trans "سيتم التواصل معك لتأكيد الموعد خلال 24 ساعة." %}</span>
+      <!-- حقل واحد فقط: سبب الزيارة (اختياري) -->
+      <div class="mb-4">
+        <label class="form-label" for="visitReason">
+          <i class="bi bi-chat-left-dots-fill text-primary"></i>
+          <span>{% trans "سبب الزيارة" %}</span>
+          <span class="text-muted small">({% trans "اختياري" %})</span>
+        </label>
+        <textarea name="visit_reason" id="visitReason" class="form-control"
+                  placeholder="{% trans 'اكتب بإيجاز سبب الزيارة أو الشكوى الطبية إن أردت...' %}"></textarea>
+      </div>
+
+      <div class="alert alert-info d-flex align-items-center gap-2 py-2 small mb-3 border-0" style="background: #F0F9FF; color: #0369A1;" role="alert">
+        <i class="bi bi-info-circle-fill fs-5"></i>
+        <span>{% trans "سيقوم فريق العيادة بالتواصل معك هاتفياً أو عبر واتساب لتأكيد الحجز." %}</span>
       </div>
 
       <button type="submit" class="btn-submit" id="submitBtn" onclick="onSubmitClick(event)">
         <i class="bi bi-check2-circle fs-5"></i>
-        <span>{% trans "تأكيد الحجز" %}</span>
+        <span>{% trans "تأكيد وإرسال طلب الحجز" %}</span>
       </button>
     </div>
   </form>
@@ -403,41 +631,41 @@
 (function () {
   'use strict';
 
-  // ── Config ──────────────────────────────────────
-  const TODAY    = new Date('{{ today_str }}');
-  const DAYS_AR  = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
-  const MONTHS_AR= ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
-  const MORNING  = ['08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30'];
-  const EVENING  = ['16:00','16:30','17:00','17:30','18:00','18:30','19:00'];
+  // ── Configuration ────────────────────────────────
+  const TODAY     = new Date('{{ today_str }}');
+  const DAYS_AR   = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+  const MONTHS_AR = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  const MORNING   = ['08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30'];
+  const EVENING   = ['16:00','16:30','17:00','17:30','18:00','18:30','19:00'];
 
   // ── State ────────────────────────────────────────
   let selDate = null;
   let selTime = null;
 
-  // ── Helpers ──────────────────────────────────────
+  // ── Time & Date Helpers ──────────────────────────
   function fmt12(hhmm) {
     const [h, m] = hhmm.split(':').map(Number);
-    const ampm = h < 12 ? 'صباحاً' : 'مساءً';
-    const h12  = h === 0 ? 12 : h > 12 ? h - 12 : h;
-    return `${h12}:${String(m).padStart(2,'0')} ${ampm}`;
+    const period = h < 12 ? 'صباحاً' : 'مساءً';
+    const h12    = h === 0 ? 12 : h > 12 ? h - 12 : h;
+    return `${h12}:${String(m).padStart(2,'0')} ${period}`;
   }
 
   function isoDate(d) {
     return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
   }
 
-  // ── Build date grid ──────────────────────────────
+  // ── Build 14-Day Grid (Skip Fridays) ─────────────
   const grid = document.getElementById('dateGrid');
-  let count = 0;
-  for (let i = 0; count < 14; i++) {
+  let validDaysCount = 0;
+  for (let i = 0; validDaysCount < 14; i++) {
     const d = new Date(TODAY);
     d.setDate(TODAY.getDate() + i);
-    if (d.getDay() === 5) continue; // skip Friday
-    count++;
+    if (d.getDay() === 5) continue; // Skip Friday (Clinic closed)
+    validDaysCount++;
 
     const btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = 'date-btn' + (i === 0 ? ' today-mark' : '');
+    btn.className = 'date-btn';
     btn.dataset.iso = isoDate(d);
     btn.innerHTML = `
       <span class="day-name">${DAYS_AR[d.getDay()]}</span>
@@ -447,7 +675,7 @@
     grid.appendChild(btn);
   }
 
-  // ── Select date ──────────────────────────────────
+  // ── Select Date ──────────────────────────────────
   function selectDate(btn, d) {
     document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
@@ -457,19 +685,19 @@
     document.getElementById('hiddenDate').value = isoDate(d);
     document.getElementById('hiddenTime').value = '';
     buildSlots();
-    document.getElementById('timeSection').style.display = '';
-    checkStep1();
+    document.getElementById('timeSection').style.display = 'block';
+    checkStep2Validity();
   }
 
-  // ── Build time slots ─────────────────────────────
+  // ── Build Time Slots ─────────────────────────────
   function buildSlots() {
-    buildSlotGroup('morningSlots', MORNING);
-    buildSlotGroup('eveningSlots', EVENING);
+    buildSlotRow('morningSlots', MORNING);
+    buildSlotRow('eveningSlots', EVENING);
   }
 
-  function buildSlotGroup(containerId, times) {
-    const c = document.getElementById(containerId);
-    c.innerHTML = '';
+  function buildSlotRow(containerId, times) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
     times.forEach(t => {
       const btn = document.createElement('button');
       btn.type = 'button';
@@ -477,92 +705,102 @@
       btn.textContent = fmt12(t);
       btn.dataset.time = t;
       btn.addEventListener('click', () => selectTime(btn, t));
-      c.appendChild(btn);
+      container.appendChild(btn);
     });
   }
 
-  // ── Select time ──────────────────────────────────
+  // ── Select Time ──────────────────────────────────
   function selectTime(btn, t) {
     document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
     selTime = t;
     document.getElementById('hiddenTime').value = t;
-    checkStep1();
+    checkStep2Validity();
   }
 
-  // ── Validate step 1 ──────────────────────────────
-  function checkStep1() {
-    document.getElementById('step1Next').disabled = !(selDate && selTime);
+  function checkStep2Validity() {
+    document.getElementById('step2Next').disabled = !(selDate && selTime);
   }
 
-  // ── Go to step ───────────────────────────────────
+  // ── Step Navigation ──────────────────────────────
   window.goToStep = function (n) {
     if (n === 2) {
-      if (!selDate || !selTime) { showToast('يرجى اختيار تاريخ ووقت الموعد أولاً.', 'error'); return; }
-      const pills = document.getElementById('summaryPills');
-      pills.innerHTML = `
-        <div class="selected-pill"><i class="bi bi-calendar3 text-primary"></i> ${DAYS_AR[selDate.getDay()]} ${selDate.getDate()} ${MONTHS_AR[selDate.getMonth()]}</div>
-        <div class="selected-pill"><i class="bi bi-clock-fill text-primary"></i> ${fmt12(selTime)}</div>`;
-    }
-    if (n === 3) {
+      // Validate Step 1 (Name & Phone required)
       const name  = document.getElementById('fullName').value.trim();
       const phone = document.getElementById('phoneNumber').value.trim();
-      const reason= document.getElementById('visitReason').value.trim();
-      if (!name || !phone || !reason) { showToast('يرجى تعبئة جميع الحقول الإلزامية.', 'error'); return; }
-      document.getElementById('cDate').textContent   = `${DAYS_AR[selDate.getDay()]} ${selDate.getDate()} ${MONTHS_AR[selDate.getMonth()]} ${selDate.getFullYear()}`;
-      document.getElementById('cTime').textContent   = fmt12(selTime);
-      document.getElementById('cName').textContent   = name;
-      document.getElementById('cPhone').textContent  = phone;
-      document.getElementById('cReason').textContent = reason;
+      if (!name || !phone) {
+        showToast('يرجى إدخال اسم المريض ورقم الهاتف أولاً.', 'error');
+        return;
+      }
+      // Show Patient Info Pill in Step 2
+      const pillBox = document.getElementById('patientInfoPill');
+      pillBox.innerHTML = `
+        <div class="summary-pill"><i class="bi bi-person-fill"></i> ${name}</div>
+        <div class="summary-pill" dir="ltr"><i class="bi bi-telephone-fill"></i> ${phone}</div>`;
     }
+
+    if (n === 3) {
+      // Validate Step 2 (Date & Time required)
+      if (!selDate || !selTime) {
+        showToast('يرجى اختيار تاريخ ووقت الموعد.', 'error');
+        return;
+      }
+      // Populate Confirmation Card
+      document.getElementById('cName').textContent  = document.getElementById('fullName').value.trim();
+      document.getElementById('cPhone').textContent = document.getElementById('phoneNumber').value.trim();
+      document.getElementById('cDate').textContent  = `${DAYS_AR[selDate.getDay()]} ${selDate.getDate()} ${MONTHS_AR[selDate.getMonth()]} ${selDate.getFullYear()}`;
+      document.getElementById('cTime').textContent  = fmt12(selTime);
+    }
+
+    // Switch panels
     document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
     document.getElementById(`step${n}`).classList.add('active');
     updateStepBar(n);
-    window.scrollTo({top: 0, behavior: 'smooth'});
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // ── Step bar ─────────────────────────────────────
+  // ── Step Bar Update ──────────────────────────────
   function updateStepBar(n) {
     for (let i = 1; i <= 3; i++) {
-      const el = document.getElementById(`si${i}`);
-      el.classList.remove('active', 'done');
-      if (i < n)  el.classList.add('done');
-      if (i === n) el.classList.add('active');
+      const item = document.getElementById(`si${i}`);
+      item.classList.remove('active', 'done');
+      if (i < n)  item.classList.add('done');
+      if (i === n) item.classList.add('active');
     }
   }
 
-  // ── Toast ─────────────────────────────────────────
+  // ── Toast Messages ───────────────────────────────
   function showToast(msg, type = 'info', duration = 4000) {
-    const t  = document.getElementById('bookingToast');
-    const ic = document.getElementById('toastIcon');
-    const ms = document.getElementById('toastMsg');
-    t.className = `booking-toast ${type}`;
+    const toast = document.getElementById('bookingToast');
+    const icon  = document.getElementById('toastIcon');
+    const text  = document.getElementById('toastMsg');
+    toast.className = `booking-toast ${type}`;
     if (type === 'success') {
-      ic.innerHTML = '<i class="bi bi-check-circle-fill text-white fs-5"></i>';
+      icon.innerHTML = '<i class="bi bi-check-circle-fill text-white fs-5"></i>';
     } else if (type === 'error') {
-      ic.innerHTML = '<i class="bi bi-exclamation-triangle-fill text-white fs-5"></i>';
+      icon.innerHTML = '<i class="bi bi-exclamation-triangle-fill text-white fs-5"></i>';
     } else {
-      ic.innerHTML = '<i class="bi bi-hourglass-split text-white fs-5"></i>';
+      icon.innerHTML = '<i class="bi bi-hourglass-split text-white fs-5"></i>';
     }
-    ms.textContent = msg;
-    t.classList.add('show');
-    if (duration > 0) setTimeout(() => t.classList.remove('show'), duration);
+    text.textContent = msg;
+    toast.classList.add('show');
+    if (duration > 0) setTimeout(() => toast.classList.remove('show'), duration);
   }
 
-  // ── On submit ────────────────────────────────────
+  // ── Form Submission ──────────────────────────────
   window.onSubmitClick = function (e) {
     e.preventDefault();
     const btn = document.getElementById('submitBtn');
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span><span>جارٍ إرسال طلب الحجز...</span>';
-    showToast('جارٍ تسجيل وحفظ طلب حجزك، يرجى الانتظار...', 'info', 0);
-    setTimeout(() => document.getElementById('bookingForm').submit(), 600);
+    showToast('جارٍ تسجيل طلب الحجز في العيادة، يرجى الانتظار...', 'info', 0);
+    setTimeout(() => document.getElementById('bookingForm').submit(), 500);
   };
 
-  // ── Auto-show Django messages as toast ───────────
+  // ── Auto-display Django Flash Messages ───────────
   {% if messages %}
   {% for m in messages %}
-  setTimeout(() => showToast("{{ m|escapejs }}", "{% if m.tags == 'error' %}error{% else %}success{% endif %}"), 300);
+  setTimeout(() => showToast("{{ m|escapejs }}", "{% if m.tags == 'error' %}error{% else %}success{% endif %}"), 250);
   {% endfor %}
   {% endif %}
 
