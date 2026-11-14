@@ -193,7 +193,6 @@ class Command(BaseCommand):
 
         # 9. No fictional appointments seeded — keep the database clean for real use
         self.stdout.write(self.style.SUCCESS("Staging data reset completed successfully!"))
-        self.stdout.write(self.style.SUCCESS(f"Target Staging Date: {base_target_date}"))
         self.stdout.write(self.style.SUCCESS(
             f"Staff accounts ready: {admin_user.username}, doctor_staging, reception_staging, content_staging."
         ))
