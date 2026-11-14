@@ -134,14 +134,37 @@
     <hr class="my-4 border-secondary opacity-25">
 
     <div class="row align-items-center text-center text-md-start small text-white-50">
-      <div class="col-md-8 mb-2 mb-md-0">
+      <div class="col-12 mb-2">
         &copy; {{ current_year }} {% if current_lang == 'ar' %}{{ site_settings.clinic_name_ar }}{% else %}{{ site_settings.clinic_name_en }}{% endif %}.
         {% if current_lang == 'ar' %}جميع الحقوق محفوظة.{% else %}All Rights Reserved.{% endif %}
         <span class="d-block d-md-inline-block ms-md-2 mt-1 mt-md-0">
           | {% if current_lang == 'ar' %}الموقع لأغراض التوعية الطبية وحجز المواعيد ولا يُغني عن الفحص السريري المباشر.{% else %}This medical website is for informative and appointment booking purposes only.{% endif %}
         </span>
       </div>
-      <div class="col-md-4 text-center text-md-end">
+    </div>
+
+    <!-- Developer & Engineering Credits -->
+    <div class="row align-items-center justify-content-between text-center text-md-start small text-white-50 mt-2 pt-3 border-top border-secondary border-opacity-10">
+      <div class="col-md-7 mb-2 mb-md-0 text-center text-md-start">
+        <div class="d-inline-flex flex-wrap align-items-center justify-content-center justify-content-md-start gap-2 py-1 px-3 rounded-pill" style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1);">
+          <i class="bi bi-code-slash text-info"></i>
+          <span>
+            {% if current_lang == 'ar' %}
+              تصميم وتطوير: <strong class="text-white">المهندس محمد محمد الصياد</strong>
+            {% else %}
+              Designed & Developed by: <strong class="text-white">Eng. Mohammed Mohammed Al-Sayyad</strong>
+            {% endif %}
+          </span>
+          <span class="text-white-50">|</span>
+          <a href="tel:773277818" class="text-info text-decoration-none fw-bold d-inline-flex align-items-center gap-1" dir="ltr" title="اتصال">
+            <i class="bi bi-telephone-fill" style="font-size: 0.75rem;"></i> 773277818
+          </a>
+          <a href="https://wa.me/967773277818" target="_blank" rel="noopener noreferrer" class="text-success text-decoration-none d-inline-flex align-items-center gap-1" title="واتساب">
+            <i class="bi bi-whatsapp"></i>
+          </a>
+        </div>
+      </div>
+      <div class="col-md-5 text-center text-md-end">
         <a href="{% url 'public:booking_status' %}" class="text-white-50 text-decoration-none me-3">{% if current_lang == 'ar' %}متابعة الحجز{% else %}Booking Status{% endif %}</a>
         <a href="{% url 'public:contact' %}" class="text-white-50 text-decoration-none">{% if current_lang == 'ar' %}التواصل والدعم{% else %}Support{% endif %}</a>
       </div>
