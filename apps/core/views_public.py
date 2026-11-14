@@ -249,10 +249,6 @@ def booking_view(request):
         selected_service = services.filter(id=initial_service_id).first()
 
     if request.method == 'POST':
-        if not settings.PUBLIC_FORMS_ENABLED:
-            messages.error(request, _('نموذج الحجز غير متاح في بيئة المعاينة.'))
-            return redirect('public:booking')
-
         # Honeypot spam protection
         if request.POST.get('website_hp'):
             return redirect('public:booking')
@@ -415,10 +411,6 @@ def contact_view(request):
     primary_branch = branches.filter(is_primary=True).first() or branches.first()
 
     if request.method == 'POST':
-        if not settings.PUBLIC_FORMS_ENABLED:
-            messages.error(request, _('نموذج التواصل غير متاح في بيئة المعاينة.'))
-            return redirect('public:contact')
-
         # Honeypot spam protection
         if request.POST.get('website_hp'):
             return redirect('public:contact')
