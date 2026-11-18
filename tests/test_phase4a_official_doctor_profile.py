@@ -143,6 +143,7 @@ class OfficialDoctorProfilePhase4ATests(TestCase):
         self.assertIn("تلقى الدكتور تدريباً", content)
         self.assertIn("الروبوت غير متوفر حالياً في اليمن", content)
         self.assertNotIn("استبدال المفاصل بالروبوت", content)
+        self.assertIn("8 خدمات", content)
 
         # Verify placeholder stats are strictly absent
         self.assertNotIn("+16", content)
