@@ -50,6 +50,9 @@
               <div class="input-group">
                 <span class="input-group-text bg-light"><i class="bi bi-lock"></i></span>
                 <input type="password" name="password" id="passwordInput" class="form-control" required placeholder="••••••••">
+                <button type="button" class="btn btn-outline-secondary" id="togglePasswordVisibility" aria-label="إظهار كلمة المرور" aria-controls="passwordInput" aria-pressed="false">
+                  <i class="bi bi-eye" aria-hidden="true"></i>
+                </button>
               </div>
             </div>
 
@@ -69,6 +72,27 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    (function() {
+      const passwordInput = document.getElementById('passwordInput');
+      const toggleButton = document.getElementById('togglePasswordVisibility');
+
+      if (!passwordInput || !toggleButton) return;
+
+      toggleButton.addEventListener('click', function() {
+        const isPasswordVisible = passwordInput.type === 'text';
+        passwordInput.type = isPasswordVisible ? 'password' : 'text';
+        toggleButton.setAttribute('aria-pressed', String(!isPasswordVisible));
+        toggleButton.setAttribute(
+          'aria-label',
+          isPasswordVisible ? 'إظهار كلمة المرور' : 'إخفاء كلمة المرور'
+        );
+        toggleButton.innerHTML = isPasswordVisible
+          ? '<i class="bi bi-eye" aria-hidden="true"></i>'
+          : '<i class="bi bi-eye-slash" aria-hidden="true"></i>';
+      });
+    })();
+  </script>
 </body>
 </html>
 

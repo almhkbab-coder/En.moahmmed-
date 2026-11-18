@@ -53,6 +53,13 @@ class AuthenticationTests(TestCase):
         self.assertFalse('_auth_user_id' in self.client.session)
         self.assertContains(response, 'غير صحيحة')
 
+    def test_login_page_has_accessible_password_visibility_toggle(self):
+        response = self.client.get(reverse('dashboard:login'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'id="passwordInput"')
+        self.assertContains(response, 'id="togglePasswordVisibility"')
+        self.assertContains(response, 'aria-controls="passwordInput"')
+
     def test_logout(self):
         self.client.login(username='doctor_test', password='testpassword123')
         response = self.client.get(reverse('dashboard:logout'))
