@@ -4,7 +4,7 @@
   <div class="container position-relative">
     <!-- Brand / Logo Area -->
     <a class="navbar-brand d-flex align-items-center gap-3" href="{% url 'public:home' %}">
-      <img src="{% if site_settings.logo %}{{ site_settings.logo.url }}{% else %}{% static 'img/clinic_logo.jpg' %}{% endif %}" alt="شعار عيادة الدكتور محمد الصياد" class="clinic-logo-nav bg-white p-1 rounded-circle" style="height: 68px; width: 68px; min-width: 68px; object-fit: contain; box-shadow: 0 4px 14px rgba(13,45,77,0.16); border: 2px solid rgba(40, 123, 168, 0.25);">
+      <img src="{% static 'img/clinic_logo.jpg' %}" alt="شعار عيادة الدكتور محمد الصياد" class="clinic-logo-nav bg-white p-1 rounded-circle" style="height: 68px; width: 68px; min-width: 68px; object-fit: contain; box-shadow: 0 4px 14px rgba(13,45,77,0.16); border: 2px solid rgba(40, 123, 168, 0.25);">
       <div>
         <div class="fw-bold fs-5 text-navy lh-1 mb-1">
           {% if current_lang == 'ar' %}{{ site_settings.doctor_name_ar }}{% else %}{{ site_settings.doctor_name_en }}{% endif %}

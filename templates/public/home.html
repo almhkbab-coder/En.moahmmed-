@@ -7,12 +7,12 @@
   
   <!-- Desktop Full-Bleed Doctor Background Column (Image 3) -->
   <div class="hero-doctor-bg-col d-none d-lg-block">
-    <img src="{% if doctor.profile_photo %}{{ doctor.profile_photo.url }}{% else %}{% static 'img/dr_mohammed_alsayyad.jpg' %}{% endif %}" alt="{{ doctor.name_ar }}" class="hero-doctor-img">
+    <img src="{% static 'img/dr_mohammed_alsayyad.jpg' %}" alt="{{ doctor.name_ar }}" class="hero-doctor-img">
   </div>
 
   <!-- Mobile Hero Doctor Photo with Floating Pill Badge (Image 4) -->
   <div class="d-lg-none hero-mobile-photo-wrapper">
-    <img src="{% if doctor.profile_photo %}{{ doctor.profile_photo.url }}{% else %}{% static 'img/dr_mohammed_alsayyad.jpg' %}{% endif %}" alt="{{ doctor.name_ar }}" class="img-fluid">
+    <img src="{% static 'img/dr_mohammed_alsayyad.jpg' %}" alt="{{ doctor.name_ar }}" class="img-fluid">
     <!-- Floating Glassy Doctor Name Pill on Mobile (Matching Image 4) -->
     <div class="hero-mobile-pill-float">
       <div class="doctor-name-pill">

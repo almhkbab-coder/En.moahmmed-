@@ -47,7 +47,7 @@
       <!-- Brand Header -->
       <div class="saas-sidebar-brand d-flex align-items-center justify-content-between">
         <div class="d-flex align-items-center gap-2">
-          <img src="{% if site_settings.logo %}{{ site_settings.logo.url }}{% else %}{% static 'img/clinic_logo.jpg' %}{% endif %}" alt="شعار عيادة الصياد" class="rounded-circle shadow-sm bg-white p-1 flex-shrink-0" style="width: 46px; height: 46px; min-width: 46px; object-fit: contain; border: 2px solid #E2E8F0;">
+          <img src="{% static 'img/clinic_logo.jpg' %}" alt="شعار عيادة الصياد" class="rounded-circle shadow-sm bg-white p-1 flex-shrink-0" style="width: 46px; height: 46px; min-width: 46px; object-fit: contain; border: 2px solid #E2E8F0;">
           <div>
             <div class="fw-bold fs-6 text-navy lh-1 mb-1">{% if current_lang == 'ar' %}عيادة الصياد{% else %}Al-Sayyad Clinic{% endif %}</div>
             <div class="text-muted" style="font-size: 0.72rem;">{% if current_lang == 'ar' %}جراحة العظام والمفاصل{% else %}Orthopaedic Practice{% endif %}</div>

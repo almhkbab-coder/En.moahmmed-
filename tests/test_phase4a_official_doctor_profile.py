@@ -144,6 +144,10 @@ class OfficialDoctorProfilePhase4ATests(TestCase):
         self.assertIn("الروبوت غير متوفر حالياً في اليمن", content)
         self.assertNotIn("استبدال المفاصل بالروبوت", content)
         self.assertIn("8 خدمات", content)
+        self.assertIn("/static/img/dr_mohammed_alsayyad.jpg", content)
+        self.assertIn("/static/img/clinic_logo.jpg", content)
+        self.assertNotIn("/media/doctors/profile/", content)
+        self.assertNotIn("/media/branding/", content)
 
         # Verify placeholder stats are strictly absent
         self.assertNotIn("+16", content)

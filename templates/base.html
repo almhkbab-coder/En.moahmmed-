@@ -16,8 +16,8 @@
   <meta property="og:description" content="{% if meta_desc %}{{ meta_desc }}{% else %}{% if current_lang == 'ar' %}{{ site_settings.meta_description_ar }}{% else %}{{ site_settings.meta_description_en }}{% endif %}{% endif %}">
   <meta property="og:url" content="{{ request.build_absolute_uri }}">
   <meta property="og:locale" content="{% if current_lang == 'ar' %}ar_YE{% else %}en_US{% endif %}">
-  <meta property="og:image" content="{% if site_settings.logo %}{{ request.scheme }}://{{ request.get_host }}{{ site_settings.logo.url }}{% else %}{{ request.scheme }}://{{ request.get_host }}{% static 'img/clinic_logo.jpg' %}{% endif %}">
-  <meta property="og:image:secure_url" content="{% if site_settings.logo %}{{ request.scheme }}://{{ request.get_host }}{{ site_settings.logo.url }}{% else %}{{ request.scheme }}://{{ request.get_host }}{% static 'img/clinic_logo.jpg' %}{% endif %}">
+  <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'img/clinic_logo.jpg' %}">
+  <meta property="og:image:secure_url" content="{{ request.scheme }}://{{ request.get_host }}{% static 'img/clinic_logo.jpg' %}">
   <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -27,7 +27,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{% if page_title %}{{ page_title }} | {% endif %}{% if current_lang == 'ar' %}{{ site_settings.clinic_name_ar }}{% else %}{{ site_settings.clinic_name_en }}{% endif %}">
   <meta name="twitter:description" content="{% if meta_desc %}{{ meta_desc }}{% else %}{% if current_lang == 'ar' %}{{ site_settings.meta_description_ar }}{% else %}{{ site_settings.meta_description_en }}{% endif %}{% endif %}">
-  <meta name="twitter:image" content="{% if site_settings.logo %}{{ request.scheme }}://{{ request.get_host }}{{ site_settings.logo.url }}{% else %}{{ request.scheme }}://{{ request.get_host }}{% static 'img/clinic_logo.jpg' %}{% endif %}">
+  <meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'img/clinic_logo.jpg' %}">
   <meta name="twitter:url" content="{{ request.build_absolute_uri }}">
 
   <!-- Mobile In-App Browsers, WebViews & Device Capabilities -->
@@ -39,8 +39,8 @@
   <meta name="theme-color" content="#1D70B8">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/jpeg" href="{% if site_settings.favicon %}{{ site_settings.favicon.url }}{% else %}{% static 'img/clinic_logo.jpg' %}{% endif %}">
-  <link rel="apple-touch-icon" href="{% if site_settings.logo %}{{ site_settings.logo.url }}{% else %}{% static 'img/clinic_logo.jpg' %}{% endif %}">
+  <link rel="icon" type="image/jpeg" href="{% static 'img/clinic_logo.jpg' %}">
+  <link rel="apple-touch-icon" href="{% static 'img/clinic_logo.jpg' %}">
 
   <!-- Google Fonts: Cairo, Tajawal (Arabic), Inter, Playfair Display (Luxury Editorial) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">

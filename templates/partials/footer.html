@@ -5,7 +5,7 @@
       <!-- Col 1: Identity & Doctor Bio -->
       <div class="col-lg-4 col-md-6">
         <div class="d-flex align-items-center gap-3 mb-3">
-          <img src="{% if site_settings.logo %}{{ site_settings.logo.url }}{% else %}{% static 'img/clinic_logo.jpg' %}{% endif %}" alt="شعار العيادة" class="rounded-circle shadow-sm bg-white p-1" style="width: 76px; height: 76px; min-width: 76px; object-fit: contain; border: 2.5px solid rgba(255, 255, 255, 0.25);">
+          <img src="{% static 'img/clinic_logo.jpg' %}" alt="شعار العيادة" class="rounded-circle shadow-sm bg-white p-1" style="width: 76px; height: 76px; min-width: 76px; object-fit: contain; border: 2.5px solid rgba(255, 255, 255, 0.25);">
           <div>
             <h5 class="mb-1 text-white fw-bold fs-5">
               {% if current_lang == 'ar' %}{{ site_settings.doctor_name_ar }}{% else %}{{ site_settings.doctor_name_en }}{% endif %}

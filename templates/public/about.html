@@ -33,7 +33,7 @@
             
             <!-- Circular Clinic Logo Badge -->
             <div class="position-absolute shadow-lg bg-white p-2 rounded-circle about-profile-logo" style="top: 8px; {% if current_lang == 'ar' %}right: 8px;{% else %}left: 8px;{% endif %} width: 76px; height: 76px; z-index: 5; border: 2.5px solid rgba(40, 123, 168, 0.25);">
-              <img src="{% if site_settings.logo %}{{ site_settings.logo.url }}{% else %}{% static 'img/clinic_logo.jpg' %}{% endif %}" alt="شعار العيادة" style="width: 100%; height: 100%; object-fit: contain; border-radius: 50%;">
+              <img src="{% static 'img/clinic_logo.jpg' %}" alt="شعار العيادة" style="width: 100%; height: 100%; object-fit: contain; border-radius: 50%;">
             </div>
 
             <!-- Floating Subtitle Pill -->
