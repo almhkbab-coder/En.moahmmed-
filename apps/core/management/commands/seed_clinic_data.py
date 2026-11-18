@@ -88,8 +88,8 @@ class Command(BaseCommand):
         settings_obj.mobile = '+967 777 345 678'
         settings_obj.whatsapp = '+967 777 345 678'
         settings_obj.email = 'contact@alsayyad-clinic.ye'
-        settings_obj.address_ar = 'صنعاء - شارع الزبيري - برج النخبة الطبي - الدور الثالث'
-        settings_obj.address_en = "Sana'a - Al-Zubairi St. - Al-Nukhba Medical Tower - 3rd Floor"
+        settings_obj.address_ar = 'صنعاء – شارع خولان – عيادات الرازي التخصصية – عمارة الحبيشي – بجوار مستشفى الثورة العام'
+        settings_obj.address_en = "Sana'a - Khawlan St. - Al-Razi Specialized Clinics - Al-Hubaishi Building - next to Al-Thawra Hospital"
         settings_obj.working_hours_summary_ar = 'السبت - الخميس: 9:00 ص - 1:00 م | 4:00 م - 8:30 م (الجمعة عطلة)'
         settings_obj.working_hours_summary_en = 'Sat - Thu: 9:00 AM - 1:00 PM | 4:00 PM - 8:30 PM (Friday Closed)'
         settings_obj.save()
@@ -106,13 +106,13 @@ class Command(BaseCommand):
 
         branch, _ = ClinicBranch.objects.get_or_create(
             clinic=clinic,
-            name_ar='الفرع الرئيسي - صنعاء',
+            name_ar='عيادات الرازي التخصصية – عمارة الحبيشي',
             defaults={
-                'name_en': 'Main Clinic - Sanaa',
+                'name_en': 'Al-Razi Specialized Clinics - Al-Hubaishi Building',
                 'city_ar': 'صنعاء',
                 'city_en': "Sana'a",
-                'address_ar': 'صنعاء - شارع الزبيري - برج النخبة الطبي - الدور الثالث',
-                'address_en': "Sana'a - Al-Zubairi St. - Al-Nukhba Medical Tower",
+                'address_ar': 'صنعاء – شارع خولان – عيادات الرازي التخصصية – عمارة الحبيشي – بجوار مستشفى الثورة العام',
+                'address_en': "Sana'a - Khawlan St. - Al-Razi Specialized Clinics - Al-Hubaishi Building - next to Al-Thawra Hospital",
                 'phone': '+967 1 205600',
                 'whatsapp': '+967 777 345 678',
                 'email': 'sanaa@alsayyad-clinic.ye',
@@ -122,6 +122,12 @@ class Command(BaseCommand):
                 'longitude': 44.206667
             }
         )
+        branch.name_ar = 'عيادات الرازي التخصصية – عمارة الحبيشي'
+        branch.name_en = 'Al-Razi Specialized Clinics - Al-Hubaishi Building'
+        branch.is_primary = True
+        branch.is_active = True
+        branch.save()
+        ClinicBranch.objects.exclude(pk=branch.pk).update(is_primary=False, is_active=False)
 
         # 5. Working Hours (Saturday to Thursday: 09:00-13:00 and 16:00-20:30, Friday closed)
         for day_code in range(7):

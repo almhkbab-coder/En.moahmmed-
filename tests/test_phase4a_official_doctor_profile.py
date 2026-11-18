@@ -46,8 +46,9 @@ class OfficialDoctorProfilePhase4ATests(TestCase):
             bio_ar=(
                 "الدكتور محمد الصياد استشاري جراحة العظام والكسور والحوض والمفاصل الصناعية، "
                 "وأستاذ جراحة العظام بكلية الطب – جامعة صنعاء، يمتلك خلفية علمية وتخصصية متقدمة في مجال جراحة العظام، "
-                "مع اهتمام خاص بجراحات استبدال المفاصل الصناعية للركبة والحوض، وتقنيات المفاصل الصناعية باستخدام الروبوت.\n\n"
-                "كما يعمل مدرباً معتمداً للجامعة السويسرية لجراحة العظام في منطقة الشرق الأوسط وشمال أفريقيا."
+                "مع اهتمام خاص بجراحات استبدال المفاصل الصناعية للركبة والحوض. تلقى تدريباً على تقنيات المفاصل بمساعدة الروبوت، "
+                "لكن هذه التقنية غير متوفرة حالياً في اليمن ولا تقدمها العيادة.\n\n"
+                "كما يعمل مدرباً معتمداً لدى جمعية العظام السويسرية AO في منطقة الشرق الأوسط وشمال أفريقيا."
             ),
             vision_ar="تقديم رعاية طبية متخصصة في جراحة العظام والمفاصل، تعتمد على الخبرة العلمية والتقنيات الجراحية الحديثة...",
             is_active=True
@@ -59,7 +60,7 @@ class OfficialDoctorProfilePhase4ATests(TestCase):
             ("دكتوراه في جراحة العظام", "جامعة القاهرة، مصر"),
             ("البورد العربي في جراحة العظام", "بيروت"),
             ("زمالة المفاصل الصناعية", "جامعة أسيوط، مصر"),
-            ("زمالة المفاصل الصناعية باستخدام الروبوت", "الهند"),
+            ("تدريب على تقنيات المفاصل بمساعدة الروبوت", "الهند"),
         ]
         for idx, (deg, inst) in enumerate(official_educations, 1):
             Education.objects.create(
@@ -77,8 +78,8 @@ class OfficialDoctorProfilePhase4ATests(TestCase):
             "من أوائل الأطباء اليمنيين الحاصلين على شهادات في التخصص الدقيق للمفاصل الصناعية للركبة والحوض",
             "استشاري متخصص في كسور الحوض والمفاصل الصناعية",
             "زمالات تخصصية في جراحة المفاصل الصناعية من مصر والهند",
-            "تدريب متخصص في تقنيات المفاصل الصناعية باستخدام الروبوت",
-            "مدرب معتمد للجامعة السويسرية لجراحة العظام في الشرق الأوسط وشمال أفريقيا",
+            "تدريب متخصص على تقنيات المفاصل بمساعدة الروبوت؛ التقنية غير متوفرة في اليمن ولا تقدمها العيادة",
+            "مدرب معتمد لدى جمعية العظام السويسرية AO في الشرق الأوسط وشمال أفريقيا",
         ]
         for idx, text in enumerate(official_experiences, 1):
             Experience.objects.create(
@@ -92,7 +93,7 @@ class OfficialDoctorProfilePhase4ATests(TestCase):
                 order=idx
             )
 
-        # 9 Official Services
+        # Official clinic services; robotic-assisted surgery is training only.
         cat = ServiceCategory.objects.create(name_ar="جراحة العظام", name_en="Orthopedics", slug="ortho-cat")
         services_data = [
             ("جراحة العظام العامة", "general-orthopedic-surgery"),
@@ -101,7 +102,6 @@ class OfficialDoctorProfilePhase4ATests(TestCase):
             ("جراحة المفاصل الصناعية للركبة", "knee-joint-replacement"),
             ("جراحة المفاصل الصناعية للحوض", "hip-joint-replacement"),
             ("عمليات استبدال المفاصل الصناعية", "artificial-joint-replacement-surgeries"),
-            ("جراحات المفاصل الصناعية باستخدام تقنيات الروبوت", "robotic-assisted-joint-replacement"),
             ("تقييم حالات خشونة وتآكل المفاصل", "assessment-osteoarthritis-joint-wear"),
             ("متابعة المرضى بعد عمليات استبدال المفاصل وإعادة التأهيل", "post-op-followup-and-rehabilitation"),
         ]
@@ -140,6 +140,9 @@ class OfficialDoctorProfilePhase4ATests(TestCase):
         # Verify old address is strictly absent
         self.assertNotIn("شارع الزبيري", content)
         self.assertNotIn("Al-Zubairi", content)
+        self.assertIn("تلقى الدكتور تدريباً", content)
+        self.assertIn("الروبوت غير متوفر حالياً في اليمن", content)
+        self.assertNotIn("استبدال المفاصل بالروبوت", content)
 
         # Verify placeholder stats are strictly absent
         self.assertNotIn("+16", content)
@@ -151,7 +154,7 @@ class OfficialDoctorProfilePhase4ATests(TestCase):
         self.assertEqual(response.status_code, 200)
         content = response.content.decode('utf-8')
 
-        # Verify all 5 official qualifications are present
+        # Verify the training credential is not presented as a clinical service.
         self.assertIn("أستاذ جراحة العظام", content)
         self.assertIn("كلية الطب، جامعة صنعاء", content)
         self.assertIn("دكتوراه في جراحة العظام", content)
@@ -160,15 +163,14 @@ class OfficialDoctorProfilePhase4ATests(TestCase):
         self.assertIn("بيروت", content)
         self.assertIn("زمالة المفاصل الصناعية", content)
         self.assertIn("جامعة أسيوط، مصر", content)
-        self.assertIn("زمالة المفاصل الصناعية باستخدام الروبوت", content)
-        self.assertIn("الهند", content)
+        self.assertIn("تدريب على تقنيات المفاصل بمساعدة الروبوت", content)
 
-    def test_official_nine_services_page_and_details(self):
+    def test_official_services_page_excludes_robotic_surgery(self):
         response = self.client.get(reverse('public:services'))
         self.assertEqual(response.status_code, 200)
         content = response.content.decode('utf-8')
 
-        # Verify 9 services titles appear
+        # Verify the clinic services do not advertise robotic surgery.
         services_titles = [
             "جراحة العظام العامة",
             "علاج الكسور وإصابات العظام بمختلف أنواعها",
@@ -176,19 +178,13 @@ class OfficialDoctorProfilePhase4ATests(TestCase):
             "جراحة المفاصل الصناعية للركبة",
             "جراحة المفاصل الصناعية للحوض",
             "عمليات استبدال المفاصل الصناعية",
-            "جراحات المفاصل الصناعية باستخدام تقنيات الروبوت",
             "تقييم حالات خشونة وتآكل المفاصل",
             "متابعة المرضى بعد عمليات استبدال المفاصل وإعادة التأهيل",
         ]
         for title in services_titles:
             self.assertIn(title, content)
-
-        # Test single service detail page
-        detail_resp = self.client.get(reverse('public:service_detail', kwargs={'slug': 'robotic-assisted-joint-replacement'}))
-        self.assertEqual(detail_resp.status_code, 200)
-        detail_content = detail_resp.content.decode('utf-8')
-        self.assertIn("جراحات المفاصل الصناعية باستخدام تقنيات الروبوت", detail_content)
-        self.assertIn("حجز موعد", detail_content)
+        self.assertNotIn("جراحات المفاصل الصناعية باستخدام تقنيات الروبوت", content)
+        self.assertNotIn("robotic-assisted-joint-replacement", content)
 
     def test_official_expertise_page_and_robotics(self):
         response = self.client.get(reverse('public:expertise'))
@@ -197,8 +193,10 @@ class OfficialDoctorProfilePhase4ATests(TestCase):
 
         # Verify distinction points
         self.assertIn("من أوائل الأطباء اليمنيين", content)
-        self.assertIn("الجامعة السويسرية لجراحة العظام", content)
+        self.assertIn("جمعية العظام السويسرية AO", content)
+        self.assertNotIn("الجامعة السويسرية", content)
         self.assertIn("تقنيات الروبوت", content)
+        self.assertIn("غير متوفرة حالياً في اليمن", content)
 
     def test_official_contact_page(self):
         response = self.client.get(reverse('public:contact'))
@@ -219,5 +217,5 @@ class OfficialDoctorProfilePhase4ATests(TestCase):
         self.assertIn("الدكتور محمد الصياد", content)
         self.assertIn("استشاري جراحة العظام والكسور والحوض والمفاصل الصناعية", content)
         self.assertIn("جامعة صنعاء", content)
-        self.assertIn("السويسرية لجراحة العظام", content)
+        self.assertIn("جمعية العظام السويسرية AO", content)
         self.assertNotIn("شارع الزبيري", content)

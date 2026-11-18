@@ -19,16 +19,16 @@ class DoctorProfile(models.Model):
     title_ar = models.CharField(_('اللقب المهني (عربي)'), max_length=200, default='استشاري جراحة العظام والكسور والحوض والمفاصل الصناعية')
     title_en = models.CharField(_('اللقب المهني (إنجليزي)'), max_length=200, default='Consultant in Orthopedic Surgery, Trauma, Pelvis & Artificial Joints')
     
-    specialty_ar = models.CharField(_('التخصص الدقيق (عربي)'), max_length=255, default='جراحة استبدال المفاصل الصناعية للركبة والحوض وتقنيات الروبوت وكسور الحوض')
-    specialty_en = models.CharField(_('التخصص الدقيق (إنجليزي)'), max_length=255, default='Knee & Hip Arthroplasty, Robotic-Assisted Surgery & Pelvic Fractures')
+    specialty_ar = models.CharField(_('التخصص الدقيق (عربي)'), max_length=255, default='استبدال مفاصل الركبة والورك وكسور الحوض')
+    specialty_en = models.CharField(_('التخصص الدقيق (إنجليزي)'), max_length=255, default='Knee & Hip Joint Replacement and Pelvic Fractures')
     
     bio_ar = models.TextField(
         _('السيرة الذاتية والنبذة التعريفية (عربي)'),
-        default='الدكتور محمد الصياد استشاري جراحة العظام والكسور والحوض والمفاصل الصناعية، وأستاذ جراحة العظام بكلية الطب – جامعة صنعاء، يمتلك خلفية علمية وتخصصية متقدمة في مجال جراحة العظام، مع اهتمام خاص بجراحات استبدال المفاصل الصناعية للركبة والحوض، وتقنيات المفاصل الصناعية باستخدام الروبوت.\n\nحصل الدكتور محمد الصياد على مؤهلات علمية وتخصصية من عدد من المؤسسات والجامعات الطبية، واكتسب خبرات متقدمة في جراحة العظام وجراحات المفاصل الصناعية، من خلال الدراسات العليا والزمالات والتدريب التخصصي داخل وخارج اليمن.\n\nويُعد من الأطباء اليمنيين الرواد في مجال التخصص الدقيق للمفاصل الصناعية، وخاصة مفاصل الركبة والحوض، ويسعى إلى توظيف أحدث التقنيات والأساليب الجراحية الحديثة لتقديم رعاية طبية متقدمة، والمساهمة في تحسين جودة حياة المرضى واستعادة قدرتهم على الحركة والنشاط.\n\nكما يعمل مدرباً معتمداً للجامعة السويسرية لجراحة العظام في منطقة الشرق الأوسط وشمال أفريقيا، ويساهم في نقل الخبرات والمعرفة الطبية المتخصصة وتطوير الممارسات الجراحية الحديثة.'
+        default='الدكتور محمد الصياد استشاري جراحة العظام والكسور والحوض والمفاصل الصناعية، وأستاذ جراحة العظام بكلية الطب – جامعة صنعاء، مع اهتمام خاص باستبدال مفاصل الركبة والورك. تلقى تدريباً متخصصاً على تقنيات المفاصل بمساعدة الروبوت، لكن هذه التقنية غير متوفرة حالياً في اليمن ولا تقدمها العيادة.\n\nكما يعمل مدرباً معتمداً لدى جمعية العظام السويسرية AO في منطقة الشرق الأوسط وشمال أفريقيا، ويساهم في التدريب الطبي وتبادل الخبرات الجراحية.'
     )
     bio_en = models.TextField(
         _('السيرة الذاتية والنبذة التعريفية (إنجليزي)'),
-        default='Dr. Mohammed Al-Sayyad is a Consultant Orthopedic, Trauma, Pelvis, and Artificial Joint Surgeon, and Professor of Orthopedic Surgery at the Faculty of Medicine - Sana\'a University. He possesses an advanced academic and clinical background in orthopedics, with specialized focus on knee and hip arthroplasty, and robotic-assisted joint replacement techniques.\n\nHe has earned specialized postgraduate qualifications and fellowships from renowned medical institutions inside and outside Yemen. He is regarded as one of Yemen\'s pioneers in precision joint replacement, dedicated to employing advanced surgical technologies to relieve pain and restore patient mobility.\n\nHe also serves as a certified trainer for the Swiss Orthopaedics University in the Middle East and North Africa (MENA) region.'
+        default='Dr. Mohammed Al-Sayyad is a Consultant Orthopedic, Trauma, Pelvis, and Joint Replacement Surgeon, and Professor of Orthopedic Surgery at Sana\'a University. His clinical focus includes knee and hip joint replacement. He has completed training in robotic-assisted joint replacement; this technology is not currently available in Yemen and is not offered by the clinic.\n\nHe is also a certified trainer for the Swiss AO Orthopaedic Association in the Middle East and North Africa, contributing to medical training and surgical knowledge exchange.'
     )
 
     vision_ar = models.TextField(

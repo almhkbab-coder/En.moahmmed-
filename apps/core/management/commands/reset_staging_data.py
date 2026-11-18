@@ -1,6 +1,7 @@
 import os
 import secrets
 from datetime import date, time, timedelta
+from django.core.management import call_command
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 from django.contrib.auth.models import Group
@@ -54,8 +55,8 @@ class Command(BaseCommand):
         content_group, _ = Group.objects.get_or_create(name='Content Manager')
 
         # 4. Setup Staging Staff Accounts
-        def get_or_create_staff(username, email, role, group, env_var, default_prefix, legacy_username=None, default_password=None):
-            pw = default_password or os.getenv(env_var) or f"{default_prefix}@{secrets.token_urlsafe(8)}!"
+        def get_or_create_staff(username, email, role, group, env_var, default_prefix, legacy_username=None):
+            pw = os.getenv(env_var) or f"{default_prefix}@{secrets.token_urlsafe(8)}!"
             user = CustomUser.objects.filter(username=username).first()
             if not user and legacy_username:
                 user = CustomUser.objects.filter(username=legacy_username).first()
@@ -84,8 +85,7 @@ class Command(BaseCommand):
         admin_user = get_or_create_staff(
             os.getenv('ADMIN_INITIAL_USERNAME', 'admin'), 'admin@staging.alsayyad-clinic.ye',
             CustomUser.Role.SUPER_ADMIN, admin_group, 'ADMIN_INITIAL_PASSWORD', 'AdminStaging',
-            legacy_username='admin_staging',
-            default_password='admin123!'
+            legacy_username='admin_staging'
         )
         doctor_user = get_or_create_staff(
             'doctor_staging', 'doctor@staging.alsayyad-clinic.ye',
@@ -112,8 +112,8 @@ class Command(BaseCommand):
         settings_obj.mobile = '+967 777 345 678'
         settings_obj.whatsapp = '+967 777 345 678'
         settings_obj.email = 'staging@alsayyad-clinic.ye'
-        settings_obj.address_ar = 'صنعاء - شارع الزبيري - برج النخبة الطبي - الدور الثالث'
-        settings_obj.address_en = "Sana'a - Al-Zubairi St. - Al-Nukhba Medical Tower - 3rd Floor"
+        settings_obj.address_ar = 'صنعاء – شارع خولان – عمارة الحبيشي – بجوار مستشفى الثورة العام – عيادات الرازي التخصصية'
+        settings_obj.address_en = "Sana'a - Khawlan St. - Al-Hubaishi Building - next to Al-Thawra Hospital - Al-Razi Specialized Clinics"
         settings_obj.working_hours_summary_ar = 'السبت - الخميس: 9:00 ص - 1:00 م | 4:00 م - 8:30 م (الجمعة عطلة)'
         settings_obj.working_hours_summary_en = 'Sat - Thu: 9:00 AM - 1:00 PM | 4:00 PM - 8:30 PM (Friday Closed)'
         settings_obj.save()
@@ -123,18 +123,20 @@ class Command(BaseCommand):
             name_ar='عيادة الدكتور محمد الصياد',
             defaults={'name_en': 'Dr. Mohammed Al-Sayyad Clinic'}
         )
-        branch, _ = ClinicBranch.objects.get_or_create(
-            clinic=clinic,
-            name_ar='الفرع الرئيسي - صنعاء (شارع الزبيري)',
-            defaults={
-                'name_en': 'Main Clinic - Sanaa (Al-Zubairi St.)',
-                'city_ar': 'صنعاء',
-                'city_en': "Sana'a",
-                'address_ar': 'صنعاء - شارع الزبيري - برج النخبة الطبي',
-                'is_primary': True,
-                'is_active': True,
-            }
-        )
+        branch = ClinicBranch.objects.filter(is_primary=True).first() or ClinicBranch.objects.first()
+        if not branch:
+            branch = ClinicBranch(clinic=clinic)
+        branch.clinic = clinic
+        branch.name_ar = 'عيادات الرازي التخصصية – عمارة الحبيشي'
+        branch.name_en = 'Al-Razi Specialized Clinics - Al-Hubaishi Building'
+        branch.city_ar = 'صنعاء'
+        branch.city_en = "Sana'a"
+        branch.address_ar = settings_obj.address_ar
+        branch.address_en = settings_obj.address_en
+        branch.is_primary = True
+        branch.is_active = True
+        branch.save()
+        ClinicBranch.objects.exclude(pk=branch.pk).update(is_primary=False, is_active=False)
 
         # Working hours Sat-Thu, Friday closed
         for day in range(7):
@@ -192,6 +194,8 @@ class Command(BaseCommand):
         )
 
         # 9. No fictional appointments seeded — keep the database clean for real use
+        call_command('update_official_doctor_data')
+
         self.stdout.write(self.style.SUCCESS("Staging data reset completed successfully!"))
         self.stdout.write(self.style.SUCCESS(
             f"Staff accounts ready: {admin_user.username}, doctor_staging, reception_staging, content_staging."

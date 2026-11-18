@@ -19,11 +19,11 @@ class Clinic(models.Model):
 
 class ClinicBranch(models.Model):
     clinic = models.ForeignKey(Clinic, on_delete=models.CASCADE, related_name='branches', verbose_name=_('العيادة'))
-    name_ar = models.CharField(_('اسم الفرع (عربي)'), max_length=200, default='الفرع الرئيسي - صنعاء')
-    name_en = models.CharField(_('اسم الفرع (إنجليزي)'), max_length=200, default='Main Branch - Sanaa')
+    name_ar = models.CharField(_('اسم الفرع (عربي)'), max_length=200, default='عيادات الرازي التخصصية – عمارة الحبيشي')
+    name_en = models.CharField(_('اسم الفرع (إنجليزي)'), max_length=200, default='Al-Razi Specialized Clinics - Al-Hubaishi Building')
     city_ar = models.CharField(_('المدينة (عربي)'), max_length=100, default='صنعاء')
     city_en = models.CharField(_('المدينة (إنجليزي)'), max_length=100, default="Sana'a")
-    address_ar = models.CharField(_('العنوان التفصيلي (عربي)'), max_length=300, default='صنعاء – شارع خولان – عمارة الحبيشي – بجوار مستشفى الثورة – مركز الرازي الطبي')
+    address_ar = models.CharField(_('العنوان التفصيلي (عربي)'), max_length=300, default='صنعاء – شارع خولان – عيادات الرازي التخصصية – عمارة الحبيشي – بجوار مستشفى الثورة العام')
     address_en = models.CharField(_('العنوان التفصيلي (إنجليزي)'), max_length=300, default="Sana'a - Khawlan St. - Al-Hubaishi Bldg. - Next to Al-Thawra Hospital - Al-Razi Medical Center")
     
     phone = models.CharField(_('رقم الهاتف'), max_length=50, default='783517733')

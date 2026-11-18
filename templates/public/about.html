@@ -2,6 +2,7 @@
 {% load static i18n %}
 
 {% block content %}
+<div class="about-profile-page">
 <!-- Breadcrumb Header -->
 <div class="py-3 bg-white border-bottom">
   <div class="container">
@@ -31,12 +32,12 @@
             <img src="{% static 'img/dr_conference.jpg' %}" alt="{{ doctor.name_ar }} - أستاذ جراحة العظام ومحاضر دولي" class="img-fluid" style="border-radius: 22px; width: 100%; max-width: 400px; height: 480px; object-fit: cover; object-position: center top; box-shadow: 0 8px 24px rgba(10,34,59,0.18);">
             
             <!-- Circular Clinic Logo Badge -->
-            <div class="position-absolute shadow-lg bg-white p-2 rounded-circle" style="top: -14px; {% if current_lang == 'ar' %}right: -14px;{% else %}left: -14px;{% endif %} width: 92px; height: 92px; z-index: 5; border: 2.5px solid rgba(40, 123, 168, 0.25);">
+            <div class="position-absolute shadow-lg bg-white p-2 rounded-circle about-profile-logo" style="top: 8px; {% if current_lang == 'ar' %}right: 8px;{% else %}left: 8px;{% endif %} width: 76px; height: 76px; z-index: 5; border: 2.5px solid rgba(40, 123, 168, 0.25);">
               <img src="{% if site_settings.logo %}{{ site_settings.logo.url }}{% else %}{% static 'img/clinic_logo.jpg' %}{% endif %}" alt="شعار العيادة" style="width: 100%; height: 100%; object-fit: contain; border-radius: 50%;">
             </div>
 
             <!-- Floating Subtitle Pill -->
-            <div class="position-absolute shadow-sm bg-white py-2 px-3 rounded-pill border" style="bottom: -15px; left: 50%; transform: translateX(-50%); z-index: 6; white-space: nowrap;">
+            <div class="position-absolute shadow-sm bg-white py-2 px-3 rounded-pill border about-profile-caption" style="bottom: -15px; left: 50%; transform: translateX(-50%); z-index: 6;">
               <span class="text-navy fw-bold small d-inline-flex align-items-center gap-1">
                 <i class="bi bi-patch-check-fill text-primary"></i>
                 {% if current_lang == 'ar' %}أستاذ جراحة العظام - جامعة صنعاء{% else %}Prof. of Orthopedic Surgery - Sana'a Univ.{% endif %}
@@ -71,11 +72,11 @@
           </span>
           <span class="badge bg-white text-navy border px-3 py-2 shadow-sm rounded-pill fw-bold" style="color: #0F172A; font-size: 0.84rem;">
             <i class="bi bi-award-fill text-warning me-1 ms-1"></i>
-            {% if current_lang == 'ar' %}مدرب معتمد للجامعة السويسرية لجراحة العظام (MENA){% else %}Certified Trainer – Swiss Orthopaedics University{% endif %}
+            {% if current_lang == 'ar' %}مدرب معتمد لدى جمعية العظام السويسرية AO (MENA){% else %}Certified Trainer for the Swiss AO Orthopaedic Association (MENA){% endif %}
           </span>
           <span class="badge bg-white text-navy border px-3 py-2 shadow-sm rounded-pill fw-bold" style="color: #0F172A; font-size: 0.84rem;">
-            <i class="bi bi-cpu-fill text-success me-1 ms-1"></i>
-            {% if current_lang == 'ar' %}تقنيات المفاصل الصناعية المتقدمة والروبوت الجراحي{% else %}Robotic Arthroplasty Specialist{% endif %}
+            <i class="bi bi-journal-check text-success me-1 ms-1"></i>
+            {% if current_lang == 'ar' %}تدريب على تقنيات المفاصل بمساعدة الروبوت{% else %}Training in Robotic-Assisted Joint Replacement{% endif %}
           </span>
         </div>
 
@@ -118,22 +119,12 @@
           </div>
 
           <!-- Crisp, Readable Bio Text -->
-          <div class="about-bio-text" style="color: #1E293B; font-size: 1.1rem; line-height: 2.05;">
-            <p class="mb-4">
-              <strong>الدكتور محمد الصياد</strong> استشاري جراحة العظام والكسور والحوض والمفاصل الصناعية، وأستاذ جراحة العظام بكلية الطب – جامعة صنعاء، يمتلك خلفية علمية وتخصصية متقدمة في مجال جراحة العظام، مع اهتمام خاص بجراحات استبدال المفاصل الصناعية للركبة والحوض، وتقنيات المفاصل الصناعية باستخدام الروبوت.
-            </p>
-
-            <p class="mb-4">
-              حصل الدكتور محمد الصياد على مؤهلات علمية وتخصصية من عدد من المؤسسات والجامعات الطبية، واكتسب خبرات متقدمة في جراحة العظام وجراحات المفاصل الصناعية، من خلال الدراسات العليا والزمالات والتدريب التخصصي داخل وخارج اليمن.
-            </p>
-
-            <p class="mb-4">
-              ويُعد من الأطباء اليمنيين الرواد في مجال التخصص الدقيق للمفاصل الصناعية، وخاصة مفاصل الركبة والحوض، ويسعى إلى توظيف أحدث التقنيات والأساليب الجراحية الحديثة لتقديم رعاية طبية متقدمة، والمساهمة في تحسين جودة حياة المرضى واستعادة قدرتهم على الحركة والنشاط.
-            </p>
-
-            <p class="mb-0">
-              كما يعمل مدرباً معتمداً للجامعة السويسرية لجراحة العظام في منطقة الشرق الأوسط وشمال أفريقيا، ويساهم في نقل الخبرات والمعرفة الطبية المتخصصة وتطوير الممارسات الجراحية الحديثة.
-            </p>
+          <div class="about-bio-text" style="color: #1E293B; font-size: 1.05rem; line-height: 1.9;">
+            {% if current_lang == 'ar' %}
+              {{ doctor.bio_ar|linebreaksbr }}
+            {% else %}
+              {{ doctor.bio_en|linebreaksbr }}
+            {% endif %}
           </div>
         </article>
 
@@ -214,11 +205,11 @@
                 </h3>
               </div>
               <p class="small lh-lg mb-0" style="color: #334155; font-size: 0.96rem;">
-                {% if current_lang == 'ar' %}
-                  مدرب معتمد للجامعة السويسرية لجراحة العظام في منطقة الشرق الأوسط وشمال أفريقيا (MENA)، يشارك بانتظام في الدورات التدريبية المتقدمة ونقل وتطوير الممارسات السريرية والجراحية الحديثة.
-                {% else %}
-                  Certified Trainer for the Swiss Orthopaedics University in the MENA region, leading specialized surgical training courses on fracture fixation and arthroplasty techniques.
-                {% endif %}
+                  {% if current_lang == 'ar' %}
+                    مدرب معتمد لدى جمعية العظام السويسرية AO في منطقة الشرق الأوسط وشمال أفريقيا، يشارك في تدريب الأطباء ونقل الخبرات الجراحية.
+                  {% else %}
+                    Certified trainer for the Swiss AO Orthopaedic Association in MENA, contributing to physician training and surgical knowledge exchange.
+                  {% endif %}
               </p>
             </div>
           </div>
@@ -290,8 +281,8 @@
             <li class="mb-0 d-flex align-items-start gap-2">
               <i class="bi bi-check-circle-fill text-success mt-1 flex-shrink-0"></i>
               <div>
-                <strong>{% if current_lang == 'ar' %}زمالة المفاصل الصناعية{% else %}Joint Replacement Fellowship{% endif %}</strong>
-                <div class="text-muted">{% if current_lang == 'ar' %}ألمانيا{% else %}Germany{% endif %}</div>
+                <strong>{% if current_lang == 'ar' %}تدريب متخصص على تقنيات المفاصل بمساعدة الروبوت{% else %}Training in Robotic-Assisted Joint Replacement{% endif %}</strong>
+                <div class="text-muted">{% if current_lang == 'ar' %}الهند؛ التقنية غير متوفرة حالياً في اليمن{% else %}India; the technology is not currently available in Yemen{% endif %}</div>
               </div>
             </li>
           </ul>
@@ -313,7 +304,7 @@
           <ul class="list-unstyled small mb-4" style="color: #334155;">
             <li class="mb-2 d-flex align-items-start gap-2">
               <i class="bi bi-building text-success mt-1"></i>
-              <span>{% if current_lang == 'ar' %}صنعاء – شارع خولان – عيادات الرازي التخصصية{% else %}Sana'a - Khawlan St. - Al-Razi Clinics{% endif %}</span>
+              <span>{% if current_lang == 'ar' %}عيادات الرازي التخصصية – عمارة الحبيشي، صنعاء{% else %}Al-Razi Specialized Clinics – Al-Hubaishi Building, Sana'a{% endif %}</span>
             </li>
             <li class="mb-2 d-flex align-items-start gap-2">
               <i class="bi bi-compass text-muted mt-1"></i>
@@ -340,4 +331,5 @@
 </section>
 
 {{ schema_markup }}
+</div>
 {% endblock %}

@@ -48,6 +48,62 @@ body.lang-en {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
+.about-profile-page {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+.about-profile-page .row > *,
+.about-profile-page .card,
+.about-profile-page article,
+.about-profile-page p,
+.about-profile-page li,
+.about-profile-page h1,
+.about-profile-page h2,
+.about-profile-page h3,
+.about-profile-page a,
+.about-profile-page .badge {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.about-profile-page img {
+  max-width: 100%;
+}
+
+.about-profile-page .about-profile-caption {
+  width: max-content;
+  max-width: min(390px, calc(100vw - 48px));
+  white-space: normal;
+  text-align: center;
+}
+
+@media (max-width: 575.98px) {
+  .about-profile-page .display-5 {
+    font-size: 2rem;
+  }
+
+  .about-profile-page .about-profile-logo {
+    width: 64px !important;
+    height: 64px !important;
+  }
+
+  .about-profile-page .about-profile-caption {
+    left: 8px !important;
+    right: 8px !important;
+    width: auto;
+    max-width: none;
+    transform: none !important;
+    font-size: 0.78rem;
+  }
+
+  .about-profile-page .about-bio-text {
+    font-size: 1rem !important;
+    line-height: 1.8 !important;
+  }
+}
+
 /* Headings */
 h1, h2, h3, h4, h5, h6 {
   color: var(--primary-navy);

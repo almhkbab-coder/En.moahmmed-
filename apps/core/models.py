@@ -25,7 +25,7 @@ class SiteSettings(models.Model):
     whatsapp = models.CharField(_('رقم الواتساب'), max_length=50, default='+967783517733')
     email = models.EmailField(_('البريد الإلكتروني للعيادة'), default='info@alsayyad-clinic.ye')
     
-    address_ar = models.CharField(_('العنوان (عربي)'), max_length=300, default='صنعاء – شارع خولان – عمارة الحبيشي – بجوار مستشفى الثورة – مركز الرازي الطبي')
+    address_ar = models.CharField(_('العنوان (عربي)'), max_length=300, default='صنعاء – شارع خولان – عيادات الرازي التخصصية – عمارة الحبيشي – بجوار مستشفى الثورة العام')
     address_en = models.CharField(_('العنوان (إنجليزي)'), max_length=300, default="Sana'a - Khawlan St. - Al-Hubaishi Bldg. - Next to Al-Thawra Hospital - Al-Razi Medical Center")
     
     working_hours_summary_ar = models.CharField(_('ملخص أوقات الدوام (عربي)'), max_length=255, default='السبت - الخميس: 9:00 ص - 1:00 م | 4:00 م - 8:30 م')
@@ -43,7 +43,7 @@ class SiteSettings(models.Model):
     # SEO Defaults
     meta_title_ar = models.CharField(_('عنوان الموقع للبحث (عربي)'), max_length=255, default='الدكتور محمد الصياد | استشاري جراحة العظام والكسور والحوض والمفاصل الصناعية - صنعاء')
     meta_title_en = models.CharField(_('عنوان الموقع للبحث (إنجليزي)'), max_length=255, default='Dr. Mohammed Al-Sayyad | Consultant Orthopedic, Trauma, Pelvis & Joint Replacement Surgeon - Sanaa')
-    meta_description_ar = models.TextField(_('وصف الموقع للبحث (عربي)'), default='الموقع الرسمي للدكتور محمد الصياد - استشاري جراحة العظام والكسور والحوض والمفاصل الصناعية، وأستاذ بكلية الطب جامعة صنعاء. مركز الرازي الطبي، شارع خولان، صنعاء.')
+    meta_description_ar = models.TextField(_('وصف الموقع للبحث (عربي)'), default='الموقع الرسمي للدكتور محمد الصياد - استشاري جراحة العظام والكسور والحوض واستبدال مفاصل الركبة والورك. عيادات الرازي التخصصية، عمارة الحبيشي، صنعاء.')
     meta_description_en = models.TextField(_('وصف الموقع للبحث (إنجليزي)'), default='Official website of Dr. Mohammed Al-Sayyad, Consultant Orthopedic, Trauma, Pelvis and Joint Replacement Surgeon, Professor at Sanaa University. Al-Razi Medical Center, Khawlan St., Sanaa.')
 
     class Meta:

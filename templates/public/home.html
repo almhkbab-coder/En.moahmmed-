@@ -41,7 +41,7 @@
         <!-- Subheading with Vertical Dividers (Like 'Knee | Hip | Robotic Joint replacement' in Image 3) -->
         <h2 class="h3 fw-semibold mb-3" style="color: #64DFDF; font-weight: 600; line-height: 1.4;">
           {% if current_lang == 'ar' %}
-            الركبة <span class="mx-2 text-white-50">|</span> الحوض <span class="mx-2 text-white-50">|</span> استبدال المفاصل بالروبوت
+            الركبة <span class="mx-2 text-white-50">|</span> الحوض <span class="mx-2 text-white-50">|</span> تدريب على تقنيات المفاصل بمساعدة الروبوت
           {% else %}
             Knee <span class="mx-2 text-white-50">|</span> Hip <span class="mx-2 text-white-50">|</span> Robotic Joint replacement
           {% endif %}
@@ -95,7 +95,7 @@
         {% if current_lang == 'ar' %}
           رعاية جراحية متخصصة لجراحة استبدال المفاصل الصناعية للركبة والحوض، وكسور الحوض والإصابات المعقدة
         {% else %}
-          Consultant-led surgical care for knee and hip joint replacements, robotic arthroplasty, and complex pelvic trauma
+          Consultant-led surgical care for knee and hip joint replacements and complex pelvic trauma
         {% endif %}
       </p>
     </div>
@@ -230,39 +230,35 @@
         </div>
       </div>
 
-      <!-- Card 5: Robotic-Assisted Arthroplasty (5.png) -->
+      <!-- Robotic-assisted surgery training, not a clinic service -->
       <div class="col-md-6 col-lg-8">
         <div class="procedure-card">
           <div class="row g-0 h-100 align-items-center">
             <div class="col-md-6">
               <div class="procedure-card-img-wrapper h-100" style="min-height: 240px;">
-                <img src="{% static 'img/services/robotic_surgery.png' %}" alt="{% if current_lang == 'ar' %}جراحة المفاصل بالروبوت{% else %}Robotic Arthroplasty{% endif %}">
-                <span class="procedure-card-badge" style="background: var(--medical-cyan);">{% if current_lang == 'ar' %}تقنية الروبوت{% else %}Robotic Solution{% endif %}</span>
+                <img src="{% static 'img/services/robotic_surgery.png' %}" alt="{% if current_lang == 'ar' %}تدريب الدكتور على تقنيات المفاصل بمساعدة الروبوت{% else %}Training in robotic-assisted joint replacement{% endif %}">
+                <span class="procedure-card-badge" style="background: var(--medical-cyan);">{% if current_lang == 'ar' %}تدريب تخصصي{% else %}Specialized Training{% endif %}</span>
               </div>
             </div>
             <div class="col-md-6 p-4 d-flex flex-column justify-content-between h-100">
               <div>
-                <span class="badge bg-primary text-white mb-2 px-2 py-1 small">{% if current_lang == 'ar' %}تقنية جراحية رائدة{% else %}Advanced Surgical Robotics{% endif %}</span>
+                <span class="badge bg-primary text-white mb-2 px-2 py-1 small">{% if current_lang == 'ar' %}خبرة تدريبية{% else %}Training Experience{% endif %}</span>
                 <h3 class="h5 fw-bold text-navy mb-2">
-                  <a href="{% url 'public:service_detail' slug='robotic-assisted-joint-replacement' %}" class="text-navy text-decoration-none">
-                    {% if current_lang == 'ar' %}جراحات المفاصل الصناعية باستخدام تقنيات الروبوت{% else %}Robotic-Assisted Joint Replacement Surgery{% endif %}
-                  </a>
+                  {% if current_lang == 'ar' %}تدريب على تقنيات المفاصل بمساعدة الروبوت{% else %}Training in Robotic-Assisted Joint Replacement{% endif %}
                 </h3>
                 <p class="text-muted small lh-base mb-3">
                   {% if current_lang == 'ar' %}
-                    توظيف تقنيات الملاحة والتوجيه الروبوتي لتحقيق أعلى دقة في قطع العظام وموازنة الأربطة المفصلية، مما يرفع ثبات المفصل وعمره التشغيلي.
+                    تلقى الدكتور تدريباً على هذه التقنيات. الروبوت غير متوفر حالياً في اليمن، ولا تُجرى هذه العمليات في العيادة.
                   {% else %}
-                    Utilization of 3D planning and real-time robotic navigation for sub-millimeter precision in implant placement and soft-tissue balance.
+                    The doctor has trained in these techniques. Robotic systems are not currently available in Yemen, and the clinic does not offer these procedures.
                   {% endif %}
                 </p>
               </div>
               <div class="d-flex align-items-center justify-content-between pt-3 border-top mt-3">
-                <a href="{% url 'public:service_detail' slug='robotic-assisted-joint-replacement' %}" class="small fw-bold text-primary text-decoration-none">
-                  {% if current_lang == 'ar' %}تفاصيل الإجراء{% else %}Learn More{% endif %} <i class="bi bi-arrow-{% if current_lang == 'ar' %}left{% else %}right{% endif %}"></i>
+                <a href="{% url 'public:expertise' %}" class="small fw-bold text-primary text-decoration-none">
+                  {% if current_lang == 'ar' %}المزيد عن الخبرات{% else %}More About Experience{% endif %} <i class="bi bi-arrow-{% if current_lang == 'ar' %}left{% else %}right{% endif %}"></i>
                 </a>
-                <a href="{% url 'public:booking' %}" class="btn btn-sm btn-medical">
-                  {% if current_lang == 'ar' %}حجز استشارة{% else %}Book Consultation{% endif %}
-                </a>
+                <span class="small text-muted">{% if current_lang == 'ar' %}ليست خدمة متاحة{% else %}Not an available service{% endif %}</span>
               </div>
             </div>
           </div>
