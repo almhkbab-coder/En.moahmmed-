@@ -1536,6 +1536,212 @@ body.saas-sidebar-open {
   line-height: 1;
 }
 
+/* Clinic dashboard: readable contrast, compact cards, and touch-friendly mobile layout. */
+.saas-dashboard-wrapper {
+  min-width: 0;
+  color: #1E293B;
+}
+
+.saas-dashboard-wrapper .text-muted {
+  color: #526174 !important;
+}
+
+.saas-dashboard-wrapper .text-navy {
+  color: #173B58 !important;
+}
+
+.saas-dashboard-wrapper .form-label,
+.saas-dashboard-wrapper label {
+  color: #334155;
+}
+
+.saas-dashboard-wrapper .form-control,
+.saas-dashboard-wrapper .form-select {
+  color: #172B4D;
+  background-color: #FFFFFF;
+  border-color: #B8C5D3;
+}
+
+.saas-dashboard-wrapper .form-control::placeholder {
+  color: #64748B;
+  opacity: 1;
+}
+
+.saas-dashboard-wrapper .form-control:focus,
+.saas-dashboard-wrapper .form-select:focus {
+  border-color: #287BA8;
+  box-shadow: 0 0 0 0.2rem rgba(40, 123, 168, 0.16);
+}
+
+.saas-dashboard-wrapper .card,
+.saas-dashboard-wrapper .saas-kpi-card,
+.saas-dashboard-wrapper .saas-panel-card {
+  min-width: 0;
+  border-color: #DCE4EC;
+}
+
+.saas-dashboard-wrapper .table {
+  --bs-table-color: #263648;
+  --bs-table-hover-color: #172B4D;
+}
+
+.saas-dashboard-wrapper .table thead th {
+  color: #334155;
+  white-space: nowrap;
+}
+
+.saas-dashboard-wrapper .btn {
+  min-height: 40px;
+}
+
+.saas-dashboard-wrapper .btn-sm {
+  min-height: 36px;
+}
+
+@media (max-width: 767.98px) {
+  .saas-topbar {
+    min-height: 58px;
+    gap: 0.5rem;
+    padding: 0.5rem 0.7rem;
+  }
+
+  .saas-topbar > div {
+    min-width: 0;
+  }
+
+  .saas-topbar > div:last-child {
+    gap: 0.35rem !important;
+  }
+
+  .saas-topbar > div:first-child .d-md-none {
+    max-width: min(150px, calc(100vw - 255px)) !important;
+  }
+
+  .saas-dashboard-wrapper .table thead th {
+    color: #334155 !important;
+  }
+
+  .saas-content-container {
+    padding: 0.75rem 0.7rem calc(88px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  .saas-content-container h1 {
+    font-size: 1.35rem;
+    line-height: 1.45;
+  }
+
+  .saas-content-container .card,
+  .saas-content-container .saas-panel-card,
+  .saas-content-container .saas-kpi-card {
+    border-radius: 14px !important;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+  }
+
+  .saas-content-container .card.p-4,
+  .saas-content-container .card.p-5,
+  .saas-content-container .card .card-body.p-4,
+  .saas-content-container .card .card-body.p-5 {
+    padding: 1rem !important;
+  }
+
+  .saas-kpi-card {
+    padding: 0.8rem;
+  }
+
+  .saas-kpi-card .display-6 {
+    font-size: 1.65rem;
+  }
+
+  .saas-dashboard-wrapper .form-control,
+  .saas-dashboard-wrapper .form-select {
+    min-height: 44px;
+    font-size: 16px;
+  }
+
+  .saas-dashboard-wrapper .btn,
+  .saas-dashboard-wrapper .btn-sm {
+    min-height: 42px;
+  }
+
+  .saas-mobile-bottom-nav {
+    height: calc(64px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .saas-bottom-nav-item {
+    min-width: 0;
+    flex: 1 1 0;
+    font-size: 0.68rem;
+    padding-inline: 0.2rem;
+  }
+
+  .dashboard-mobile-cards {
+    overflow: visible;
+    border-radius: 0;
+  }
+
+  .dashboard-mobile-cards table,
+  .dashboard-mobile-cards tbody {
+    display: block;
+    width: 100%;
+  }
+
+  .dashboard-mobile-cards thead {
+    display: none;
+  }
+
+  .dashboard-mobile-cards tbody tr {
+    display: block;
+    margin: 0.65rem;
+    padding: 0.35rem 0.8rem;
+    background: #FFFFFF;
+    border: 1px solid #DCE4EC;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+  }
+
+  .dashboard-mobile-cards tbody td {
+    display: grid;
+    grid-template-columns: minmax(6.2rem, 36%) minmax(0, 1fr);
+    align-items: start;
+    gap: 0.55rem;
+    width: 100%;
+    padding: 0.65rem 0;
+    border: 0;
+    border-bottom: 1px solid #E8EDF2;
+    color: #263648;
+    text-align: start;
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+
+  .dashboard-mobile-cards tbody td:last-child {
+    border-bottom: 0;
+  }
+
+  .dashboard-mobile-cards tbody td[data-label]::before {
+    content: attr(data-label);
+    color: #526174;
+    font-size: 0.78rem;
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
+  .dashboard-mobile-cards tbody td[colspan] {
+    display: block;
+    margin: 0;
+    text-align: center;
+  }
+
+  .dashboard-mobile-cards tbody td[colspan]::before {
+    content: none;
+  }
+
+  .dashboard-mobile-cards .btn {
+    justify-self: start;
+  }
+}
+
 
 
 

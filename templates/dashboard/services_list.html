@@ -42,7 +42,7 @@
 </div>
 
 <div class="card border-0 rounded-4 shadow-sm bg-white overflow-hidden">
-  <div class="table-responsive">
+  <div class="table-responsive dashboard-mobile-cards">
     <table class="table table-hover align-middle mb-0">
       <thead class="table-light small">
         <tr>
@@ -58,32 +58,32 @@
       <tbody>
         {% for s in services %}
           <tr>
-            <td>
+            <td data-label="الخدمة (عربي)">
               <div class="d-flex align-items-center gap-2">
                 <i class="bi {{ s.icon }} text-success fs-5"></i>
                 <div class="fw-bold">{{ s.title_ar }}</div>
               </div>
             </td>
-            <td>{{ s.title_en }}</td>
-            <td>
+            <td data-label="Service (English)">{{ s.title_en }}</td>
+            <td data-label="التصنيف">
               <span class="badge bg-light text-dark border">{{ s.category.name_ar|default:"-" }}</span>
             </td>
-            <td>
+            <td data-label="مميزة">
               {% if s.is_featured %}
                 <span class="badge bg-warning text-dark"><i class="bi bi-star-fill me-1"></i> مميزة</span>
               {% else %}
                 <span class="text-muted small">-</span>
               {% endif %}
             </td>
-            <td>
+            <td data-label="الحالة">
               {% if s.is_active %}
                 <span class="badge bg-success">نشطة</span>
               {% else %}
                 <span class="badge bg-secondary">معطلة</span>
               {% endif %}
             </td>
-            <td>{{ s.order }}</td>
-            <td>
+            <td data-label="الترتيب">{{ s.order }}</td>
+            <td data-label="الإجراءات">
               <div class="btn-group btn-group-sm">
                 <a href="{{ s.get_absolute_url }}" target="_blank" class="btn btn-light border" title="معاينة"><i class="bi bi-box-arrow-up-right"></i></a>
                 <a href="{% url 'dashboard:service_edit' s.id %}" class="btn btn-light border" title="تعديل"><i class="bi bi-pencil"></i></a>

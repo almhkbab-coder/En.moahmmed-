@@ -10,7 +10,7 @@
 </div>
 
 <div class="card border-0 rounded-4 shadow-sm bg-white overflow-hidden">
-  <div class="table-responsive">
+  <div class="table-responsive dashboard-mobile-cards">
     <table class="table table-hover align-middle mb-0">
       <thead class="table-light small">
         <tr>
@@ -26,30 +26,30 @@
       <tbody>
         {% for a in articles %}
           <tr>
-            <td>
+            <td data-label="عنوان المقال">
               <div class="fw-bold text-navy">{{ a.title_ar }}</div>
               <div class="text-muted small">{{ a.title_en }}</div>
             </td>
-            <td>
+            <td data-label="التصنيف">
               <span class="badge bg-light text-dark border">{{ a.category.name_ar|default:"-" }}</span>
             </td>
-            <td>
+            <td data-label="الكاتب">
               {% if a.author %}
                 {{ a.author.get_full_name|default:a.author.username }}
               {% else %}
                 الطبيب
               {% endif %}
             </td>
-            <td>
+            <td data-label="الحالة">
               {% if a.is_published %}
                 <span class="badge bg-success">منشور</span>
               {% else %}
                 <span class="badge bg-warning text-dark">مسودة</span>
               {% endif %}
             </td>
-            <td>{{ a.view_count }}</td>
-            <td class="small text-muted">{{ a.published_at|date:"Y-m-d" }}</td>
-            <td>
+            <td data-label="المشاهدات">{{ a.view_count }}</td>
+            <td data-label="تاريخ النشر" class="small text-muted">{{ a.published_at|date:"Y-m-d" }}</td>
+            <td data-label="الإجراءات">
               <div class="btn-group btn-group-sm">
                 <a href="{{ a.get_absolute_url }}" target="_blank" class="btn btn-light border" title="معاينة بالموقع"><i class="bi bi-box-arrow-up-right"></i></a>
                 <a href="{% url 'dashboard:article_edit' a.id %}" class="btn btn-light border" title="تعديل"><i class="bi bi-pencil"></i></a>

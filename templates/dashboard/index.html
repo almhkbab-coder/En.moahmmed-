@@ -44,7 +44,7 @@
 <!-- 4 KPI Metric Cards -->
 <div class="row g-3 mb-4">
   <!-- 1. Total Patients -->
-  <div class="col-sm-6 col-xl-3">
+  <div class="col-6 col-xl-3">
     <div class="saas-kpi-card h-100">
       <div class="d-flex align-items-center justify-content-between mb-2">
         <div class="d-flex align-items-center gap-2 text-muted small fw-semibold">
@@ -71,7 +71,7 @@
   </div>
 
   <!-- 2. Appointments Today -->
-  <div class="col-sm-6 col-xl-3">
+  <div class="col-6 col-xl-3">
     <div class="saas-kpi-card h-100">
       <div class="d-flex align-items-center justify-content-between mb-2">
         <div class="d-flex align-items-center gap-2 text-muted small fw-semibold">
@@ -103,7 +103,7 @@
   </div>
 
   <!-- 3. Pending Reports / Requests -->
-  <div class="col-sm-6 col-xl-3">
+  <div class="col-6 col-xl-3">
     <div class="saas-kpi-card h-100">
       <div class="d-flex align-items-center justify-content-between mb-2">
         <div class="d-flex align-items-center gap-2 text-muted small fw-semibold">
@@ -135,7 +135,7 @@
   </div>
 
   <!-- 4. Total Completed -->
-  <div class="col-sm-6 col-xl-3">
+  <div class="col-6 col-xl-3">
     <div class="saas-kpi-card h-100">
       <div class="d-flex align-items-center justify-content-between mb-2">
         <div class="d-flex align-items-center gap-2 text-muted small fw-semibold">
@@ -275,7 +275,7 @@
       </div>
 
       <!-- Appointments Clean Table -->
-      <div class="table-responsive">
+      <div class="table-responsive dashboard-mobile-cards">
         <table class="table table-borderless align-middle mb-0">
           <thead style="border-bottom: 1px solid #F1F5F9; color: #94A3B8; font-size: 0.78rem; text-transform: uppercase;">
             <tr>
@@ -291,7 +291,7 @@
             {% for apt in recent_appointments %}
               <tr style="border-bottom: 1px solid #F8FAFC;">
                 <!-- Patient Info -->
-                <td class="ps-2 py-3">
+                <td data-label="{% if current_lang == 'ar' %}المريض{% else %}Patient{% endif %}" class="ps-2 py-3">
                   <div class="d-flex align-items-center gap-2">
                     <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold flex-shrink-0" style="width: 36px; height: 36px; background: linear-gradient(135deg, #2A72F8, #1E40AF); font-size: 0.85rem;">
                       {{ apt.patient.full_name|slice:":1" }}
@@ -304,33 +304,33 @@
                 </td>
 
                 <!-- Assigned Doctor -->
-                <td>
+                <td data-label="{% if current_lang == 'ar' %}الطبيب المشرف{% else %}Doctor{% endif %}">
                   <div class="fw-semibold small text-navy">د. محمد الصياد</div>
                   <div class="text-muted" style="font-size: 0.72rem;">{% if current_lang == 'ar' %}استشاري جراحة عظام ومفاصل{% else %}Orthopedic Consultant{% endif %}</div>
                 </td>
 
                 <!-- Date & Time -->
-                <td>
+                <td data-label="{% if current_lang == 'ar' %}الموعد والتاريخ{% else %}Date &amp; Time{% endif %}">
                   <div class="small fw-semibold text-navy">{{ apt.appointment_date|date:"Y-m-d" }}</div>
                   <div class="text-muted" style="font-size: 0.72rem;">{{ apt.appointment_time }}</div>
                 </td>
 
                 <!-- Service / Disease -->
-                <td>
+                <td data-label="{% if current_lang == 'ar' %}التخصص / الخدمة{% else %}Service{% endif %}">
                   <span class="badge rounded-pill bg-light text-navy border px-2 py-1" style="font-size: 0.72rem; font-weight: 500;">
                     {{ apt.service.title_ar|default:"استشارة عظام ومفاصل" }}
                   </span>
                 </td>
 
                 <!-- Status Badge -->
-                <td>
+                <td data-label="{% if current_lang == 'ar' %}الحالة{% else %}Status{% endif %}">
                   <span class="badge {{ apt.status_badge_class }}" style="font-size: 0.72rem;">
                     {{ apt.get_status_display }}
                   </span>
                 </td>
 
                 <!-- Actions -->
-                <td class="text-end pe-2">
+                <td data-label="{% if current_lang == 'ar' %}الإجراءات{% else %}Actions{% endif %}" class="text-end pe-2">
                   <a href="{% url 'dashboard:appointment_detail' apt.id %}" class="btn btn-sm btn-light rounded-pill px-2 py-1 text-muted border" title="{% if current_lang == 'ar' %}معاينة وتحديث{% else %}View / Edit{% endif %}">
                     <i class="bi bi-eye"></i>
                   </a>

@@ -17,7 +17,7 @@
 </div>
 
 <div class="card border-0 rounded-4 shadow-sm bg-white overflow-hidden">
-  <div class="table-responsive">
+  <div class="table-responsive dashboard-mobile-cards">
     <table class="table table-hover align-middle mb-0">
       <thead class="table-light small">
         <tr>
@@ -32,22 +32,22 @@
       <tbody>
         {% for patient in page_obj %}
           <tr>
-            <td>
+            <td data-label="اسم المريض">
               <a href="{% url 'dashboard:patient_detail' patient.id %}" class="fw-bold text-navy">
                 {{ patient.full_name }}
               </a>
             </td>
-            <td>
+            <td data-label="رقم الهاتف">
               <a href="tel:{{ patient.phone_number }}" class="text-muted small">
                 {{ patient.phone_number }}
               </a>
             </td>
-            <td>{{ patient.email|default:"-" }}</td>
-            <td>
+            <td data-label="البريد الإلكتروني">{{ patient.email|default:"-" }}</td>
+            <td data-label="عدد المواعيد">
               <span class="badge bg-light text-dark border">{{ patient.appointment_count }}</span>
             </td>
-            <td class="small text-muted">{{ patient.created_at|date:"Y-m-d" }}</td>
-            <td>
+            <td data-label="تاريخ أول تسجيل" class="small text-muted">{{ patient.created_at|date:"Y-m-d" }}</td>
+            <td data-label="الإجراءات">
               <a href="{% url 'dashboard:patient_detail' patient.id %}" class="btn btn-sm btn-outline-navy">
                 <i class="bi bi-person-lines-fill"></i> عرض السجل
               </a>

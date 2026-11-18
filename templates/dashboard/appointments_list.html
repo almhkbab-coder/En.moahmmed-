@@ -34,7 +34,7 @@
 </div>
 
 <div class="card border-0 rounded-4 shadow-sm bg-white overflow-hidden">
-  <div class="table-responsive">
+  <div class="table-responsive dashboard-mobile-cards">
     <table class="table table-hover align-middle mb-0">
       <thead class="table-light small">
         <tr>
@@ -52,31 +52,31 @@
       <tbody>
         {% for apt in page_obj %}
           <tr>
-            <td>
+            <td data-label="رمز الحجز">
               <a href="{% url 'dashboard:appointment_detail' apt.id %}" class="fw-bold text-navy">
                 {{ apt.booking_reference }}
               </a>
             </td>
-            <td>
+            <td data-label="المريض">
               <a href="{% url 'dashboard:patient_detail' apt.patient.id %}" class="fw-semibold text-dark">
                 {{ apt.patient.full_name }}
               </a>
             </td>
-            <td>
+            <td data-label="رقم الهاتف">
               <a href="tel:{{ apt.patient.phone_number }}" class="text-muted small">
                 {{ apt.patient.phone_number }}
               </a>
             </td>
-            <td>{{ apt.appointment_date|date:"Y-m-d" }}</td>
-            <td>{{ apt.appointment_time }}</td>
-            <td><span class="small text-muted">{{ apt.service.title_ar|default:"استشارة عامة" }}</span></td>
-            <td>
+            <td data-label="تاريخ الموعد">{{ apt.appointment_date|date:"Y-m-d" }}</td>
+            <td data-label="الوقت">{{ apt.appointment_time }}</td>
+            <td data-label="الخدمة"><span class="small text-muted">{{ apt.service.title_ar|default:"استشارة عامة" }}</span></td>
+            <td data-label="الحالة">
               <span class="badge {{ apt.status_badge_class }}">
                 {{ apt.get_status_display }}
               </span>
             </td>
-            <td class="small text-muted">{{ apt.created_at|date:"Y-m-d H:i" }}</td>
-            <td>
+            <td data-label="تاريخ الطلب" class="small text-muted">{{ apt.created_at|date:"Y-m-d H:i" }}</td>
+            <td data-label="الإجراءات">
               <a href="{% url 'dashboard:appointment_detail' apt.id %}" class="btn btn-sm btn-outline-navy">
                 <i class="bi bi-eye"></i> إدارة الموعد
               </a>

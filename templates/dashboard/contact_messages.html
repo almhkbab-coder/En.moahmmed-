@@ -3,7 +3,7 @@
 
 {% block dashboard_content %}
 <div class="card border-0 rounded-4 shadow-sm bg-white overflow-hidden">
-  <div class="table-responsive">
+  <div class="table-responsive dashboard-mobile-cards">
     <table class="table table-hover align-middle mb-0">
       <thead class="table-light small">
         <tr>
@@ -19,16 +19,16 @@
       <tbody>
         {% for msg in page_obj %}
           <tr>
-            <td class="fw-bold">{{ msg.full_name }}</td>
-            <td>
+            <td data-label="المرسل" class="fw-bold">{{ msg.full_name }}</td>
+            <td data-label="رقم الهاتف">
               <a href="tel:{{ msg.phone }}" class="text-muted small">{{ msg.phone }}</a>
               <a href="https://wa.me/{{ msg.phone|cut:' '|cut:'+' }}" target="_blank" class="text-success ms-1"><i class="bi bi-whatsapp"></i></a>
             </td>
-            <td class="small">{{ msg.email|default:"-" }}</td>
-            <td class="fw-semibold">{{ msg.subject }}</td>
-            <td class="small text-muted" style="max-width: 320px;">{{ msg.message }}</td>
-            <td class="small text-muted">{{ msg.created_at|date:"Y-m-d H:i" }}</td>
-            <td class="small text-muted">{{ msg.ip_address|default:"-" }}</td>
+            <td data-label="البريد" class="small">{{ msg.email|default:"-" }}</td>
+            <td data-label="موضوع الرسالة" class="fw-semibold">{{ msg.subject }}</td>
+            <td data-label="نص الرسالة" class="small text-muted" style="max-width: 320px;">{{ msg.message }}</td>
+            <td data-label="تاريخ الإرسال" class="small text-muted">{{ msg.created_at|date:"Y-m-d H:i" }}</td>
+            <td data-label="IP" class="small text-muted">{{ msg.ip_address|default:"-" }}</td>
           </tr>
         {% empty %}
           <tr>
